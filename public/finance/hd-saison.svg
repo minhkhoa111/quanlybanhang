@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 64" role="img" aria-label="HD SAISON">
+  <defs>
+    <linearGradient id="hdg" x1="0" x2="1">
+      <stop offset="0" stop-color="#ffb822"/>
+      <stop offset="1" stop-color="#ff7a00"/>
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" rx="10" fill="#fff" stroke="#f1e9df"/>
+  <g transform="translate(14,10)">
+    <rect x="0" y="4" width="44" height="36" rx="6" fill="url(#hdg)" />
+    <polygon points="8,16 28,8 36,28 12,28" fill="#fff" opacity="0.95" />
+  </g>
+  <text x="74" y="38" font-family="Inter, Arial, Helvetica, sans-serif" font-weight="800" font-size="16" fill="#d35400">HD SAISON</text>
+</svg>

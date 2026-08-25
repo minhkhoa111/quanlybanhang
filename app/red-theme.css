@@ -1,0 +1,17 @@
+.announcement a{color:var(--red) !important}.nav-cta span{color:var(--red) !important}.logo>span{background:linear-gradient(135deg,#e54835,#ff6b5a) !important}.product-actions .mini-cta{background:linear-gradient(90deg,#e54835,#ff6b5a) !important;color:#fff !important}.product-badge{background:linear-gradient(90deg,rgba(229,72,72,1),rgba(255,107,90,1)) !important}.order-product-chip[aria-pressed=true]{border-color:var(--red) !important}
+.site-logo-header{display:block;width:62px;height:62px;object-fit:contain;filter:drop-shadow(0 1px 1px rgba(0,0,0,.45))}.site-logo-footer{display:block;width:180px;height:180px;object-fit:contain}.logo-footer{width:max-content}@media(max-width:650px){.site-logo-header{width:54px;height:54px}}
+.footer-finance{background:#172033;border-block:1px solid #344054}
+.footer-finance-inner{display:grid;grid-template-columns:minmax(260px,.8fr) minmax(0,1.4fr);gap:52px;align-items:center;padding-block:38px}
+.finance-copy>span{display:block;margin-bottom:8px;color:#ffd166;font-size:12px;font-weight:850;text-transform:uppercase}
+.finance-copy h2{max-width:440px;margin:0;color:#fff;font-size:27px;line-height:1.2}
+.finance-copy p{max-width:470px;margin:12px 0 20px;color:#b8c2d1;font-size:14px;line-height:1.6}
+.finance-contact{display:inline-flex;align-items:center;gap:10px;padding:11px 14px;border:1px solid #667085;border-radius:8px;color:#fff;font-size:14px;font-weight:800}
+.finance-contact:hover{border-color:#ffd166;color:#ffd166}
+.finance-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.finance-partner{height:82px;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:16px 18px;background:#fff;border:1px solid #d0d5dd;border-radius:8px;transition:border-color .2s,transform .2s,box-shadow .2s}
+.finance-partner:hover{transform:translateY(-2px);border-color:#ffd166;box-shadow:0 10px 24px rgba(0,0,0,.18)}
+.finance-partner img{width:auto;max-width:82%;height:auto;max-height:48px;object-fit:contain}
+.finance-partner span{color:#667085;font-size:20px;font-weight:800}
+.finance-note{grid-column:1/-1;margin:2px 0 0;color:#98a2b3;font-size:11px;line-height:1.5}
+@media(max-width:800px){.footer-finance-inner{grid-template-columns:1fr;gap:26px}.finance-copy h2{font-size:24px}}
+@media(max-width:520px){.finance-list{grid-template-columns:1fr}.finance-partner{height:76px}.finance-note{grid-column:auto}}

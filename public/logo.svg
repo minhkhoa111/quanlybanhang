@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 200" role="img" aria-labelledby="titleDesc">
+  <title id="titleDesc">Huy Apple</title>
+  <defs>
+    <linearGradient id="gradA" x1="0" x2="1">
+      <stop offset="0%" stop-color="#ff6b6b" />
+      <stop offset="100%" stop-color="#c53030" />
+    </linearGradient>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#0b1220" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <rect width="100%" height="100%" fill="transparent" />
+
+  <!-- circular mark with H monogram -->
+  <g transform="translate(28,20)" filter="url(#shadow)">
+    <circle cx="84" cy="84" r="72" fill="url(#gradA)" />
+    <path d="M64 56c4-6 12-10 20-10s16 4 20 10c6 10 2 24-10 32-12 8-30 8-42 0-12-8-16-22-10-32z" fill="#fff" opacity="0.95"/>
+    <text x="84" y="108" font-family="Inter, Arial, Helvetica, sans-serif" font-weight="800" font-size="56" fill="#0b1220" text-anchor="middle" alignment-baseline="central">H</text>
+  </g>
+
+  <!-- wordmark -->
+  <g transform="translate(200,128)">
+    <text x="0" y="0" font-family="Inter, Arial, Helvetica, sans-serif" font-weight="700" font-size="56" fill="#0b1220">Huy</text>
+    <text x="150" y="0" font-family="Inter, Arial, Helvetica, sans-serif" font-weight="400" font-size="56" fill="#0b1220">Apple</text>
+  </g>
+</svg>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 64" role="img" aria-label="Shinhan Finance">
+  <rect width="100%" height="100%" rx="10" fill="#fff" stroke="#e8eef8"/>
+  <g transform="translate(16,8)">
+    <rect x="0" y="4" width="48" height="44" rx="8" fill="#0b4b8f" />
+    <path d="M12 18 C18 10, 34 10, 36 18 C38 26, 24 34, 12 26 Z" fill="#fff" opacity="0.95" />
+  </g>
+  <text x="82" y="38" font-family="Inter, Arial, Helvetica, sans-serif" font-weight="800" font-size="16" fill="#0b4b8f">SHINHAN FINANCE</text>
+</svg>

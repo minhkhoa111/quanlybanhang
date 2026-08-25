@@ -1,0 +1,122 @@
+.visual-category-menu {
+  margin-top: 24px;
+  border-block: 1px solid #e2e6eb;
+  background: #f1f2f4;
+}
+
+.visual-category-scroll {
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: none;
+}
+
+.visual-category-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.visual-category-list {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  min-width: 1120px;
+}
+
+.visual-category-item {
+  display: grid;
+  grid-template-rows: 120px auto;
+  align-items: end;
+  justify-items: center;
+  min-width: 0;
+  padding: 18px 12px 20px;
+  color: #202938;
+  text-align: center;
+  text-decoration: none;
+  scroll-snap-align: start;
+  opacity: 1;
+  visibility: visible;
+  translate: none;
+  transition:
+    color .28s var(--motion-spring),
+    background-color .28s ease,
+    transform .32s var(--motion-spring);
+}
+
+.visual-category-image {
+  position: relative;
+  display: flex;
+  width: 150px;
+  height: 112px;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+
+.visual-category-image img {
+  position: static !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 8px;
+  object-fit: contain !important;
+  object-position: center;
+  mix-blend-mode: multiply;
+  transition: transform .38s var(--motion-spring);
+}
+
+.visual-category-label {
+  min-height: 24px;
+  margin-top: 8px;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .visual-category-item:hover {
+    color: var(--brand);
+    background: rgba(255, 255, 255, .66);
+    transform: translateY(-2px);
+  }
+
+  .visual-category-item:hover .visual-category-image img {
+    transform: translateY(-4px) scale(1.055);
+  }
+}
+
+@media (max-width: 760px) {
+  .visual-category-menu {
+    margin-top: 16px;
+  }
+
+  .visual-category-scroll {
+    width: 100%;
+    padding-inline: 16px;
+    scroll-padding-inline: 16px;
+    scroll-snap-type: inline mandatory;
+  }
+
+  .visual-category-list {
+    display: flex;
+    min-width: max-content;
+  }
+
+  .visual-category-item {
+    grid-template-rows: 92px auto;
+    width: 132px;
+    padding: 14px 6px 16px;
+  }
+
+  .visual-category-image {
+    width: 110px;
+    height: 88px;
+  }
+
+  .visual-category-label {
+    font-size: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .visual-category-item,
+  .visual-category-image img {
+    transition: none;
+  }
+}

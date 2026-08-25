@@ -1,0 +1,2687 @@
+{
+  "iphone-13": {
+    "price": "13.790.000đ",
+    "sellingPrice": "13.790.000đ",
+    "image": "/products/details/iphone-13/detail-1-7dd32e9e.jpg",
+    "images": [
+      "/products/details/iphone-13/detail-1-7dd32e9e.jpg",
+      "/products/details/iphone-13/detail-2-ea0a1cdc.webp",
+      "/products/details/iphone-13/detail-3-f8e9ad9a.png",
+      "/products/details/iphone-13/detail-4-8591fcdb.webp",
+      "/products/details/iphone-13/detail-5-fb01372f.webp",
+      "/products/details/iphone-13/detail-6-59360690.webp",
+      "/products/details/iphone-13/detail-7-c606a1f1.png",
+      "/products/details/iphone-13/detail-8-d1c57e80.png",
+      "/products/details/iphone-13/color-trang-00ac4beb.jpg"
+    ],
+    "specs": [
+      "Hệ điều hành khi ra mắt: iOS 15",
+      "Chipset: Apple A15",
+      "Dung lượng RAM: 4 GB",
+      "Bộ nhớ trong: 128 GB",
+      "Loại CPU: 3.22 GHz",
+      "GPU: Apple GPU 4 nhân",
+      "Kích thước màn hình: 6.1 inches",
+      "Công nghệ màn hình: Super Retina XDR OLED",
+      "Độ phân giải màn hình: 2532 x 1170 pixels",
+      "Tính năng màn hình: Màn hình super Retina XDR, OLED, 460 ppi, HDR display, công nghệ True Tone Wide color (P3), Haptic Touch, Lớp phủ oleophobic chống bám vân tay",
+      "Camera sau: Camera góc rộng: 12MP, f/1.6 Camera góc siêu rộng: 12MP, ƒ/2.4",
+      "Camera trước: 12MP, f/2.2",
+      "Pin: 3240mAh",
+      "Hỗ trợ mạng: 5G",
+      "Thẻ SIM: 2 SIM (nano‑SIM và eSIM)",
+      "Công nghệ NFC: Có",
+      "Thời điểm ra mắt: 09/2021"
+    ],
+    "variants": [
+      {
+        "id": "iphone-13-128gb-trang",
+        "name": "128GB · Trắng",
+        "storage": "128GB",
+        "color": "Trắng",
+        "colorHex": "#a8adb4",
+        "price": "13.790.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-13/color-trang-00ac4beb.jpg"
+      }
+    ],
+    "colors": [
+      "#a8adb4"
+    ],
+    "colorOptions": [
+      {
+        "name": "Trắng",
+        "hex": "#a8adb4"
+      }
+    ],
+    "storageOptions": [
+      "128GB"
+    ],
+    "source": "https://cellphones.com.vn/iphone-13.html",
+    "checkedAt": "2026-08-18T13:42:56.397Z"
+  },
+  "iphone-14": {
+    "price": "15.290.000đ",
+    "sellingPrice": "15.290.000đ",
+    "image": "/products/details/iphone-14/detail-1-f8d0d6e3.jpg",
+    "images": [
+      "/products/details/iphone-14/detail-1-f8d0d6e3.jpg",
+      "/products/details/iphone-14/detail-2-7d96fc40.png",
+      "/products/details/iphone-14/detail-3-df3be304.webp",
+      "/products/details/iphone-14/detail-4-09b6c2ff.webp",
+      "/products/details/iphone-14/detail-5-7ca70e70.webp",
+      "/products/details/iphone-14/detail-6-1582fbfc.webp",
+      "/products/details/iphone-14/detail-7-47572686.png",
+      "/products/details/iphone-14/detail-8-11de74bd.webp",
+      "/products/details/iphone-14/color-trang-b14f58b7.jpg",
+      "/products/details/iphone-14/color-xanh-33b72d52.jpg"
+    ],
+    "specs": [
+      "Kích thước màn hình: 6.1 inches",
+      "Công nghệ màn hình: OLED",
+      "Camera sau: Camera góc rộng: 12MP, ƒ/1.5Camera góc siêu rộng: 12MP, ƒ/2.4",
+      "Camera trước: 12MP, ƒ/1.9",
+      "Chipset: Apple A15 Bionic 6 nhân",
+      "Công nghệ NFC: Có",
+      "Dung lượng RAM: 6 GB",
+      "Bộ nhớ trong: 128 GB",
+      "Pin: 3,279mAh",
+      "Thẻ SIM: 2 SIM (nano‑SIM và eSIM)",
+      "Hệ điều hành: iOS 16",
+      "Độ phân giải màn hình: 2532 x 1170 pixels",
+      "Tính năng màn hình: Tần số quét 60Hz, 1200 nits, Kính cường lực Ceramic Shield, Super Retina XDR",
+      "Loại CPU: 3.22 GHz"
+    ],
+    "variants": [
+      {
+        "id": "iphone-14-128gb-trang",
+        "name": "128GB · Trắng",
+        "storage": "128GB",
+        "color": "Trắng",
+        "colorHex": "#a8adb4",
+        "price": "15.290.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-14/color-trang-b14f58b7.jpg"
+      },
+      {
+        "id": "iphone-14-128gb-xanh",
+        "name": "128GB · Xanh",
+        "storage": "128GB",
+        "color": "Xanh",
+        "colorHex": "#a8adb4",
+        "price": "15.290.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-14/color-xanh-33b72d52.jpg"
+      }
+    ],
+    "colors": [
+      "#a8adb4",
+      "#a8adb4"
+    ],
+    "colorOptions": [
+      {
+        "name": "Trắng",
+        "hex": "#a8adb4"
+      },
+      {
+        "name": "Xanh",
+        "hex": "#a8adb4"
+      }
+    ],
+    "storageOptions": [
+      "128GB"
+    ],
+    "source": "https://cellphones.com.vn/iphone-14.html",
+    "checkedAt": "2026-08-18T13:42:56.423Z"
+  },
+  "iphone-15": {
+    "price": "18.890.000đ",
+    "sellingPrice": "18.890.000đ",
+    "image": "/products/details/iphone-15/detail-1-3d5b6467.png",
+    "images": [
+      "/products/details/iphone-15/detail-1-3d5b6467.png",
+      "/products/details/iphone-15/detail-2-57a6133f.jpg",
+      "/products/details/iphone-15/detail-3-c3336af1.webp",
+      "/products/details/iphone-15/detail-4-2596277a.webp",
+      "/products/details/iphone-15/detail-5-a5772dc0.webp",
+      "/products/details/iphone-15/detail-6-85870fbd.webp",
+      "/products/details/iphone-15/detail-7-a943f5f2.webp",
+      "/products/details/iphone-15/detail-8-f33a1b70.webp",
+      "/products/details/iphone-15/color-den-152b1441.png",
+      "/products/details/iphone-15/color-den-4d90b3a8.png",
+      "/products/details/iphone-15/color-xanhduong-0b3875df.png",
+      "/products/details/iphone-15/color-xanhduong-84c59e5d.png"
+    ],
+    "specs": [
+      "Hệ điều hành khi ra mắt: iOS 17",
+      "Chipset: Apple A16 Bionic 6 nhân",
+      "Dung lượng RAM: 6 GB",
+      "Bộ nhớ trong: 128 GB",
+      "Loại CPU: CPU 6 lõi với 2 lõi hiệu năng và 4 lõi tiết kiệm điện",
+      "GPU: 5‑core GPU",
+      "Kích thước màn hình: 6.1 inches",
+      "Công nghệ màn hình: Super Retina XDR OLED",
+      "Độ phân giải màn hình: 2556 x 1179 pixels",
+      "Tính năng màn hình: Dynamic Island HDR display True Tone Wide color (P3) Haptic TouchLớp phủ oleophobia chống dấu vân tayĐộ sáng tối đa: 2000 nitsMặt kính cảm ứng: Kính cường lực Ceramic ShieldTần số quét 60 Hz",
+      "Camera sau: Chính 48 MP & Phụ 12 MP",
+      "Camera trước: 12MP, ƒ/1.9",
+      "Pin: 3349 mAh",
+      "Hỗ trợ mạng: 5G",
+      "Thẻ SIM: 2 SIM (nano‑SIM và eSIM)",
+      "Công nghệ NFC: Có",
+      "Thời điểm ra mắt: 09/2023"
+    ],
+    "variants": [
+      {
+        "id": "iphone-15-128gb-den",
+        "name": "128GB · Đen",
+        "storage": "128GB",
+        "color": "Đen",
+        "colorHex": "#202124",
+        "price": "18.890.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-15/color-den-152b1441.png"
+      },
+      {
+        "id": "iphone-15-128gb-xanhduong",
+        "name": "128GB · Xanhduong",
+        "storage": "128GB",
+        "color": "Xanhduong",
+        "colorHex": "#a8adb4",
+        "price": "18.890.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-15/color-xanhduong-0b3875df.png"
+      },
+      {
+        "id": "iphone-15-256gb-den",
+        "name": "256GB · Đen",
+        "storage": "256GB",
+        "color": "Đen",
+        "colorHex": "#202124",
+        "price": "20.890.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-15/color-den-152b1441.png"
+      },
+      {
+        "id": "iphone-15-256gb-xanhduong",
+        "name": "256GB · Xanhduong",
+        "storage": "256GB",
+        "color": "Xanhduong",
+        "colorHex": "#a8adb4",
+        "price": "20.890.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-15/color-xanhduong-0b3875df.png"
+      }
+    ],
+    "colors": [
+      "#202124",
+      "#a8adb4"
+    ],
+    "colorOptions": [
+      {
+        "name": "Đen",
+        "hex": "#202124"
+      },
+      {
+        "name": "Xanhduong",
+        "hex": "#a8adb4"
+      }
+    ],
+    "storageOptions": [
+      "128GB",
+      "256GB"
+    ],
+    "source": "https://cellphones.com.vn/iphone-15.html",
+    "checkedAt": "2026-08-18T13:42:56.489Z"
+  },
+  "iphone-15-256gb": {
+    "price": "20.890.000đ",
+    "sellingPrice": "20.890.000đ",
+    "image": "/products/details/iphone-15-256gb/detail-1-cccad66e.png",
+    "images": [
+      "/products/details/iphone-15-256gb/detail-1-cccad66e.png",
+      "/products/details/iphone-15-256gb/detail-2-ca20743d.webp",
+      "/products/details/iphone-15-256gb/detail-3-5c9d0740.jpg",
+      "/products/details/iphone-15-256gb/detail-4-b8db28b1.webp",
+      "/products/details/iphone-15-256gb/detail-5-8f4ec410.webp",
+      "/products/details/iphone-15-256gb/detail-6-b3d2e5fb.jpg",
+      "/products/details/iphone-15-256gb/detail-7-be99063d.jpg",
+      "/products/details/iphone-15-256gb/detail-8-b0adf1a9.jpg",
+      "/products/details/iphone-15-256gb/color-den-152b1441.png",
+      "/products/details/iphone-15-256gb/color-den-4d90b3a8.png",
+      "/products/details/iphone-15-256gb/color-xanhduong-0b3875df.png",
+      "/products/details/iphone-15-256gb/color-xanhduong-84c59e5d.png"
+    ],
+    "specs": [
+      "Kích thước màn hình: 6.1 inches",
+      "Công nghệ màn hình: Super Retina XDR OLED",
+      "Camera sau: Chính 48 MP & Phụ 12 MP",
+      "Camera trước: 12MP, ƒ/1.9",
+      "Chipset: Apple A16 Bionic 6 nhân",
+      "Công nghệ NFC: Có",
+      "Dung lượng RAM: 6 GB",
+      "Bộ nhớ trong: 256 GB",
+      "Pin: 3349 mAh",
+      "Thẻ SIM: 2 SIM (nano‑SIM và eSIM)",
+      "Hệ điều hành: iOS 17",
+      "Độ phân giải màn hình: 2556 x 1179 pixels",
+      "Tính năng màn hình: Dynamic Island HDR display True Tone Wide color (P3) Haptic TouchLớp phủ oleophobia chống dấu vân tayĐộ sáng tối đa: 2000 nitsMặt kính cảm ứng: Kính cường lực Ceramic ShieldTần số quét 60 Hz",
+      "Loại CPU: CPU 6 lõi với 2 lõi hiệu năng và 4 lõi tiết kiệm điện"
+    ],
+    "variants": [
+      {
+        "id": "iphone-15-256gb-128gb-den",
+        "name": "128GB · Đen",
+        "storage": "128GB",
+        "color": "Đen",
+        "colorHex": "#202124",
+        "price": "18.890.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-15-256gb/color-den-152b1441.png"
+      },
+      {
+        "id": "iphone-15-256gb-128gb-xanhduong",
+        "name": "128GB · Xanhduong",
+        "storage": "128GB",
+        "color": "Xanhduong",
+        "colorHex": "#a8adb4",
+        "price": "18.890.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-15-256gb/color-xanhduong-0b3875df.png"
+      },
+      {
+        "id": "iphone-15-256gb-256gb-den",
+        "name": "256GB · Đen",
+        "storage": "256GB",
+        "color": "Đen",
+        "colorHex": "#202124",
+        "price": "20.890.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-15-256gb/color-den-152b1441.png"
+      },
+      {
+        "id": "iphone-15-256gb-256gb-xanhduong",
+        "name": "256GB · Xanhduong",
+        "storage": "256GB",
+        "color": "Xanhduong",
+        "colorHex": "#a8adb4",
+        "price": "20.890.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-15-256gb/color-xanhduong-0b3875df.png"
+      }
+    ],
+    "colors": [
+      "#202124",
+      "#a8adb4"
+    ],
+    "colorOptions": [
+      {
+        "name": "Đen",
+        "hex": "#202124"
+      },
+      {
+        "name": "Xanhduong",
+        "hex": "#a8adb4"
+      }
+    ],
+    "storageOptions": [
+      "128GB",
+      "256GB"
+    ],
+    "source": "https://cellphones.com.vn/iphone-15-256gb.html",
+    "checkedAt": "2026-08-18T13:42:56.524Z"
+  },
+  "iphone-15-plus": {
+    "price": "17.690.000đ",
+    "sellingPrice": "17.690.000đ",
+    "image": "/products/details/iphone-15-plus/detail-1-6162f411.webp",
+    "images": [
+      "/products/details/iphone-15-plus/detail-1-6162f411.webp",
+      "/products/details/iphone-15-plus/detail-2-c08e13d6.webp",
+      "/products/details/iphone-15-plus/detail-3-f9c1d24c.webp",
+      "/products/details/iphone-15-plus/detail-4-87737a2c.webp",
+      "/products/details/iphone-15-plus/detail-5-42a41e67.webp",
+      "/products/details/iphone-15-plus/detail-6-e636e527.webp",
+      "/products/details/iphone-15-plus/detail-7-ce6eb940.webp",
+      "/products/details/iphone-15-plus/detail-8-99bcf704.png"
+    ],
+    "specs": [
+      "Kích thước màn hình: 6.7 inches",
+      "Công nghệ màn hình: Super Retina XDR OLED",
+      "Camera sau: Chính 48 MP & Phụ 12 MP",
+      "Camera trước: 12MP, ƒ/1.9",
+      "Chipset: Apple A16 Bionic",
+      "Công nghệ NFC: Có",
+      "Dung lượng RAM: 6 GB",
+      "Bộ nhớ trong: 128 GB",
+      "Pin: 4383 mAh",
+      "Thẻ SIM: 2 SIM (nano‑SIM và eSIM)",
+      "Hệ điều hành: iOS 17",
+      "Độ phân giải màn hình: 2796 x 1290-pixel",
+      "Tính năng màn hình: Dynamic Island HDR display True Tone Wide color (P3) Tần số quét 60 HzHaptic TouchLớp phủ oleophobia chống dấu vân tayĐộ sáng tối đa: 2000 nits Mật độ điểm ảnh 460 ppi",
+      "Loại CPU: CPU 6 lõi với 2 lõi hiệu năng và 4 lõi tiết kiệm điện"
+    ],
+    "variants": [
+      {
+        "id": "iphone-15-plus-128gb",
+        "name": "128GB",
+        "storage": "128GB",
+        "price": "17.690.000đ",
+        "stock": 1,
+        "image": ""
+      }
+    ],
+    "colors": [],
+    "colorOptions": [],
+    "storageOptions": [
+      "128GB"
+    ],
+    "source": "https://cellphones.com.vn/iphone-15-plus.html",
+    "checkedAt": "2026-08-18T13:42:56.547Z"
+  },
+  "iphone-16": {
+    "price": "20.290.000đ",
+    "sellingPrice": "20.290.000đ",
+    "image": "/products/details/iphone-16/detail-1-84ca7422.png",
+    "images": [
+      "/products/details/iphone-16/detail-1-84ca7422.png",
+      "/products/details/iphone-16/detail-2-41549c51.webp",
+      "/products/details/iphone-16/detail-3-d202661c.webp",
+      "/products/details/iphone-16/detail-4-c8771f9b.webp",
+      "/products/details/iphone-16/detail-5-8364637a.webp",
+      "/products/details/iphone-16/detail-6-7d61c93a.webp",
+      "/products/details/iphone-16/detail-7-64d60ac6.webp",
+      "/products/details/iphone-16/detail-8-6fcba2e5.webp",
+      "/products/details/iphone-16/color-den-59be1f51.png",
+      "/products/details/iphone-16/color-hong-330d1e7c.png",
+      "/products/details/iphone-16/color-xanhluuly-40d9e6bc.png",
+      "/products/details/iphone-16/color-xanhmongket-70c42686.png"
+    ],
+    "specs": [
+      "Hệ điều hành khi ra mắt: iOS 18",
+      "Chipset: Apple A18",
+      "Dung lượng RAM: 8 GB",
+      "Bộ nhớ trong: 128 GB",
+      "Loại CPU: CPU 6 lõi mới với 2 lõi hiệu năng và 4 lõi tiết kiệm điện",
+      "GPU: GPU 5 lõi mới",
+      "Kích thước màn hình: 6.1 inches",
+      "Công nghệ màn hình: Super Retina XDR OLED",
+      "Độ phân giải màn hình: 2556 x 1179 pixels",
+      "Tính năng màn hình: Dynamic IslandMàn hình HDRTrue ToneDải màu rộng (P3)Haptic TouchTỷ lệ tương phản 2.000.000:1Độ sáng tối đa 1000 nit460 ppiLớp phủ kháng dầu chống in dấu vân tayHỗ trợ hiển thị đồng thời nhiều ngôn ngữ và ký tự",
+      "Camera sau: Camera chính: 48MP, f/1.6, 26mm, Focus Pixels 100%, hỗ trợ ảnh có độ phân giải siêu cao Camera góc siêu rộng: 12MP, ƒ/2.2, 13 mm, Focus Pixels 100%, Độ phóng đại quang học 2x, độ thu nhỏ quang học 2x; phạm vi thu phóng quang học 4x Độ thu phóng kỹ thu",
+      "Camera trước: 12MP, ƒ/1.9, Tự động lấy nét theo pha Focus Pixels",
+      "Hỗ trợ mạng: 5G",
+      "Thẻ SIM: Sim kép (nano-Sim và e-Sim) - Hỗ trợ 2 e-Sim",
+      "Công nghệ NFC: Có",
+      "Thời điểm ra mắt: 09/2024"
+    ],
+    "variants": [
+      {
+        "id": "iphone-16-128gb-den",
+        "name": "128GB · Đen",
+        "storage": "128GB",
+        "color": "Đen",
+        "colorHex": "#202124",
+        "price": "20.290.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-16/color-den-59be1f51.png"
+      },
+      {
+        "id": "iphone-16-128gb-hong",
+        "name": "128GB · Hồng",
+        "storage": "128GB",
+        "color": "Hồng",
+        "colorHex": "#a8adb4",
+        "price": "20.290.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-16/color-hong-330d1e7c.png"
+      },
+      {
+        "id": "iphone-16-128gb-xanhluuly",
+        "name": "128GB · Xanhluuly",
+        "storage": "128GB",
+        "color": "Xanhluuly",
+        "colorHex": "#a8adb4",
+        "price": "20.290.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-16/color-xanhluuly-40d9e6bc.png"
+      },
+      {
+        "id": "iphone-16-128gb-xanhmongket",
+        "name": "128GB · Xanhmongket",
+        "storage": "128GB",
+        "color": "Xanhmongket",
+        "colorHex": "#a8adb4",
+        "price": "20.290.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-16/color-xanhmongket-70c42686.png"
+      },
+      {
+        "id": "iphone-16-256gb-den",
+        "name": "256GB · Đen",
+        "storage": "256GB",
+        "color": "Đen",
+        "colorHex": "#202124",
+        "price": "22.190.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-16/color-den-59be1f51.png"
+      },
+      {
+        "id": "iphone-16-256gb-hong",
+        "name": "256GB · Hồng",
+        "storage": "256GB",
+        "color": "Hồng",
+        "colorHex": "#a8adb4",
+        "price": "22.190.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-16/color-hong-330d1e7c.png"
+      },
+      {
+        "id": "iphone-16-256gb-xanhluuly",
+        "name": "256GB · Xanhluuly",
+        "storage": "256GB",
+        "color": "Xanhluuly",
+        "colorHex": "#a8adb4",
+        "price": "22.190.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-16/color-xanhluuly-40d9e6bc.png"
+      },
+      {
+        "id": "iphone-16-256gb-xanhmongket",
+        "name": "256GB · Xanhmongket",
+        "storage": "256GB",
+        "color": "Xanhmongket",
+        "colorHex": "#a8adb4",
+        "price": "22.190.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-16/color-xanhmongket-70c42686.png"
+      },
+      {
+        "id": "iphone-16-512gb-den",
+        "name": "512GB · Đen",
+        "storage": "512GB",
+        "color": "Đen",
+        "colorHex": "#202124",
+        "price": "26.990.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-16/color-den-59be1f51.png"
+      },
+      {
+        "id": "iphone-16-512gb-hong",
+        "name": "512GB · Hồng",
+        "storage": "512GB",
+        "color": "Hồng",
+        "colorHex": "#a8adb4",
+        "price": "26.990.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-16/color-hong-330d1e7c.png"
+      },
+      {
+        "id": "iphone-16-512gb-xanhluuly",
+        "name": "512GB · Xanhluuly",
+        "storage": "512GB",
+        "color": "Xanhluuly",
+        "colorHex": "#a8adb4",
+        "price": "26.990.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-16/color-xanhluuly-40d9e6bc.png"
+      },
+      {
+        "id": "iphone-16-512gb-xanhmongket",
+        "name": "512GB · Xanhmongket",
+        "storage": "512GB",
+        "color": "Xanhmongket",
+        "colorHex": "#a8adb4",
+        "price": "26.990.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-16/color-xanhmongket-70c42686.png"
+      }
+    ],
+    "colors": [
+      "#202124",
+      "#a8adb4",
+      "#a8adb4",
+      "#a8adb4"
+    ],
+    "colorOptions": [
+      {
+        "name": "Đen",
+        "hex": "#202124"
+      },
+      {
+        "name": "Hồng",
+        "hex": "#a8adb4"
+      },
+      {
+        "name": "Xanhluuly",
+        "hex": "#a8adb4"
+      },
+      {
+        "name": "Xanhmongket",
+        "hex": "#a8adb4"
+      }
+    ],
+    "storageOptions": [
+      "128GB",
+      "256GB",
+      "512GB"
+    ],
+    "source": "https://cellphones.com.vn/iphone-16.html",
+    "checkedAt": "2026-08-18T13:42:56.577Z"
+  },
+  "iphone-16-plus": {
+    "price": "24.890.000đ",
+    "sellingPrice": "24.890.000đ",
+    "image": "/products/details/iphone-16-plus/detail-1-d6c64a3f.webp",
+    "images": [
+      "/products/details/iphone-16-plus/detail-1-d6c64a3f.webp",
+      "/products/details/iphone-16-plus/detail-2-8c7c1c88.webp",
+      "/products/details/iphone-16-plus/detail-3-c7050fd0.webp",
+      "/products/details/iphone-16-plus/detail-4-026351f8.webp",
+      "/products/details/iphone-16-plus/detail-5-39d90ae5.png",
+      "/products/details/iphone-16-plus/detail-6-e510545a.webp",
+      "/products/details/iphone-16-plus/detail-7-05d13635.webp",
+      "/products/details/iphone-16-plus/detail-8-08f9bd3d.webp",
+      "/products/details/iphone-16-plus/color-den-6c22ae21.png",
+      "/products/details/iphone-16-plus/color-den-efd8db76.png",
+      "/products/details/iphone-16-plus/color-hong-2e741934.png",
+      "/products/details/iphone-16-plus/color-hong-3bb68ac9.png",
+      "/products/details/iphone-16-plus/color-trang-a841f0f3.png",
+      "/products/details/iphone-16-plus/color-xanhluuly-2f639713.png",
+      "/products/details/iphone-16-plus/color-xanhmongket-8d1fe99e.png",
+      "/products/details/iphone-16-plus/color-xanhmongket-93c3e9e4.png"
+    ],
+    "specs": [
+      "Hệ điều hành khi ra mắt: iOS 18",
+      "Chipset: Apple A18",
+      "Dung lượng RAM: 8 GB",
+      "Bộ nhớ trong: 128 GB",
+      "Loại CPU: CPU 6 lõi mới với 2 lõi hiệu năng và 4 lõi tiết kiệm điện",
+      "GPU: GPU 5 lõi mới",
+      "Kích thước màn hình: 6.7 inches",
+      "Công nghệ màn hình: Super Retina XDR OLED",
+      "Độ phân giải màn hình: 2796 x 1290-pixel",
+      "Tính năng màn hình: Dynamic IslandMàn hình HDRTrue ToneDải màu rộng (P3)Haptic TouchTỷ lệ tương phản 2.000.000:1Độ sáng tối đa 1000 nit460 ppiLớp phủ kháng dầu chống in dấu vân tayHỗ trợ hiển thị đồng thời nhiều ngôn ngữ và ký tự",
+      "Camera sau: Camera chính: 48MP, f/1.6, 26mm, Focus Pixels 100%, hỗ trợ ảnh có độ phân giải siêu cao Camera góc siêu rộng: 12MP, ƒ/2.2, 13 mm, Focus Pixels 100%, Độ phóng đại quang học 2x, độ thu nhỏ quang học 2x; phạm vi thu phóng quang học 4x Độ thu phóng kỹ thu",
+      "Camera trước: 12MP, ƒ/1.9, Tự động lấy nét theo pha Focus Pixels",
+      "Hỗ trợ mạng: 5G",
+      "Thẻ SIM: Sim kép (nano-Sim và e-Sim) - Hỗ trợ 2 e-Sim",
+      "Công nghệ NFC: Có",
+      "Thời điểm ra mắt: 09/2024"
+    ],
+    "variants": [
+      {
+        "id": "iphone-16-plus-128gb-den",
+        "name": "128GB · Đen",
+        "storage": "128GB",
+        "color": "Đen",
+        "colorHex": "#202124",
+        "price": "24.890.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-16-plus/color-den-6c22ae21.png"
+      },
+      {
+        "id": "iphone-16-plus-128gb-hong",
+        "name": "128GB · Hồng",
+        "storage": "128GB",
+        "color": "Hồng",
+        "colorHex": "#a8adb4",
+        "price": "24.890.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-16-plus/color-hong-2e741934.png"
+      },
+      {
+        "id": "iphone-16-plus-128gb-trang",
+        "name": "128GB · Trắng",
+        "storage": "128GB",
+        "color": "Trắng",
+        "colorHex": "#a8adb4",
+        "price": "24.890.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-16-plus/color-trang-a841f0f3.png"
+      },
+      {
+        "id": "iphone-16-plus-128gb-xanhluuly",
+        "name": "128GB · Xanhluuly",
+        "storage": "128GB",
+        "color": "Xanhluuly",
+        "colorHex": "#a8adb4",
+        "price": "24.890.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-16-plus/color-xanhluuly-2f639713.png"
+      },
+      {
+        "id": "iphone-16-plus-128gb-xanhmongket",
+        "name": "128GB · Xanhmongket",
+        "storage": "128GB",
+        "color": "Xanhmongket",
+        "colorHex": "#a8adb4",
+        "price": "24.890.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-16-plus/color-xanhmongket-8d1fe99e.png"
+      }
+    ],
+    "colors": [
+      "#202124",
+      "#a8adb4",
+      "#a8adb4",
+      "#a8adb4",
+      "#a8adb4"
+    ],
+    "colorOptions": [
+      {
+        "name": "Đen",
+        "hex": "#202124"
+      },
+      {
+        "name": "Hồng",
+        "hex": "#a8adb4"
+      },
+      {
+        "name": "Trắng",
+        "hex": "#a8adb4"
+      },
+      {
+        "name": "Xanhluuly",
+        "hex": "#a8adb4"
+      },
+      {
+        "name": "Xanhmongket",
+        "hex": "#a8adb4"
+      }
+    ],
+    "storageOptions": [
+      "128GB"
+    ],
+    "source": "https://cellphones.com.vn/iphone-16-plus.html",
+    "checkedAt": "2026-08-18T13:42:56.597Z"
+  },
+  "iphone-16-pro-max": {
+    "price": "30.990.000đ",
+    "sellingPrice": "30.990.000đ",
+    "image": "/products/details/iphone-16-pro-max/detail-1-0a3ffeae.png",
+    "images": [
+      "/products/details/iphone-16-pro-max/detail-1-0a3ffeae.png",
+      "/products/details/iphone-16-pro-max/detail-2-99d15514.png",
+      "/products/details/iphone-16-pro-max/detail-3-a91eca29.webp",
+      "/products/details/iphone-16-pro-max/detail-4-1f08d82a.webp",
+      "/products/details/iphone-16-pro-max/detail-5-7599d9d5.webp",
+      "/products/details/iphone-16-pro-max/detail-6-3409fa47.webp",
+      "/products/details/iphone-16-pro-max/detail-7-44c16e81.png",
+      "/products/details/iphone-16-pro-max/detail-8-530896fd.png"
+    ],
+    "specs": [
+      "Hệ điều hành khi ra mắt: iOS 18",
+      "Chipset: Apple A18 Pro",
+      "Dung lượng RAM: 8 GB",
+      "Bộ nhớ trong: 256 GB",
+      "Loại CPU: CPU 6 lõi mới với 2 lõi hiệu năng và 4 lõi hiệu suất",
+      "GPU: GPU 6 lõi mới",
+      "Kích thước màn hình: 6.9 inches",
+      "Công nghệ màn hình: Super Retina XDR OLED",
+      "Độ phân giải màn hình: 2868 x 1320 pixels",
+      "Tính năng màn hình: Dynamic IslandMàn hình Luôn Bật Công nghệ ProMotion với tốc độ làm mới thích ứng lên đến 120Hz Màn hình HDR True Tone Dải màu rộng (P3) Haptic Touch Tỷ lệ tương phản 2.000.000:1",
+      "Camera sau: Camera chính: 48MP, f/1.78, 24mm, 2µm, chống rung quang học dịch chuyển cảm biến thế hệ thứ hai, Focus Pixels 100%Telephoto 2x 12MP: 52 mm, ƒ/1.6 Camera góc siêu rộng: 48MP, 13 mm,ƒ/2.2 và trường ảnh 120°, Hybrid Focus Pixels, ảnh có độ phân giải",
+      "Camera trước: 12MP, ƒ/1.9, Tự động lấy nét theo pha Focus Pixels",
+      "Hỗ trợ mạng: 5G",
+      "Thẻ SIM: Sim kép (nano-Sim và e-Sim) - Hỗ trợ 2 e-Sim",
+      "Công nghệ NFC: Có",
+      "Thời điểm ra mắt: 09/2024"
+    ],
+    "variants": [
+      {
+        "id": "iphone-16-pro-max-256gb",
+        "name": "256GB",
+        "storage": "256GB",
+        "price": "30.990.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-16-pro-max/detail-1-0a3ffeae.png"
+      },
+      {
+        "id": "iphone-16-pro-max-512gb",
+        "name": "512GB",
+        "storage": "512GB",
+        "price": "38.990.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-16-pro-max/detail-1-0a3ffeae.png"
+      }
+    ],
+    "colors": [],
+    "colorOptions": [],
+    "storageOptions": [
+      "256GB",
+      "512GB"
+    ],
+    "source": "https://cellphones.com.vn/iphone-16-pro-max.html",
+    "checkedAt": "2026-08-18T13:42:56.617Z"
+  },
+  "iphone-16-pro-max-512gb": {
+    "price": "38.990.000đ",
+    "sellingPrice": "38.990.000đ",
+    "image": "/products/details/iphone-16-pro-max-512gb/detail-1-925dff2d.webp",
+    "images": [
+      "/products/details/iphone-16-pro-max-512gb/detail-1-925dff2d.webp",
+      "/products/details/iphone-16-pro-max-512gb/detail-2-119cba5c.webp",
+      "/products/details/iphone-16-pro-max-512gb/detail-3-7ad0dcb0.webp",
+      "/products/details/iphone-16-pro-max-512gb/detail-4-815f81c0.webp",
+      "/products/details/iphone-16-pro-max-512gb/detail-5-9e35e205.webp",
+      "/products/details/iphone-16-pro-max-512gb/detail-6-985a8460.webp",
+      "/products/details/iphone-16-pro-max-512gb/detail-7-686aba98.png",
+      "/products/details/iphone-16-pro-max-512gb/detail-8-3b7fab6f.png"
+    ],
+    "specs": [
+      "Kích thước màn hình: 6.9 inches",
+      "Công nghệ màn hình: Super Retina XDR OLED",
+      "Camera sau: Camera chính: 48MP, f/1.78, 24mm, 2µm, chống rung quang học dịch chuyển cảm biến thế hệ thứ hai, Focus Pixels 100%Telephoto 2x 12MP: 52 mm, ƒ/1.6 Camera góc siêu rộng: 48MP, 13 mm,ƒ/2.2 và trường ảnh 120°, Hybrid Focus Pixels, ảnh có độ phân giải",
+      "Camera trước: 12MP, ƒ/1.9, Tự động lấy nét theo pha Focus Pixels",
+      "Chipset: Apple A18 Pro",
+      "Công nghệ NFC: Có",
+      "Bộ nhớ trong: 512 GB",
+      "Thẻ SIM: Sim kép (nano-Sim và e-Sim) - Hỗ trợ 2 e-Sim",
+      "Hệ điều hành: iOS 18",
+      "Độ phân giải màn hình: 2868 x 1320 pixels",
+      "Tính năng màn hình: Dynamic IslandMàn hình Luôn Bật Công nghệ ProMotion với tốc độ làm mới thích ứng lên đến 120Hz Màn hình HDR True Tone Dải màu rộng (P3) Haptic Touch Tỷ lệ tương phản 2.000.000:1",
+      "Loại CPU: CPU 6 lõi mới với 2 lõi hiệu năng và 4 lõi hiệu suất",
+      "Tương thích: Tương Thích Với Thiết Bị Trợ Thính"
+    ],
+    "variants": [
+      {
+        "id": "iphone-16-pro-max-512gb-256gb",
+        "name": "256GB",
+        "storage": "256GB",
+        "price": "30.990.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-16-pro-max-512gb/detail-1-925dff2d.webp"
+      },
+      {
+        "id": "iphone-16-pro-max-512gb-512gb",
+        "name": "512GB",
+        "storage": "512GB",
+        "price": "38.990.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-16-pro-max-512gb/detail-1-925dff2d.webp"
+      }
+    ],
+    "colors": [],
+    "colorOptions": [],
+    "storageOptions": [
+      "256GB",
+      "512GB"
+    ],
+    "source": "https://cellphones.com.vn/iphone-16-pro-max-512gb.html",
+    "checkedAt": "2026-08-18T13:42:56.636Z"
+  },
+  "iphone-16e": {
+    "price": "13.690.000đ",
+    "sellingPrice": "13.690.000đ",
+    "image": "/products/details/iphone-16e/detail-1-884c86c9.png",
+    "images": [
+      "/products/details/iphone-16e/detail-1-884c86c9.png",
+      "/products/details/iphone-16e/detail-2-e6b9acd2.webp",
+      "/products/details/iphone-16e/detail-3-ff0ed121.webp",
+      "/products/details/iphone-16e/detail-4-24a2d89a.png",
+      "/products/details/iphone-16e/detail-5-537574d5.png",
+      "/products/details/iphone-16e/detail-6-ab70b84b.png",
+      "/products/details/iphone-16e/detail-7-dbc5ead4.webp",
+      "/products/details/iphone-16e/detail-8-112cf742.webp",
+      "/products/details/iphone-16e/color-trang-499b2a78.png",
+      "/products/details/iphone-16e/color-trang-d1527540.png"
+    ],
+    "specs": [
+      "Hệ điều hành khi ra mắt: iOS 18",
+      "Chipset: Chip A18",
+      "Bộ nhớ trong: 128 GB",
+      "Loại CPU: CPU 6 lõi mới với 2 lõi hiệu năng và 4 lõi tiết kiệm điện",
+      "GPU: GPU 4 lõi mớiNeural Engine 16 lõi mới",
+      "Kích thước màn hình: 6.1 inches",
+      "Công nghệ màn hình: Super Retina XDR",
+      "Độ phân giải màn hình: 2532 x 1170 pixels",
+      "Tính năng màn hình: Màn hình HDR True Tone Dải màu rộng (P3) Haptic Touch Tỷ lệ tương phản 2.000.000:1 (tiêu chuẩn) Độ sáng tối đa 800 nit (tiêu chuẩn); độ sáng đỉnh 1200 nit (HDR) Lớp phủ kháng dầu chống in dấu vân tay Thu Phóng Màn Hình",
+      "Camera sau: Hệ thống camera 2 trong 1Fusion 48MP: 26 mm, khẩu độ ƒ/1.6, chống rung quang học, Hybrid Focus Pixels, ảnh có độ phân giải siêu cao (24MP và 48MP)Đồng thời hỗ trợ Telephoto 2x 12MP: 52 mm, khẩu độ ƒ/1.6, chống rung quang học, Hybrid Focus Pixels",
+      "Camera trước: Camera 12MP Khẩu độ ƒ/1.9 Camera TrueDepth hỗ trợ nhận diện khuôn mặt",
+      "Pin: Thời gian xem video Lên đến 26 giờ Thời gian xem video (trực tuyến) Lên đến 21 giờThời gian nghe nhạc Lên đến 90 giờ",
+      "Hỗ trợ mạng: 5G",
+      "Thẻ SIM: Sim kép (nano-Sim và e-Sim) - Hỗ trợ 2 e-Sim",
+      "Công nghệ NFC: Có",
+      "Thời điểm ra mắt: 02/2025"
+    ],
+    "variants": [
+      {
+        "id": "iphone-16e-128gb-trang",
+        "name": "128GB · Trắng",
+        "storage": "128GB",
+        "color": "Trắng",
+        "colorHex": "#a8adb4",
+        "price": "13.690.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-16e/color-trang-499b2a78.png"
+      }
+    ],
+    "colors": [
+      "#a8adb4"
+    ],
+    "colorOptions": [
+      {
+        "name": "Trắng",
+        "hex": "#a8adb4"
+      }
+    ],
+    "storageOptions": [
+      "128GB"
+    ],
+    "source": "https://cellphones.com.vn/iphone-16e.html",
+    "checkedAt": "2026-08-18T13:42:56.752Z"
+  },
+  "iphone-17-256gb": {
+    "price": "24.490.000đ",
+    "sellingPrice": "24.490.000đ",
+    "image": "/products/details/iphone-17-256gb/detail-1-fcd1b33c.webp",
+    "images": [
+      "/products/details/iphone-17-256gb/detail-1-fcd1b33c.webp",
+      "/products/details/iphone-17-256gb/detail-2-2be21966.webp",
+      "/products/details/iphone-17-256gb/detail-3-8369ff10.webp",
+      "/products/details/iphone-17-256gb/detail-4-1885e4a7.webp",
+      "/products/details/iphone-17-256gb/detail-5-54e4d426.webp",
+      "/products/details/iphone-17-256gb/detail-6-034c5b0d.webp",
+      "/products/details/iphone-17-256gb/detail-7-be30e941.webp",
+      "/products/details/iphone-17-256gb/detail-8-8721b5ab.jpg",
+      "/products/details/iphone-17-256gb/color-den-2d1e6cf7.jpg",
+      "/products/details/iphone-17-256gb/color-den-e7e4a22a.jpg",
+      "/products/details/iphone-17-256gb/color-trang-d4b4c480.jpg",
+      "/products/details/iphone-17-256gb/color-trang-ea786cb2.jpg",
+      "/products/details/iphone-17-256gb/color-xanhlamkhoi-adf39639.jpg",
+      "/products/details/iphone-17-256gb/color-xanhlamkhoi-f6ff9afc.jpg",
+      "/products/details/iphone-17-256gb/color-xanhlaxothom-4f1f2f1a.jpg",
+      "/products/details/iphone-17-256gb/color-xanhlaxothom-54bcb13b.jpg"
+    ],
+    "specs": [
+      "Hệ điều hành khi ra mắt: iOS 26",
+      "Chipset: Apple A19",
+      "Bộ nhớ trong: 256 GB",
+      "Loại CPU: 6 lõi (2 hiệu năng + 4 tiết kiệm điện)",
+      "GPU: GPU 5 lõi với Neural Accelerator",
+      "Kích thước màn hình: 6.3 inches",
+      "Công nghệ màn hình: Super Retina XDR OLED",
+      "Độ phân giải màn hình: 2622 x 1206 pixels",
+      "Tính năng màn hình: Dynamic IslandMàn hình luôn bậtHDR460 ppiTrue ToneDải màu rộng (P3)Haptic TouchTỷ lệ tương phản 2.000.000:1Độ sáng 1000 nit (typ)Đỉnh 1600 nit (HDR)Đỉnh 3000 nit (ngoài trời)Lớp phủ chống vân tay, chống phản chi",
+      "Camera sau: 48MP Fusion Main f/1.6 OIS12MP Tele 2x f/1.6 OIS48MP Ultra Wide f/2.2 120°",
+      "Camera trước: 18MP Center Stage, f/1.9, PDAF",
+      "Pin: Xem video: 30 giờXem video trực tuyến: 27 giờ",
+      "Hỗ trợ mạng: 5G",
+      "Thẻ SIM: Sim kép (nano-Sim và e-Sim) - Hỗ trợ 2 e-Sim",
+      "Công nghệ NFC: Có",
+      "Thời điểm ra mắt: 09/2025"
+    ],
+    "variants": [
+      {
+        "id": "iphone-17-256gb-256gb-den",
+        "name": "256GB · Đen",
+        "storage": "256GB",
+        "color": "Đen",
+        "colorHex": "#202124",
+        "price": "24.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-256gb/color-den-2d1e6cf7.jpg"
+      },
+      {
+        "id": "iphone-17-256gb-256gb-trang",
+        "name": "256GB · Trắng",
+        "storage": "256GB",
+        "color": "Trắng",
+        "colorHex": "#a8adb4",
+        "price": "24.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-256gb/color-trang-d4b4c480.jpg"
+      },
+      {
+        "id": "iphone-17-256gb-256gb-xanhlamkhoi",
+        "name": "256GB · Xanhlamkhoi",
+        "storage": "256GB",
+        "color": "Xanhlamkhoi",
+        "colorHex": "#a8adb4",
+        "price": "24.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-256gb/color-xanhlamkhoi-adf39639.jpg"
+      },
+      {
+        "id": "iphone-17-256gb-256gb-xanhlaxothom",
+        "name": "256GB · Xanhlaxothom",
+        "storage": "256GB",
+        "color": "Xanhlaxothom",
+        "colorHex": "#a8adb4",
+        "price": "24.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-256gb/color-xanhlaxothom-4f1f2f1a.jpg"
+      },
+      {
+        "id": "iphone-17-256gb-512gb-den",
+        "name": "512GB · Đen",
+        "storage": "512GB",
+        "color": "Đen",
+        "colorHex": "#202124",
+        "price": "29.790.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-256gb/color-den-2d1e6cf7.jpg"
+      },
+      {
+        "id": "iphone-17-256gb-512gb-trang",
+        "name": "512GB · Trắng",
+        "storage": "512GB",
+        "color": "Trắng",
+        "colorHex": "#a8adb4",
+        "price": "29.790.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-256gb/color-trang-d4b4c480.jpg"
+      },
+      {
+        "id": "iphone-17-256gb-512gb-xanhlamkhoi",
+        "name": "512GB · Xanhlamkhoi",
+        "storage": "512GB",
+        "color": "Xanhlamkhoi",
+        "colorHex": "#a8adb4",
+        "price": "29.790.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-256gb/color-xanhlamkhoi-adf39639.jpg"
+      },
+      {
+        "id": "iphone-17-256gb-512gb-xanhlaxothom",
+        "name": "512GB · Xanhlaxothom",
+        "storage": "512GB",
+        "color": "Xanhlaxothom",
+        "colorHex": "#a8adb4",
+        "price": "29.790.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-256gb/color-xanhlaxothom-4f1f2f1a.jpg"
+      }
+    ],
+    "colors": [
+      "#202124",
+      "#a8adb4",
+      "#a8adb4",
+      "#a8adb4"
+    ],
+    "colorOptions": [
+      {
+        "name": "Đen",
+        "hex": "#202124"
+      },
+      {
+        "name": "Trắng",
+        "hex": "#a8adb4"
+      },
+      {
+        "name": "Xanhlamkhoi",
+        "hex": "#a8adb4"
+      },
+      {
+        "name": "Xanhlaxothom",
+        "hex": "#a8adb4"
+      }
+    ],
+    "storageOptions": [
+      "256GB",
+      "512GB"
+    ],
+    "source": "https://cellphones.com.vn/iphone-17-256gb.html",
+    "checkedAt": "2026-08-18T13:42:56.855Z"
+  },
+  "iphone-17-512gb": {
+    "price": "29.790.000đ",
+    "sellingPrice": "29.790.000đ",
+    "image": "/products/details/iphone-17-512gb/detail-1-34c63213.webp",
+    "images": [
+      "/products/details/iphone-17-512gb/detail-1-34c63213.webp",
+      "/products/details/iphone-17-512gb/detail-2-6a6c6418.jpg",
+      "/products/details/iphone-17-512gb/detail-3-c22b69f7.jpg",
+      "/products/details/iphone-17-512gb/detail-4-8ab95116.webp",
+      "/products/details/iphone-17-512gb/detail-5-0c2e9b5a.jpg",
+      "/products/details/iphone-17-512gb/detail-6-f6ee49fd.webp",
+      "/products/details/iphone-17-512gb/detail-7-ed1f13bb.webp",
+      "/products/details/iphone-17-512gb/detail-8-c48d04e7.webp",
+      "/products/details/iphone-17-512gb/color-den-2d1e6cf7.jpg",
+      "/products/details/iphone-17-512gb/color-den-e7e4a22a.jpg",
+      "/products/details/iphone-17-512gb/color-trang-d4b4c480.jpg",
+      "/products/details/iphone-17-512gb/color-trang-ea786cb2.jpg",
+      "/products/details/iphone-17-512gb/color-xanhlamkhoi-adf39639.jpg",
+      "/products/details/iphone-17-512gb/color-xanhlamkhoi-f6ff9afc.jpg",
+      "/products/details/iphone-17-512gb/color-xanhlaxothom-4f1f2f1a.jpg",
+      "/products/details/iphone-17-512gb/color-xanhlaxothom-54bcb13b.jpg"
+    ],
+    "specs": [
+      "Hệ điều hành khi ra mắt: iOS 26",
+      "Chipset: Apple A19",
+      "Bộ nhớ trong: 512 GB",
+      "Loại CPU: 6 lõi (2 hiệu năng + 4 tiết kiệm điện)",
+      "GPU: GPU 5 lõi với Neural Accelerator",
+      "Kích thước màn hình: 6.3 inches",
+      "Công nghệ màn hình: Super Retina XDR OLED",
+      "Độ phân giải màn hình: 2622 x 1206 pixels",
+      "Tính năng màn hình: Dynamic IslandMàn hình luôn bậtHDRTrue ToneDải màu rộng (P3)Haptic TouchTỷ lệ tương phản 2.000.000:1Độ sáng 1000 nit (typ)Đỉnh 1600 nit (HDR)Đỉnh 3000 nit (ngoài trời)Lớp phủ chống vân tay, chống phản chiếu",
+      "Camera sau: 48MP Fusion Main f/1.6 OIS12MP Tele 2x f/1.6 OIS48MP Ultra Wide f/2.2 120°",
+      "Camera trước: 18MP Center Stage, f/1.9, PDAF",
+      "Hỗ trợ mạng: 5G",
+      "Thẻ SIM: Sim kép (nano-Sim và e-Sim) - Hỗ trợ 2 e-Sim",
+      "Công nghệ NFC: Có",
+      "Thời điểm ra mắt: 09/2025"
+    ],
+    "variants": [
+      {
+        "id": "iphone-17-512gb-256gb-den",
+        "name": "256GB · Đen",
+        "storage": "256GB",
+        "color": "Đen",
+        "colorHex": "#202124",
+        "price": "24.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-512gb/color-den-2d1e6cf7.jpg"
+      },
+      {
+        "id": "iphone-17-512gb-256gb-trang",
+        "name": "256GB · Trắng",
+        "storage": "256GB",
+        "color": "Trắng",
+        "colorHex": "#a8adb4",
+        "price": "24.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-512gb/color-trang-d4b4c480.jpg"
+      },
+      {
+        "id": "iphone-17-512gb-256gb-xanhlamkhoi",
+        "name": "256GB · Xanhlamkhoi",
+        "storage": "256GB",
+        "color": "Xanhlamkhoi",
+        "colorHex": "#a8adb4",
+        "price": "24.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-512gb/color-xanhlamkhoi-adf39639.jpg"
+      },
+      {
+        "id": "iphone-17-512gb-256gb-xanhlaxothom",
+        "name": "256GB · Xanhlaxothom",
+        "storage": "256GB",
+        "color": "Xanhlaxothom",
+        "colorHex": "#a8adb4",
+        "price": "24.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-512gb/color-xanhlaxothom-4f1f2f1a.jpg"
+      },
+      {
+        "id": "iphone-17-512gb-512gb-den",
+        "name": "512GB · Đen",
+        "storage": "512GB",
+        "color": "Đen",
+        "colorHex": "#202124",
+        "price": "29.790.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-512gb/color-den-2d1e6cf7.jpg"
+      },
+      {
+        "id": "iphone-17-512gb-512gb-trang",
+        "name": "512GB · Trắng",
+        "storage": "512GB",
+        "color": "Trắng",
+        "colorHex": "#a8adb4",
+        "price": "29.790.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-512gb/color-trang-d4b4c480.jpg"
+      },
+      {
+        "id": "iphone-17-512gb-512gb-xanhlamkhoi",
+        "name": "512GB · Xanhlamkhoi",
+        "storage": "512GB",
+        "color": "Xanhlamkhoi",
+        "colorHex": "#a8adb4",
+        "price": "29.790.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-512gb/color-xanhlamkhoi-adf39639.jpg"
+      },
+      {
+        "id": "iphone-17-512gb-512gb-xanhlaxothom",
+        "name": "512GB · Xanhlaxothom",
+        "storage": "512GB",
+        "color": "Xanhlaxothom",
+        "colorHex": "#a8adb4",
+        "price": "29.790.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-512gb/color-xanhlaxothom-4f1f2f1a.jpg"
+      }
+    ],
+    "colors": [
+      "#202124",
+      "#a8adb4",
+      "#a8adb4",
+      "#a8adb4"
+    ],
+    "colorOptions": [
+      {
+        "name": "Đen",
+        "hex": "#202124"
+      },
+      {
+        "name": "Trắng",
+        "hex": "#a8adb4"
+      },
+      {
+        "name": "Xanhlamkhoi",
+        "hex": "#a8adb4"
+      },
+      {
+        "name": "Xanhlaxothom",
+        "hex": "#a8adb4"
+      }
+    ],
+    "storageOptions": [
+      "256GB",
+      "512GB"
+    ],
+    "source": "https://cellphones.com.vn/iphone-17-512gb.html",
+    "checkedAt": "2026-08-18T13:42:56.883Z"
+  },
+  "iphone-17-pro": {
+    "price": "31.990.000đ",
+    "sellingPrice": "31.990.000đ",
+    "image": "/products/details/iphone-17-pro/detail-1-6fcb9726.png",
+    "images": [
+      "/products/details/iphone-17-pro/detail-1-6fcb9726.png",
+      "/products/details/iphone-17-pro/detail-2-580ac396.webp",
+      "/products/details/iphone-17-pro/detail-3-a7fe2a22.webp",
+      "/products/details/iphone-17-pro/detail-4-87a73a15.webp",
+      "/products/details/iphone-17-pro/detail-5-0cee1b5d.webp",
+      "/products/details/iphone-17-pro/detail-6-0575b52a.webp",
+      "/products/details/iphone-17-pro/detail-7-631946af.webp",
+      "/products/details/iphone-17-pro/detail-8-005cf0e5.webp",
+      "/products/details/iphone-17-pro/color-bac-b0f6d5e0.jpg",
+      "/products/details/iphone-17-pro/color-camvutru-6b5ad717.jpg",
+      "/products/details/iphone-17-pro/color-camvutru-6e7a12e0.jpg",
+      "/products/details/iphone-17-pro/color-camvutru-8b6e3cdc.jpg",
+      "/products/details/iphone-17-pro/color-xanhdam-4228413e.jpg",
+      "/products/details/iphone-17-pro/color-xanhdam-c29ae1b9.jpg"
+    ],
+    "specs": [
+      "Hệ điều hành khi ra mắt: iOS 26",
+      "Chipset: Chip A19 Pro",
+      "Bộ nhớ trong: 256 GB",
+      "Loại CPU: CPU 6 lõi với 2 lõi hiệu năng và 4 lõi tiết kiệm điện",
+      "GPU: GPU 6 lõi với Neural Accelerator",
+      "Kích thước màn hình: 6.3 inches",
+      "Công nghệ màn hình: Super Retina XDR",
+      "Độ phân giải màn hình: 2622 x 1206 pixels",
+      "Tính năng màn hình: Màn hình Luôn Bật, ProMotion 120Hz, HDR, True Tone, Dải màu rộng (P3), Haptic Touch, Tỷ lệ tương phản 2.000.000:1, Độ sáng 1000 nit (tiêu chuẩn), 1600 nit (HDR), 3000 nit (ngoài trời) / tối thiểu 1 nit, Lớp phủ kháng dầu, Chống phản chiếu, Hỗ trợ đa ngôn",
+      "Camera sau: Chính: 48MP khẩu độ ƒ/1.6 OIS hỗ trợ chụp 24MP hoặc 48MPGóc Siêu Rộng: 48MP khẩu độ ƒ/2.2 góc nhìn 120°Telephoto: 48MP khẩu độ ƒ/2.8 OIS zoom quang học lên đến 8x",
+      "Camera trước: Camera 18MP Center Stage Khẩu độ ƒ/1.9",
+      "Thẻ SIM: Sim kép (nano-Sim và e-Sim) - Hỗ trợ 2 e-Sim",
+      "Công nghệ NFC: Có",
+      "Thời điểm ra mắt: 09/2025"
+    ],
+    "variants": [
+      {
+        "id": "iphone-17-pro-256gb-bac",
+        "name": "256GB · Bạc",
+        "storage": "256GB",
+        "color": "Bạc",
+        "colorHex": "#a8adb4",
+        "price": "31.990.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro/color-bac-b0f6d5e0.jpg"
+      },
+      {
+        "id": "iphone-17-pro-256gb-camvutru",
+        "name": "256GB · Camvutru",
+        "storage": "256GB",
+        "color": "Camvutru",
+        "colorHex": "#d7774e",
+        "price": "31.990.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro/color-camvutru-6b5ad717.jpg"
+      },
+      {
+        "id": "iphone-17-pro-256gb-xanhdam",
+        "name": "256GB · Xanhdam",
+        "storage": "256GB",
+        "color": "Xanhdam",
+        "colorHex": "#a8adb4",
+        "price": "31.990.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro/color-xanhdam-4228413e.jpg"
+      },
+      {
+        "id": "iphone-17-pro-512gb-bac",
+        "name": "512GB · Bạc",
+        "storage": "512GB",
+        "color": "Bạc",
+        "colorHex": "#a8adb4",
+        "price": "38.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro/color-bac-b0f6d5e0.jpg"
+      },
+      {
+        "id": "iphone-17-pro-512gb-camvutru",
+        "name": "512GB · Camvutru",
+        "storage": "512GB",
+        "color": "Camvutru",
+        "colorHex": "#d7774e",
+        "price": "38.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro/color-camvutru-6b5ad717.jpg"
+      },
+      {
+        "id": "iphone-17-pro-512gb-xanhdam",
+        "name": "512GB · Xanhdam",
+        "storage": "512GB",
+        "color": "Xanhdam",
+        "colorHex": "#a8adb4",
+        "price": "38.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro/color-xanhdam-4228413e.jpg"
+      }
+    ],
+    "colors": [
+      "#a8adb4",
+      "#d7774e",
+      "#a8adb4"
+    ],
+    "colorOptions": [
+      {
+        "name": "Bạc",
+        "hex": "#a8adb4"
+      },
+      {
+        "name": "Camvutru",
+        "hex": "#d7774e"
+      },
+      {
+        "name": "Xanhdam",
+        "hex": "#a8adb4"
+      }
+    ],
+    "storageOptions": [
+      "256GB",
+      "512GB"
+    ],
+    "source": "https://cellphones.com.vn/iphone-17-pro.html",
+    "checkedAt": "2026-08-18T13:42:56.925Z"
+  },
+  "iphone-17-pro-512gb": {
+    "price": "38.490.000đ",
+    "sellingPrice": "38.490.000đ",
+    "image": "/products/details/iphone-17-pro-512gb/detail-1-f66a6f77.jpg",
+    "images": [
+      "/products/details/iphone-17-pro-512gb/detail-1-f66a6f77.jpg",
+      "/products/details/iphone-17-pro-512gb/detail-2-abfefec6.webp",
+      "/products/details/iphone-17-pro-512gb/detail-3-634504fe.webp",
+      "/products/details/iphone-17-pro-512gb/detail-4-23dca8f0.webp",
+      "/products/details/iphone-17-pro-512gb/detail-5-6d395e14.jpg",
+      "/products/details/iphone-17-pro-512gb/detail-6-e7634e9a.webp",
+      "/products/details/iphone-17-pro-512gb/detail-7-c61aca4c.jpg",
+      "/products/details/iphone-17-pro-512gb/detail-8-35692bbc.webp",
+      "/products/details/iphone-17-pro-512gb/color-bac-b0f6d5e0.jpg",
+      "/products/details/iphone-17-pro-512gb/color-camvutru-6b5ad717.jpg",
+      "/products/details/iphone-17-pro-512gb/color-camvutru-6e7a12e0.jpg",
+      "/products/details/iphone-17-pro-512gb/color-camvutru-8b6e3cdc.jpg",
+      "/products/details/iphone-17-pro-512gb/color-xanhdam-4228413e.jpg",
+      "/products/details/iphone-17-pro-512gb/color-xanhdam-c29ae1b9.jpg"
+    ],
+    "specs": [
+      "Hệ điều hành khi ra mắt: iOS 26",
+      "Chipset: Chip A19 Pro",
+      "Bộ nhớ trong: 512 GB",
+      "Loại CPU: CPU 6 lõi với 2 lõi hiệu năng và 4 lõi tiết kiệm điện",
+      "GPU: GPU 6 lõi với Neural Accelerator",
+      "Kích thước màn hình: 6.3 inches",
+      "Công nghệ màn hình: Super Retina XDR",
+      "Độ phân giải màn hình: 2622 x 1206 pixels",
+      "Tính năng màn hình: Màn hình Luôn Bật, ProMotion 120Hz, HDR, True Tone, Dải màu rộng (P3), Haptic Touch, Tỷ lệ tương phản 2.000.000:1, Độ sáng 1000 nit (tiêu chuẩn), 1600 nit (HDR), 3000 nit (ngoài trời) / tối thiểu 1 nit, Lớp phủ kháng dầu, Chống phản chiếu, Hỗ trợ đa ngôn",
+      "Camera sau: Chính: 48MP khẩu độ ƒ/1.6 OIS hỗ trợ chụp 24MP hoặc 48MPGóc Siêu Rộng: 48MP khẩu độ ƒ/2.2 góc nhìn 120°Telephoto: 48MP khẩu độ ƒ/2.8 OIS zoom quang học lên đến 8x",
+      "Camera trước: Camera 18MP Center Stage Khẩu độ ƒ/1.9",
+      "Hỗ trợ mạng: 5G",
+      "Thẻ SIM: Sim kép (nano-Sim và e-Sim) - Hỗ trợ 2 e-Sim",
+      "Công nghệ NFC: Có",
+      "Thời điểm ra mắt: 09/2025"
+    ],
+    "variants": [
+      {
+        "id": "iphone-17-pro-512gb-256gb-bac",
+        "name": "256GB · Bạc",
+        "storage": "256GB",
+        "color": "Bạc",
+        "colorHex": "#a8adb4",
+        "price": "31.990.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-512gb/color-bac-b0f6d5e0.jpg"
+      },
+      {
+        "id": "iphone-17-pro-512gb-256gb-camvutru",
+        "name": "256GB · Camvutru",
+        "storage": "256GB",
+        "color": "Camvutru",
+        "colorHex": "#d7774e",
+        "price": "31.990.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-512gb/color-camvutru-6b5ad717.jpg"
+      },
+      {
+        "id": "iphone-17-pro-512gb-256gb-xanhdam",
+        "name": "256GB · Xanhdam",
+        "storage": "256GB",
+        "color": "Xanhdam",
+        "colorHex": "#a8adb4",
+        "price": "31.990.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-512gb/color-xanhdam-4228413e.jpg"
+      },
+      {
+        "id": "iphone-17-pro-512gb-512gb-bac",
+        "name": "512GB · Bạc",
+        "storage": "512GB",
+        "color": "Bạc",
+        "colorHex": "#a8adb4",
+        "price": "38.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-512gb/color-bac-b0f6d5e0.jpg"
+      },
+      {
+        "id": "iphone-17-pro-512gb-512gb-camvutru",
+        "name": "512GB · Camvutru",
+        "storage": "512GB",
+        "color": "Camvutru",
+        "colorHex": "#d7774e",
+        "price": "38.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-512gb/color-camvutru-6b5ad717.jpg"
+      },
+      {
+        "id": "iphone-17-pro-512gb-512gb-xanhdam",
+        "name": "512GB · Xanhdam",
+        "storage": "512GB",
+        "color": "Xanhdam",
+        "colorHex": "#a8adb4",
+        "price": "38.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-512gb/color-xanhdam-4228413e.jpg"
+      }
+    ],
+    "colors": [
+      "#a8adb4",
+      "#d7774e",
+      "#a8adb4"
+    ],
+    "colorOptions": [
+      {
+        "name": "Bạc",
+        "hex": "#a8adb4"
+      },
+      {
+        "name": "Camvutru",
+        "hex": "#d7774e"
+      },
+      {
+        "name": "Xanhdam",
+        "hex": "#a8adb4"
+      }
+    ],
+    "storageOptions": [
+      "256GB",
+      "512GB"
+    ],
+    "source": "https://cellphones.com.vn/iphone-17-pro-512gb.html",
+    "checkedAt": "2026-08-18T13:42:56.970Z"
+  },
+  "iphone-17-pro-max": {
+    "price": "34.590.000đ",
+    "sellingPrice": "34.590.000đ",
+    "image": "/products/details/iphone-17-pro-max/detail-1-68b70cb4.webp",
+    "images": [
+      "/products/details/iphone-17-pro-max/detail-1-68b70cb4.webp",
+      "/products/details/iphone-17-pro-max/detail-2-4745f229.webp",
+      "/products/details/iphone-17-pro-max/detail-3-c552d2e3.webp",
+      "/products/details/iphone-17-pro-max/detail-4-4603a242.webp",
+      "/products/details/iphone-17-pro-max/detail-5-ef8c95eb.jpg",
+      "/products/details/iphone-17-pro-max/detail-6-6b393e41.webp",
+      "/products/details/iphone-17-pro-max/detail-7-dc390c89.webp",
+      "/products/details/iphone-17-pro-max/detail-8-86b276b0.webp",
+      "/products/details/iphone-17-pro-max/color-camvutru-67cadb6a.jpg",
+      "/products/details/iphone-17-pro-max/color-camvutru-dccb4727.jpg",
+      "/products/details/iphone-17-pro-max/color-camvutru-dcfa4d00.jpg",
+      "/products/details/iphone-17-pro-max/color-camvutru-fcc14697.jpg",
+      "/products/details/iphone-17-pro-max/color-xanhdam-15900afc.jpg",
+      "/products/details/iphone-17-pro-max/color-xanhdam-633cf6ec.jpg",
+      "/products/details/iphone-17-pro-max/color-xanhdam-9345653e.jpg",
+      "/products/details/iphone-17-pro-max/color-xanhdam-c8a20522.jpg"
+    ],
+    "specs": [
+      "Hệ điều hành khi ra mắt: iOS 26",
+      "Chipset: Chip A19 Pro",
+      "Bộ nhớ trong: 256 GB",
+      "Loại CPU: CPU 6 lõi với 2 lõi hiệu năng và 4 lõi tiết kiệm điện",
+      "GPU: GPU 6 lõi với Neural Accelerator",
+      "Kích thước màn hình: 6.9 inches",
+      "Công nghệ màn hình: Super Retina XDR",
+      "Độ phân giải màn hình: 2868 x 1320 pixels",
+      "Tính năng màn hình: Màn hình Luôn Bật, ProMotion 120Hz, HDR, True Tone, Dải màu rộng (P3), Haptic Touch, Tỷ lệ tương phản 2.000.000:1, Độ sáng 1000 nit (tiêu chuẩn), 1600 nit (HDR), 3000 nit (ngoài trời) / tối thiểu 1 nit, Lớp phủ kháng dầu, Chống phản chiếu, Hỗ trợ đa ngôn",
+      "Camera sau: Chính: 48MP khẩu độ ƒ/1.6 OIS hỗ trợ chụp 24MP hoặc 48MPGóc Siêu Rộng: 48MP khẩu độ ƒ/2.2 góc nhìn 120°Telephoto: 48MP khẩu độ ƒ/2.8 OIS zoom quang học lên đến 8x",
+      "Camera trước: Camera 18MP Center Stage Khẩu độ ƒ/1.9",
+      "Hỗ trợ mạng: 5G",
+      "Thẻ SIM: Sim kép (nano-Sim và e-Sim) - Hỗ trợ 2 e-Sim",
+      "Công nghệ NFC: Có",
+      "Thời điểm ra mắt: 09/2025"
+    ],
+    "variants": [
+      {
+        "id": "iphone-17-pro-max-256gb-camvutru",
+        "name": "256GB · Camvutru",
+        "storage": "256GB",
+        "color": "Camvutru",
+        "colorHex": "#d7774e",
+        "price": "34.590.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max/color-camvutru-67cadb6a.jpg"
+      },
+      {
+        "id": "iphone-17-pro-max-256gb-xanhdam",
+        "name": "256GB · Xanhdam",
+        "storage": "256GB",
+        "color": "Xanhdam",
+        "colorHex": "#a8adb4",
+        "price": "34.590.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max/color-xanhdam-15900afc.jpg"
+      },
+      {
+        "id": "iphone-17-pro-max-512gb-camvutru",
+        "name": "512GB · Camvutru",
+        "storage": "512GB",
+        "color": "Camvutru",
+        "colorHex": "#d7774e",
+        "price": "41.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max/color-camvutru-67cadb6a.jpg"
+      },
+      {
+        "id": "iphone-17-pro-max-512gb-xanhdam",
+        "name": "512GB · Xanhdam",
+        "storage": "512GB",
+        "color": "Xanhdam",
+        "colorHex": "#a8adb4",
+        "price": "41.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max/color-xanhdam-15900afc.jpg"
+      },
+      {
+        "id": "iphone-17-pro-max-1tb-camvutru",
+        "name": "1TB · Camvutru",
+        "storage": "1TB",
+        "color": "Camvutru",
+        "colorHex": "#d7774e",
+        "price": "47.990.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max/color-camvutru-67cadb6a.jpg"
+      },
+      {
+        "id": "iphone-17-pro-max-1tb-xanhdam",
+        "name": "1TB · Xanhdam",
+        "storage": "1TB",
+        "color": "Xanhdam",
+        "colorHex": "#a8adb4",
+        "price": "47.990.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max/color-xanhdam-15900afc.jpg"
+      },
+      {
+        "id": "iphone-17-pro-max-2tb-camvutru",
+        "name": "2TB · Camvutru",
+        "storage": "2TB",
+        "color": "Camvutru",
+        "colorHex": "#d7774e",
+        "price": "60.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max/color-camvutru-67cadb6a.jpg"
+      },
+      {
+        "id": "iphone-17-pro-max-2tb-xanhdam",
+        "name": "2TB · Xanhdam",
+        "storage": "2TB",
+        "color": "Xanhdam",
+        "colorHex": "#a8adb4",
+        "price": "60.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max/color-xanhdam-15900afc.jpg"
+      }
+    ],
+    "colors": [
+      "#d7774e",
+      "#a8adb4"
+    ],
+    "colorOptions": [
+      {
+        "name": "Camvutru",
+        "hex": "#d7774e"
+      },
+      {
+        "name": "Xanhdam",
+        "hex": "#a8adb4"
+      }
+    ],
+    "storageOptions": [
+      "256GB",
+      "512GB",
+      "1TB",
+      "2TB"
+    ],
+    "source": "https://cellphones.com.vn/iphone-17-pro-max.html",
+    "checkedAt": "2026-08-18T13:42:57.006Z"
+  },
+  "iphone-17-pro-max-1tb": {
+    "price": "47.990.000đ",
+    "sellingPrice": "47.990.000đ",
+    "image": "/products/details/iphone-17-pro-max-1tb/detail-1-906a3572.webp",
+    "images": [
+      "/products/details/iphone-17-pro-max-1tb/detail-1-906a3572.webp",
+      "/products/details/iphone-17-pro-max-1tb/detail-2-c6638f94.webp",
+      "/products/details/iphone-17-pro-max-1tb/detail-3-99670ea8.webp",
+      "/products/details/iphone-17-pro-max-1tb/detail-4-dbe087b5.webp",
+      "/products/details/iphone-17-pro-max-1tb/detail-5-0d2261b9.webp",
+      "/products/details/iphone-17-pro-max-1tb/detail-6-18c05465.webp",
+      "/products/details/iphone-17-pro-max-1tb/detail-7-cbd91275.webp",
+      "/products/details/iphone-17-pro-max-1tb/detail-8-cd9caa25.webp",
+      "/products/details/iphone-17-pro-max-1tb/color-camvutru-67cadb6a.jpg",
+      "/products/details/iphone-17-pro-max-1tb/color-camvutru-dccb4727.jpg",
+      "/products/details/iphone-17-pro-max-1tb/color-camvutru-dcfa4d00.jpg",
+      "/products/details/iphone-17-pro-max-1tb/color-camvutru-fcc14697.jpg",
+      "/products/details/iphone-17-pro-max-1tb/color-xanhdam-15900afc.jpg",
+      "/products/details/iphone-17-pro-max-1tb/color-xanhdam-633cf6ec.jpg",
+      "/products/details/iphone-17-pro-max-1tb/color-xanhdam-9345653e.jpg",
+      "/products/details/iphone-17-pro-max-1tb/color-xanhdam-c8a20522.jpg"
+    ],
+    "specs": [
+      "Hệ điều hành khi ra mắt: iOS 26",
+      "Chipset: Chip A19 Pro",
+      "Bộ nhớ trong: 1 TB",
+      "Loại CPU: CPU 6 lõi với 2 lõi hiệu năng và 4 lõi tiết kiệm điện",
+      "GPU: GPU 6 lõi với Neural Accelerator",
+      "Kích thước màn hình: 6.9 inches",
+      "Công nghệ màn hình: Super Retina XDR",
+      "Độ phân giải màn hình: 2868 x 1320 pixels",
+      "Tính năng màn hình: Màn hình Luôn Bật, ProMotion 120Hz, HDR, True Tone, Dải màu rộng (P3), Haptic Touch, Tỷ lệ tương phản 2.000.000:1, Độ sáng 1000 nit (tiêu chuẩn), 1600 nit (HDR), 3000 nit (ngoài trời) / tối thiểu 1 nit, Lớp phủ kháng dầu, Chống phản chiếu, Hỗ trợ đa ngôn",
+      "Camera sau: Chính: 48MP khẩu độ ƒ/1.6 OIS hỗ trợ chụp 24MP hoặc 48MPGóc Siêu Rộng: 48MP khẩu độ ƒ/2.2 góc nhìn 120°Telephoto: 48MP khẩu độ ƒ/2.8 OIS zoom quang học lên đến 8x",
+      "Camera trước: Camera 18MP Center Stage Khẩu độ ƒ/1.9",
+      "Hỗ trợ mạng: 5G",
+      "Thẻ SIM: Sim kép (nano-Sim và e-Sim) - Hỗ trợ 2 e-Sim",
+      "Công nghệ NFC: Có",
+      "Thời điểm ra mắt: 09/2025"
+    ],
+    "variants": [
+      {
+        "id": "iphone-17-pro-max-1tb-256gb-camvutru",
+        "name": "256GB · Camvutru",
+        "storage": "256GB",
+        "color": "Camvutru",
+        "colorHex": "#d7774e",
+        "price": "34.590.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max-1tb/color-camvutru-67cadb6a.jpg"
+      },
+      {
+        "id": "iphone-17-pro-max-1tb-256gb-xanhdam",
+        "name": "256GB · Xanhdam",
+        "storage": "256GB",
+        "color": "Xanhdam",
+        "colorHex": "#a8adb4",
+        "price": "34.590.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max-1tb/color-xanhdam-15900afc.jpg"
+      },
+      {
+        "id": "iphone-17-pro-max-1tb-512gb-camvutru",
+        "name": "512GB · Camvutru",
+        "storage": "512GB",
+        "color": "Camvutru",
+        "colorHex": "#d7774e",
+        "price": "41.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max-1tb/color-camvutru-67cadb6a.jpg"
+      },
+      {
+        "id": "iphone-17-pro-max-1tb-512gb-xanhdam",
+        "name": "512GB · Xanhdam",
+        "storage": "512GB",
+        "color": "Xanhdam",
+        "colorHex": "#a8adb4",
+        "price": "41.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max-1tb/color-xanhdam-15900afc.jpg"
+      },
+      {
+        "id": "iphone-17-pro-max-1tb-1tb-camvutru",
+        "name": "1TB · Camvutru",
+        "storage": "1TB",
+        "color": "Camvutru",
+        "colorHex": "#d7774e",
+        "price": "47.990.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max-1tb/color-camvutru-67cadb6a.jpg"
+      },
+      {
+        "id": "iphone-17-pro-max-1tb-1tb-xanhdam",
+        "name": "1TB · Xanhdam",
+        "storage": "1TB",
+        "color": "Xanhdam",
+        "colorHex": "#a8adb4",
+        "price": "47.990.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max-1tb/color-xanhdam-15900afc.jpg"
+      },
+      {
+        "id": "iphone-17-pro-max-1tb-2tb-camvutru",
+        "name": "2TB · Camvutru",
+        "storage": "2TB",
+        "color": "Camvutru",
+        "colorHex": "#d7774e",
+        "price": "60.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max-1tb/color-camvutru-67cadb6a.jpg"
+      },
+      {
+        "id": "iphone-17-pro-max-1tb-2tb-xanhdam",
+        "name": "2TB · Xanhdam",
+        "storage": "2TB",
+        "color": "Xanhdam",
+        "colorHex": "#a8adb4",
+        "price": "60.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max-1tb/color-xanhdam-15900afc.jpg"
+      }
+    ],
+    "colors": [
+      "#d7774e",
+      "#a8adb4"
+    ],
+    "colorOptions": [
+      {
+        "name": "Camvutru",
+        "hex": "#d7774e"
+      },
+      {
+        "name": "Xanhdam",
+        "hex": "#a8adb4"
+      }
+    ],
+    "storageOptions": [
+      "256GB",
+      "512GB",
+      "1TB",
+      "2TB"
+    ],
+    "source": "https://cellphones.com.vn/iphone-17-pro-max-1tb.html",
+    "checkedAt": "2026-08-18T13:42:57.032Z"
+  },
+  "iphone-17-pro-max-2tb": {
+    "price": "60.490.000đ",
+    "sellingPrice": "60.490.000đ",
+    "image": "/products/details/iphone-17-pro-max-2tb/detail-1-3aec6a88.webp",
+    "images": [
+      "/products/details/iphone-17-pro-max-2tb/detail-1-3aec6a88.webp",
+      "/products/details/iphone-17-pro-max-2tb/detail-2-9e98a0bf.webp",
+      "/products/details/iphone-17-pro-max-2tb/detail-3-86c2dbd1.webp",
+      "/products/details/iphone-17-pro-max-2tb/detail-4-cb21d8a4.jpg",
+      "/products/details/iphone-17-pro-max-2tb/detail-5-ae3d598e.webp",
+      "/products/details/iphone-17-pro-max-2tb/detail-6-b52a222d.webp",
+      "/products/details/iphone-17-pro-max-2tb/detail-7-e5f0eace.webp",
+      "/products/details/iphone-17-pro-max-2tb/detail-8-00003ca1.webp",
+      "/products/details/iphone-17-pro-max-2tb/color-camvutru-67cadb6a.jpg",
+      "/products/details/iphone-17-pro-max-2tb/color-camvutru-dccb4727.jpg",
+      "/products/details/iphone-17-pro-max-2tb/color-camvutru-dcfa4d00.jpg",
+      "/products/details/iphone-17-pro-max-2tb/color-camvutru-fcc14697.jpg",
+      "/products/details/iphone-17-pro-max-2tb/color-xanhdam-15900afc.jpg",
+      "/products/details/iphone-17-pro-max-2tb/color-xanhdam-633cf6ec.jpg",
+      "/products/details/iphone-17-pro-max-2tb/color-xanhdam-9345653e.jpg",
+      "/products/details/iphone-17-pro-max-2tb/color-xanhdam-c8a20522.jpg"
+    ],
+    "specs": [
+      "Hệ điều hành khi ra mắt: iOS 26",
+      "Chipset: Chip A19 Pro",
+      "Bộ nhớ trong: 2 TB",
+      "Loại CPU: CPU 6 lõi với 2 lõi hiệu năng và 4 lõi tiết kiệm điện",
+      "GPU: GPU 6 lõi với Neural Accelerator",
+      "Kích thước màn hình: 6.9 inches",
+      "Công nghệ màn hình: Super Retina XDR",
+      "Độ phân giải màn hình: 2868 x 1320 pixels",
+      "Tính năng màn hình: Màn hình Luôn Bật, ProMotion 120Hz, HDR, True Tone, Dải màu rộng (P3), Haptic Touch, Tỷ lệ tương phản 2.000.000:1, Độ sáng 1000 nit (tiêu chuẩn), 1600 nit (HDR), 3000 nit (ngoài trời) / tối thiểu 1 nit, Lớp phủ kháng dầu, Chống phản chiếu, Hỗ trợ đa ngôn",
+      "Camera sau: Chính: 48MP khẩu độ ƒ/1.6 OIS hỗ trợ chụp 24MP hoặc 48MPGóc Siêu Rộng: 48MP khẩu độ ƒ/2.2 góc nhìn 120°Telephoto: 48MP khẩu độ ƒ/2.8 OIS zoom quang học lên đến 8x",
+      "Camera trước: Camera 18MP Center Stage Khẩu độ ƒ/1.9",
+      "Hỗ trợ mạng: 5G",
+      "Công nghệ NFC: Có",
+      "Thời điểm ra mắt: 09/2025"
+    ],
+    "variants": [
+      {
+        "id": "iphone-17-pro-max-2tb-256gb-camvutru",
+        "name": "256GB · Camvutru",
+        "storage": "256GB",
+        "color": "Camvutru",
+        "colorHex": "#d7774e",
+        "price": "34.590.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max-2tb/color-camvutru-67cadb6a.jpg"
+      },
+      {
+        "id": "iphone-17-pro-max-2tb-256gb-xanhdam",
+        "name": "256GB · Xanhdam",
+        "storage": "256GB",
+        "color": "Xanhdam",
+        "colorHex": "#a8adb4",
+        "price": "34.590.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max-2tb/color-xanhdam-15900afc.jpg"
+      },
+      {
+        "id": "iphone-17-pro-max-2tb-512gb-camvutru",
+        "name": "512GB · Camvutru",
+        "storage": "512GB",
+        "color": "Camvutru",
+        "colorHex": "#d7774e",
+        "price": "41.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max-2tb/color-camvutru-67cadb6a.jpg"
+      },
+      {
+        "id": "iphone-17-pro-max-2tb-512gb-xanhdam",
+        "name": "512GB · Xanhdam",
+        "storage": "512GB",
+        "color": "Xanhdam",
+        "colorHex": "#a8adb4",
+        "price": "41.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max-2tb/color-xanhdam-15900afc.jpg"
+      },
+      {
+        "id": "iphone-17-pro-max-2tb-1tb-camvutru",
+        "name": "1TB · Camvutru",
+        "storage": "1TB",
+        "color": "Camvutru",
+        "colorHex": "#d7774e",
+        "price": "47.990.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max-2tb/color-camvutru-67cadb6a.jpg"
+      },
+      {
+        "id": "iphone-17-pro-max-2tb-1tb-xanhdam",
+        "name": "1TB · Xanhdam",
+        "storage": "1TB",
+        "color": "Xanhdam",
+        "colorHex": "#a8adb4",
+        "price": "47.990.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max-2tb/color-xanhdam-15900afc.jpg"
+      },
+      {
+        "id": "iphone-17-pro-max-2tb-2tb-camvutru",
+        "name": "2TB · Camvutru",
+        "storage": "2TB",
+        "color": "Camvutru",
+        "colorHex": "#d7774e",
+        "price": "60.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max-2tb/color-camvutru-67cadb6a.jpg"
+      },
+      {
+        "id": "iphone-17-pro-max-2tb-2tb-xanhdam",
+        "name": "2TB · Xanhdam",
+        "storage": "2TB",
+        "color": "Xanhdam",
+        "colorHex": "#a8adb4",
+        "price": "60.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max-2tb/color-xanhdam-15900afc.jpg"
+      }
+    ],
+    "colors": [
+      "#d7774e",
+      "#a8adb4"
+    ],
+    "colorOptions": [
+      {
+        "name": "Camvutru",
+        "hex": "#d7774e"
+      },
+      {
+        "name": "Xanhdam",
+        "hex": "#a8adb4"
+      }
+    ],
+    "storageOptions": [
+      "256GB",
+      "512GB",
+      "1TB",
+      "2TB"
+    ],
+    "source": "https://cellphones.com.vn/iphone-17-pro-max-2tb.html",
+    "checkedAt": "2026-08-18T13:42:57.062Z"
+  },
+  "iphone-17-pro-max-512gb": {
+    "price": "41.490.000đ",
+    "sellingPrice": "41.490.000đ",
+    "image": "/products/details/iphone-17-pro-max-512gb/detail-1-c4695e2d.webp",
+    "images": [
+      "/products/details/iphone-17-pro-max-512gb/detail-1-c4695e2d.webp",
+      "/products/details/iphone-17-pro-max-512gb/detail-2-a60639a2.jpg",
+      "/products/details/iphone-17-pro-max-512gb/detail-3-f67825fb.webp",
+      "/products/details/iphone-17-pro-max-512gb/detail-4-1f68ea35.webp",
+      "/products/details/iphone-17-pro-max-512gb/detail-5-b7b9b307.webp",
+      "/products/details/iphone-17-pro-max-512gb/detail-6-52f9296d.jpg",
+      "/products/details/iphone-17-pro-max-512gb/detail-7-b6cf13fc.jpg",
+      "/products/details/iphone-17-pro-max-512gb/detail-8-cef0fc2e.webp",
+      "/products/details/iphone-17-pro-max-512gb/color-camvutru-67cadb6a.jpg",
+      "/products/details/iphone-17-pro-max-512gb/color-camvutru-dccb4727.jpg",
+      "/products/details/iphone-17-pro-max-512gb/color-camvutru-dcfa4d00.jpg",
+      "/products/details/iphone-17-pro-max-512gb/color-camvutru-fcc14697.jpg",
+      "/products/details/iphone-17-pro-max-512gb/color-xanhdam-15900afc.jpg",
+      "/products/details/iphone-17-pro-max-512gb/color-xanhdam-633cf6ec.jpg",
+      "/products/details/iphone-17-pro-max-512gb/color-xanhdam-9345653e.jpg",
+      "/products/details/iphone-17-pro-max-512gb/color-xanhdam-c8a20522.jpg"
+    ],
+    "specs": [
+      "Hệ điều hành khi ra mắt: iOS 26",
+      "Chipset: Chip A19 Pro",
+      "Bộ nhớ trong: 512 GB",
+      "Loại CPU: CPU 6 lõi với 2 lõi hiệu năng và 4 lõi tiết kiệm điện",
+      "GPU: GPU 6 lõi với Neural Accelerator",
+      "Kích thước màn hình: 6.9 inches",
+      "Công nghệ màn hình: Super Retina XDR",
+      "Độ phân giải màn hình: 2868 x 1320 pixels",
+      "Tính năng màn hình: Màn hình Luôn Bật, ProMotion 120Hz, HDR, True Tone, Dải màu rộng (P3), Haptic Touch, Tỷ lệ tương phản 2.000.000:1, Độ sáng 1000 nit (tiêu chuẩn), 1600 nit (HDR), 3000 nit (ngoài trời) / tối thiểu 1 nit, Lớp phủ kháng dầu, Chống phản chiếu, Hỗ trợ đa ngôn",
+      "Camera sau: Chính: 48MP khẩu độ ƒ/1.6 OIS hỗ trợ chụp 24MP hoặc 48MPGóc Siêu Rộng: 48MP khẩu độ ƒ/2.2 góc nhìn 120°Telephoto: 48MP khẩu độ ƒ/2.8 OIS zoom quang học lên đến 8x",
+      "Camera trước: Camera 18MP Center Stage Khẩu độ ƒ/1.9",
+      "Hỗ trợ mạng: 5G",
+      "Công nghệ NFC: Có",
+      "Thời điểm ra mắt: 09/2025"
+    ],
+    "variants": [
+      {
+        "id": "iphone-17-pro-max-512gb-256gb-camvutru",
+        "name": "256GB · Camvutru",
+        "storage": "256GB",
+        "color": "Camvutru",
+        "colorHex": "#d7774e",
+        "price": "34.590.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max-512gb/color-camvutru-67cadb6a.jpg"
+      },
+      {
+        "id": "iphone-17-pro-max-512gb-256gb-xanhdam",
+        "name": "256GB · Xanhdam",
+        "storage": "256GB",
+        "color": "Xanhdam",
+        "colorHex": "#a8adb4",
+        "price": "34.590.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max-512gb/color-xanhdam-15900afc.jpg"
+      },
+      {
+        "id": "iphone-17-pro-max-512gb-512gb-camvutru",
+        "name": "512GB · Camvutru",
+        "storage": "512GB",
+        "color": "Camvutru",
+        "colorHex": "#d7774e",
+        "price": "41.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max-512gb/color-camvutru-67cadb6a.jpg"
+      },
+      {
+        "id": "iphone-17-pro-max-512gb-512gb-xanhdam",
+        "name": "512GB · Xanhdam",
+        "storage": "512GB",
+        "color": "Xanhdam",
+        "colorHex": "#a8adb4",
+        "price": "41.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max-512gb/color-xanhdam-15900afc.jpg"
+      },
+      {
+        "id": "iphone-17-pro-max-512gb-1tb-camvutru",
+        "name": "1TB · Camvutru",
+        "storage": "1TB",
+        "color": "Camvutru",
+        "colorHex": "#d7774e",
+        "price": "47.990.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max-512gb/color-camvutru-67cadb6a.jpg"
+      },
+      {
+        "id": "iphone-17-pro-max-512gb-1tb-xanhdam",
+        "name": "1TB · Xanhdam",
+        "storage": "1TB",
+        "color": "Xanhdam",
+        "colorHex": "#a8adb4",
+        "price": "47.990.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max-512gb/color-xanhdam-15900afc.jpg"
+      },
+      {
+        "id": "iphone-17-pro-max-512gb-2tb-camvutru",
+        "name": "2TB · Camvutru",
+        "storage": "2TB",
+        "color": "Camvutru",
+        "colorHex": "#d7774e",
+        "price": "60.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max-512gb/color-camvutru-67cadb6a.jpg"
+      },
+      {
+        "id": "iphone-17-pro-max-512gb-2tb-xanhdam",
+        "name": "2TB · Xanhdam",
+        "storage": "2TB",
+        "color": "Xanhdam",
+        "colorHex": "#a8adb4",
+        "price": "60.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17-pro-max-512gb/color-xanhdam-15900afc.jpg"
+      }
+    ],
+    "colors": [
+      "#d7774e",
+      "#a8adb4"
+    ],
+    "colorOptions": [
+      {
+        "name": "Camvutru",
+        "hex": "#d7774e"
+      },
+      {
+        "name": "Xanhdam",
+        "hex": "#a8adb4"
+      }
+    ],
+    "storageOptions": [
+      "256GB",
+      "512GB",
+      "1TB",
+      "2TB"
+    ],
+    "source": "https://cellphones.com.vn/iphone-17-pro-max-512gb.html",
+    "checkedAt": "2026-08-18T13:42:57.083Z"
+  },
+  "iphone-17e": {
+    "price": "17.490.000đ",
+    "sellingPrice": "17.490.000đ",
+    "image": "/products/details/iphone-17e/detail-1-99fa1e0d.webp",
+    "images": [
+      "/products/details/iphone-17e/detail-1-99fa1e0d.webp",
+      "/products/details/iphone-17e/detail-2-1afb6514.webp",
+      "/products/details/iphone-17e/detail-3-80350f65.webp",
+      "/products/details/iphone-17e/detail-4-71648f22.webp",
+      "/products/details/iphone-17e/detail-5-9eae2a66.webp",
+      "/products/details/iphone-17e/detail-6-eee4e6ff.webp",
+      "/products/details/iphone-17e/detail-7-745086b3.webp",
+      "/products/details/iphone-17e/detail-8-33c6a340.webp",
+      "/products/details/iphone-17e/color-den-902fa51e.jpg",
+      "/products/details/iphone-17e/color-den-c9aa9384.jpg",
+      "/products/details/iphone-17e/color-hong-1b02f4d0.jpg",
+      "/products/details/iphone-17e/color-hong-84006b1f.jpg"
+    ],
+    "specs": [
+      "Hệ điều hành khi ra mắt: iOS 26",
+      "Chipset: Apple A19",
+      "Bộ nhớ trong: 256 GB",
+      "Loại CPU: 6 lõi với 2 lõi hiệu năng và 4 lõi tiết kiệm điện",
+      "GPU: 4 lõi với Neural Accelerators",
+      "Kích thước màn hình: 6.1 inches",
+      "Công nghệ màn hình: Super Retina XDR",
+      "Độ phân giải màn hình: 2532 x 1170 pixels",
+      "Tính năng màn hình: HDR460 ppiTrue ToneDải màu rộng (P3)Haptic TouchTỷ lệ tương phản 2.000.000:1Độ sáng 800 nit (tiêu chuẩn)Độ sáng đỉnh: 1200 nit (HDR)",
+      "Camera sau: 48MP, ƒ/1.6Telephoto 2x: 12MP, ƒ/1.6",
+      "Camera trước: 12MP, ƒ/1.9",
+      "Pin: Xem video: 26 giờXem video trực tuyến: 21 giờ",
+      "Hỗ trợ mạng: 5G",
+      "Thẻ SIM: 2 SIM (nano‑SIM và eSIM)",
+      "Công nghệ NFC: Có"
+    ],
+    "variants": [
+      {
+        "id": "iphone-17e-256gb-den",
+        "name": "256GB · Đen",
+        "storage": "256GB",
+        "color": "Đen",
+        "colorHex": "#202124",
+        "price": "17.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17e/color-den-902fa51e.jpg"
+      },
+      {
+        "id": "iphone-17e-256gb-hong",
+        "name": "256GB · Hồng",
+        "storage": "256GB",
+        "color": "Hồng",
+        "colorHex": "#a8adb4",
+        "price": "17.490.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-17e/color-hong-1b02f4d0.jpg"
+      }
+    ],
+    "colors": [
+      "#202124",
+      "#a8adb4"
+    ],
+    "colorOptions": [
+      {
+        "name": "Đen",
+        "hex": "#202124"
+      },
+      {
+        "name": "Hồng",
+        "hex": "#a8adb4"
+      }
+    ],
+    "storageOptions": [
+      "256GB"
+    ],
+    "source": "https://cellphones.com.vn/iphone-17e.html",
+    "checkedAt": "2026-08-18T13:42:57.163Z"
+  },
+  "iphone-air-256gb": {
+    "price": "22.990.000đ",
+    "sellingPrice": "22.990.000đ",
+    "image": "/products/details/iphone-air-256gb/detail-1-0aba6995.jpg",
+    "images": [
+      "/products/details/iphone-air-256gb/detail-1-0aba6995.jpg",
+      "/products/details/iphone-air-256gb/detail-2-093b563a.webp",
+      "/products/details/iphone-air-256gb/detail-3-f35bdc3b.webp",
+      "/products/details/iphone-air-256gb/detail-4-f29fc3b4.webp",
+      "/products/details/iphone-air-256gb/detail-5-3ee88190.webp",
+      "/products/details/iphone-air-256gb/detail-6-39b6e2fd.webp",
+      "/products/details/iphone-air-256gb/detail-7-738a3919.webp",
+      "/products/details/iphone-air-256gb/detail-8-316bb5cf.webp",
+      "/products/details/iphone-air-256gb/color-denkhonggian-9f450e8d.jpg",
+      "/products/details/iphone-air-256gb/color-trangmay-c714571b.jpg",
+      "/products/details/iphone-air-256gb/color-vangnhat-c7b5c4d4.jpg"
+    ],
+    "specs": [
+      "Hệ điều hành khi ra mắt: iOS 26",
+      "Chipset: Chip A19 Pro",
+      "Bộ nhớ trong: 256 GB",
+      "Loại CPU: 6 lõi (2 hiệu năng + 4 tiết kiệm điện)",
+      "GPU: GPU 5 lõi với Neural Accelerator",
+      "Kích thước màn hình: 6.5 inches",
+      "Công nghệ màn hình: Super Retina XDR",
+      "Độ phân giải màn hình: 2736 x 1260 pixels",
+      "Tính năng màn hình: Dynamic IslandMàn hình luôn bậtHDR460 ppiTrue ToneDải màu rộng (P3)Haptic TouchTỷ lệ tương phản 2.000.000:1Độ sáng 1000 nit (typ)Đỉnh 1600 nit (HDR)Đỉnh 3000 nit (ngoài trời)Lớp phủ chống vân tay, chống phản chi",
+      "Camera sau: 48MP Fusion Main f/1.6",
+      "Camera trước: 18MP Center Stage f/1.6",
+      "Pin: Xem video: 27 giờXem video trực tuyến: 22 giờ",
+      "Hỗ trợ mạng: 5G",
+      "Thẻ SIM: 2 eSIM",
+      "Công nghệ NFC: Có",
+      "Thời điểm ra mắt: 09/2025"
+    ],
+    "variants": [
+      {
+        "id": "iphone-air-256gb-256gb-denkhonggian",
+        "name": "256GB · Denkhonggian",
+        "storage": "256GB",
+        "color": "Denkhonggian",
+        "colorHex": "#a8adb4",
+        "price": "22.990.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-air-256gb/color-denkhonggian-9f450e8d.jpg"
+      },
+      {
+        "id": "iphone-air-256gb-256gb-trangmay",
+        "name": "256GB · Trangmay",
+        "storage": "256GB",
+        "color": "Trangmay",
+        "colorHex": "#a8adb4",
+        "price": "22.990.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-air-256gb/color-trangmay-c714571b.jpg"
+      },
+      {
+        "id": "iphone-air-256gb-256gb-vangnhat",
+        "name": "256GB · Vangnhat",
+        "storage": "256GB",
+        "color": "Vangnhat",
+        "colorHex": "#a8adb4",
+        "price": "22.990.000đ",
+        "stock": 1,
+        "image": "/products/details/iphone-air-256gb/color-vangnhat-c7b5c4d4.jpg"
+      }
+    ],
+    "colors": [
+      "#a8adb4",
+      "#a8adb4",
+      "#a8adb4"
+    ],
+    "colorOptions": [
+      {
+        "name": "Denkhonggian",
+        "hex": "#a8adb4"
+      },
+      {
+        "name": "Trangmay",
+        "hex": "#a8adb4"
+      },
+      {
+        "name": "Vangnhat",
+        "hex": "#a8adb4"
+      }
+    ],
+    "storageOptions": [
+      "256GB"
+    ],
+    "source": "https://cellphones.com.vn/iphone-air-256gb.html",
+    "checkedAt": "2026-08-18T13:42:57.243Z"
+  },
+  "xiaomi-14t-pro": {
+    "price": "12.990.000đ",
+    "sellingPrice": "12.990.000đ",
+    "image": "/products/details/xiaomi-14t-pro/detail-1-edd1c58a.webp",
+    "images": [
+      "/products/details/xiaomi-14t-pro/detail-1-edd1c58a.webp",
+      "/products/details/xiaomi-14t-pro/detail-2-cc30d57c.png",
+      "/products/details/xiaomi-14t-pro/detail-3-9ba41814.png",
+      "/products/details/xiaomi-14t-pro/detail-4-ad989009.webp",
+      "/products/details/xiaomi-14t-pro/detail-5-67a66feb.webp",
+      "/products/details/xiaomi-14t-pro/detail-6-4d1f4686.webp",
+      "/products/details/xiaomi-14t-pro/detail-7-1a8b33a0.png",
+      "/products/details/xiaomi-14t-pro/detail-8-0203aaed.webp"
+    ],
+    "specs": [
+      "Kích thước màn hình: 6.67 inches",
+      "Công nghệ màn hình: AMOLED",
+      "Camera sau: Máy ảnh chính: 50MP, 23mm, ƒ/1 6 Máy ảnh góc siêu rộng: 12MP, 15mm, ƒ/2 2 Máy ảnh tele: 50MP, 60mm, ƒ/2 0",
+      "Camera trước: 32MPƒ/2,0 Độ dài tiêu cự tương đương 25 mm FOV 80,8˚Chế độ ban đêmHDRTính năng chụp ảnh bằng lòng bàn tay",
+      "Chipset: MediaTek Dimensity 9300+",
+      "Công nghệ NFC: Có",
+      "Dung lượng RAM: 12 GB",
+      "Bộ nhớ trong: 512 GB",
+      "Pin: 5000 mAh",
+      "Thẻ SIM: Sim kép (nano-Sim và e-Sim) - Hỗ trợ 2 e-Sim",
+      "Độ phân giải màn hình: 1220 x 2712 pixels",
+      "Tính năng màn hình: 144Hz, 446 ppi, 4000 nitsĐộ sâu màu 12 bitLàm mờ PWM lên đến 3840HDR10+, Dolby Vision®Mặt sau cong 3D",
+      "Loại CPU: 1 x Cortex-X4, tối đa 3,4GHz; 3 x Cortex-X4, lên đến 2,85GHz; 4 x Cortex-A720, lên đến 2.0GHz"
+    ],
+    "variants": [
+      {
+        "id": "xiaomi-14t-pro-512gb",
+        "name": "512GB",
+        "storage": "512GB",
+        "price": "12.990.000đ",
+        "stock": 1,
+        "image": ""
+      }
+    ],
+    "colors": [],
+    "colorOptions": [],
+    "storageOptions": [
+      "512GB"
+    ],
+    "source": "https://cellphones.com.vn/xiaomi-14t-pro.html",
+    "checkedAt": "2026-08-18T13:42:57.494Z"
+  },
+  "galaxy-a07": {
+    "price": "2.990.000đ",
+    "sellingPrice": "2.990.000đ",
+    "image": "/products/dien-thoai-samsung-galaxy-a07.jpg",
+    "images": [
+      "/products/dien-thoai-samsung-galaxy-a07.jpg"
+    ],
+    "specs": [],
+    "variants": [
+      {
+        "id": "galaxy-a07-128gb",
+        "name": "128GB",
+        "storage": "128GB",
+        "price": "2.990.000đ",
+        "stock": 1,
+        "image": ""
+      }
+    ],
+    "colors": [],
+    "colorOptions": [],
+    "storageOptions": [
+      "128GB"
+    ],
+    "source": "https://cellphones.com.vn/samsung-galaxy-a07.html",
+    "checkedAt": "2026-08-18T13:42:55.882Z"
+  },
+  "galaxy-a17": {
+    "price": "4.490.000đ",
+    "sellingPrice": "4.490.000đ",
+    "image": "/products/dien-thoai-samsung-galaxy-a17.jpg",
+    "images": [
+      "/products/dien-thoai-samsung-galaxy-a17.jpg"
+    ],
+    "specs": [],
+    "variants": [
+      {
+        "id": "galaxy-a17-128gb",
+        "name": "128GB",
+        "storage": "128GB",
+        "price": "4.490.000đ",
+        "stock": 1,
+        "image": ""
+      }
+    ],
+    "colors": [],
+    "colorOptions": [],
+    "storageOptions": [
+      "128GB"
+    ],
+    "source": "https://cellphones.com.vn/samsung-galaxy-a17.html",
+    "checkedAt": "2026-08-18T13:42:55.897Z"
+  },
+  "galaxy-a37": {
+    "price": "6.990.000đ",
+    "sellingPrice": "6.990.000đ",
+    "image": "/products/dien-thoai-samsung-galaxy-a37.jpg",
+    "images": [
+      "/products/dien-thoai-samsung-galaxy-a37.jpg"
+    ],
+    "specs": [],
+    "variants": [
+      {
+        "id": "galaxy-a37-128gb",
+        "name": "128GB",
+        "storage": "128GB",
+        "price": "6.990.000đ",
+        "stock": 1,
+        "image": ""
+      }
+    ],
+    "colors": [],
+    "colorOptions": [],
+    "storageOptions": [
+      "128GB"
+    ],
+    "source": "https://cellphones.com.vn/samsung-galaxy-a37.html",
+    "checkedAt": "2026-08-18T13:42:55.915Z"
+  },
+  "galaxy-a56": {
+    "price": "9.990.000đ",
+    "sellingPrice": "9.990.000đ",
+    "image": "/products/dien-thoai-samsung-galaxy-a56.png",
+    "images": [
+      "/products/dien-thoai-samsung-galaxy-a56.png"
+    ],
+    "specs": [],
+    "variants": [
+      {
+        "id": "galaxy-a56-256gb",
+        "name": "256GB",
+        "storage": "256GB",
+        "price": "9.990.000đ",
+        "stock": 1,
+        "image": ""
+      }
+    ],
+    "colors": [],
+    "colorOptions": [],
+    "storageOptions": [
+      "256GB"
+    ],
+    "source": "https://cellphones.com.vn/samsung-galaxy-a56.html",
+    "checkedAt": "2026-08-18T13:42:55.934Z"
+  },
+  "galaxy-s25-fe": {
+    "price": "16.990.000đ",
+    "sellingPrice": "16.990.000đ",
+    "image": "/products/dien-thoai-samsung-galaxy-s25-fe.jpg",
+    "images": [
+      "/products/dien-thoai-samsung-galaxy-s25-fe.jpg"
+    ],
+    "specs": [],
+    "variants": [
+      {
+        "id": "galaxy-s25-fe-256gb",
+        "name": "256GB",
+        "storage": "256GB",
+        "price": "16.990.000đ",
+        "stock": 1,
+        "image": ""
+      }
+    ],
+    "colors": [],
+    "colorOptions": [],
+    "storageOptions": [
+      "256GB"
+    ],
+    "source": "https://cellphones.com.vn/samsung-galaxy-s25-fe.html",
+    "checkedAt": "2026-08-18T13:42:55.957Z"
+  },
+  "galaxy-s25-plus": {
+    "price": "23.990.000đ",
+    "sellingPrice": "23.990.000đ",
+    "image": "/products/dien-thoai-samsung-galaxy-s25-plus.png",
+    "images": [
+      "/products/dien-thoai-samsung-galaxy-s25-plus.png"
+    ],
+    "specs": [],
+    "variants": [
+      {
+        "id": "galaxy-s25-plus-512gb",
+        "name": "512GB",
+        "storage": "512GB",
+        "price": "23.990.000đ",
+        "stock": 1,
+        "image": ""
+      }
+    ],
+    "colors": [],
+    "colorOptions": [],
+    "storageOptions": [
+      "512GB"
+    ],
+    "source": "https://cellphones.com.vn/dien-thoai-samsung-galaxy-s25-plus-512gb.html",
+    "checkedAt": "2026-08-18T13:42:55.979Z"
+  },
+  "galaxy-s25-ultra": {
+    "price": "28.990.000đ",
+    "sellingPrice": "28.990.000đ",
+    "image": "/products/dien-thoai-samsung-galaxy-s25-ultra.png",
+    "images": [
+      "/products/dien-thoai-samsung-galaxy-s25-ultra.png"
+    ],
+    "specs": [],
+    "variants": [
+      {
+        "id": "galaxy-s25-ultra-512gb",
+        "name": "512GB",
+        "storage": "512GB",
+        "price": "28.990.000đ",
+        "stock": 1,
+        "image": ""
+      }
+    ],
+    "colors": [],
+    "colorOptions": [],
+    "storageOptions": [
+      "512GB"
+    ],
+    "source": "https://cellphones.com.vn/samsung-galaxy-s25-ultra.html",
+    "checkedAt": "2026-08-18T13:42:56.013Z"
+  },
+  "galaxy-s26": {
+    "price": "22.990.000đ",
+    "sellingPrice": "22.990.000đ",
+    "image": "/products/dien-thoai-samsung-galaxy-s26.jpg",
+    "images": [
+      "/products/dien-thoai-samsung-galaxy-s26.jpg"
+    ],
+    "specs": [],
+    "variants": [
+      {
+        "id": "galaxy-s26-256gb",
+        "name": "256GB",
+        "storage": "256GB",
+        "price": "22.990.000đ",
+        "stock": 1,
+        "image": ""
+      }
+    ],
+    "colors": [],
+    "colorOptions": [],
+    "storageOptions": [
+      "256GB"
+    ],
+    "source": "https://cellphones.com.vn/samsung-galaxy-s26.html",
+    "checkedAt": "2026-08-18T13:42:56.067Z"
+  },
+  "galaxy-s26-ultra": {
+    "price": "32.990.000đ",
+    "sellingPrice": "32.990.000đ",
+    "image": "/products/dien-thoai-samsung-galaxy-s26-ultra.jpg",
+    "images": [
+      "/products/dien-thoai-samsung-galaxy-s26-ultra.jpg"
+    ],
+    "specs": [],
+    "variants": [
+      {
+        "id": "galaxy-s26-ultra-512gb",
+        "name": "512GB",
+        "storage": "512GB",
+        "price": "32.990.000đ",
+        "stock": 1,
+        "image": ""
+      }
+    ],
+    "colors": [],
+    "colorOptions": [],
+    "storageOptions": [
+      "512GB"
+    ],
+    "source": "https://cellphones.com.vn/samsung-galaxy-s26-ultra.html",
+    "checkedAt": "2026-08-18T13:42:56.106Z"
+  },
+  "galaxy-z-flip-8": {
+    "price": "26.990.000đ",
+    "sellingPrice": "26.990.000đ",
+    "image": "/products/dien-thoai-samsung-galaxy-z-flip-8.jpg",
+    "images": [
+      "/products/dien-thoai-samsung-galaxy-z-flip-8.jpg"
+    ],
+    "specs": [],
+    "variants": [
+      {
+        "id": "galaxy-z-flip-8-512gb",
+        "name": "512GB",
+        "storage": "512GB",
+        "price": "26.990.000đ",
+        "stock": 1,
+        "image": ""
+      }
+    ],
+    "colors": [],
+    "colorOptions": [],
+    "storageOptions": [
+      "512GB"
+    ],
+    "source": "https://cellphones.com.vn/samsung-galaxy-z-flip8.html",
+    "checkedAt": "2026-08-18T13:42:56.176Z"
+  },
+  "galaxy-z-fold-8": {
+    "price": "41.990.000đ",
+    "sellingPrice": "41.990.000đ",
+    "image": "/products/dien-thoai-samsung-galaxy-z-fold-8.jpg",
+    "images": [
+      "/products/dien-thoai-samsung-galaxy-z-fold-8.jpg"
+    ],
+    "specs": [],
+    "variants": [
+      {
+        "id": "galaxy-z-fold-8-512gb",
+        "name": "512GB",
+        "storage": "512GB",
+        "price": "41.990.000đ",
+        "stock": 1,
+        "image": ""
+      }
+    ],
+    "colors": [],
+    "colorOptions": [],
+    "storageOptions": [
+      "512GB"
+    ],
+    "source": "https://cellphones.com.vn/samsung-galaxy-z-fold8.html",
+    "checkedAt": "2026-08-18T13:42:56.318Z"
+  },
+  "oppo-a3-pro": {
+    "price": "5.490.000đ",
+    "sellingPrice": "5.490.000đ",
+    "image": "/products/oppo-a3-pro.png",
+    "images": [
+      "/products/oppo-a3-pro.png"
+    ],
+    "specs": [],
+    "variants": [
+      {
+        "id": "oppo-a3-pro-256gb",
+        "name": "256GB",
+        "storage": "256GB",
+        "price": "5.490.000đ",
+        "stock": 1,
+        "image": ""
+      }
+    ],
+    "colors": [],
+    "colorOptions": [],
+    "storageOptions": [
+      "256GB"
+    ],
+    "source": "https://cellphones.com.vn/oppo-a3-pro.html",
+    "checkedAt": "2026-08-18T13:42:57.379Z"
+  },
+  "oppo-find-x8-pro": {
+    "price": "23.990.000đ",
+    "sellingPrice": "23.990.000đ",
+    "image": "/products/oppo-find-x8-pro.png",
+    "images": [
+      "/products/oppo-find-x8-pro.png"
+    ],
+    "specs": [],
+    "variants": [
+      {
+        "id": "oppo-find-x8-pro-512gb",
+        "name": "512GB",
+        "storage": "512GB",
+        "price": "23.990.000đ",
+        "stock": 1,
+        "image": ""
+      }
+    ],
+    "colors": [],
+    "colorOptions": [],
+    "storageOptions": [
+      "512GB"
+    ],
+    "source": "https://cellphones.com.vn/oppo-find-x8-pro.html",
+    "checkedAt": "2026-08-18T13:42:57.398Z"
+  },
+  "oppo-reno-13-pro": {
+    "price": "13.990.000đ",
+    "sellingPrice": "13.990.000đ",
+    "image": "/products/oppo-reno-13-pro.png",
+    "images": [
+      "/products/oppo-reno-13-pro.png"
+    ],
+    "specs": [],
+    "variants": [
+      {
+        "id": "oppo-reno-13-pro-512gb",
+        "name": "512GB",
+        "storage": "512GB",
+        "price": "13.990.000đ",
+        "stock": 1,
+        "image": ""
+      }
+    ],
+    "colors": [],
+    "colorOptions": [],
+    "storageOptions": [
+      "512GB"
+    ],
+    "source": "https://cellphones.com.vn/oppo-reno-13-pro.html",
+    "checkedAt": "2026-08-18T13:42:57.428Z"
+  },
+  "redmi-14c": {
+    "price": "3.190.000đ",
+    "sellingPrice": "3.190.000đ",
+    "image": "/products/redmi-14c.jpg",
+    "images": [
+      "/products/redmi-14c.jpg"
+    ],
+    "specs": [],
+    "variants": [
+      {
+        "id": "redmi-14c-128gb",
+        "name": "128GB",
+        "storage": "128GB",
+        "price": "3.190.000đ",
+        "stock": 1,
+        "image": ""
+      }
+    ],
+    "colors": [],
+    "colorOptions": [],
+    "storageOptions": [
+      "128GB"
+    ],
+    "source": "https://cellphones.com.vn/xiaomi-redmi-14c.html",
+    "checkedAt": "2026-08-18T13:42:57.454Z"
+  },
+  "redmi-note-14-pro": {
+    "price": "7.990.000đ",
+    "sellingPrice": "7.990.000đ",
+    "image": "/products/redmi-note-14-pro.png",
+    "images": [
+      "/products/redmi-note-14-pro.png"
+    ],
+    "specs": [],
+    "variants": [
+      {
+        "id": "redmi-note-14-pro-256gb",
+        "name": "256GB",
+        "storage": "256GB",
+        "price": "7.990.000đ",
+        "stock": 1,
+        "image": ""
+      }
+    ],
+    "colors": [],
+    "colorOptions": [],
+    "storageOptions": [
+      "256GB"
+    ],
+    "source": "https://cellphones.com.vn/xiaomi-redmi-note-14-pro.html",
+    "checkedAt": "2026-08-18T13:42:57.474Z"
+  },
+  "xiaomi-15": {
+    "price": "18.990.000đ",
+    "sellingPrice": "18.990.000đ",
+    "image": "/products/xiaomi-15.png",
+    "images": [
+      "/products/xiaomi-15.png"
+    ],
+    "specs": [],
+    "variants": [
+      {
+        "id": "xiaomi-15-256gb",
+        "name": "256GB",
+        "storage": "256GB",
+        "price": "18.990.000đ",
+        "stock": 1,
+        "image": ""
+      }
+    ],
+    "colors": [],
+    "colorOptions": [],
+    "storageOptions": [
+      "256GB"
+    ],
+    "source": "https://cellphones.com.vn/xiaomi-15.html",
+    "checkedAt": "2026-08-18T13:42:57.523Z"
+  },
+  "xiaomi-15-ultra": {
+    "price": "26.990.000đ",
+    "sellingPrice": "26.990.000đ",
+    "image": "/products/xiaomi-15-ultra.png",
+    "images": [
+      "/products/xiaomi-15-ultra.png"
+    ],
+    "specs": [],
+    "variants": [
+      {
+        "id": "xiaomi-15-ultra-512gb",
+        "name": "512GB",
+        "storage": "512GB",
+        "price": "26.990.000đ",
+        "stock": 1,
+        "image": ""
+      }
+    ],
+    "colors": [],
+    "colorOptions": [],
+    "storageOptions": [
+      "512GB"
+    ],
+    "source": "https://cellphones.com.vn/xiaomi-15-ultra.html",
+    "checkedAt": "2026-08-18T13:42:57.550Z"
+  }
+}

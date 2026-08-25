@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 64" role="img" aria-label="FE Credit">
+  <defs>
+    <linearGradient id="feg" x1="0" x2="1">
+      <stop offset="0" stop-color="#0d6efd"/>
+      <stop offset="1" stop-color="#0a58ca"/>
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" rx="10" fill="#fff" stroke="#e7ecf8"/>
+  <g transform="translate(14,12)">
+    <rect x="0" y="0" width="44" height="40" rx="8" fill="url(#feg)" />
+    <path d="M12 18 L20 10 L32 26" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+  <text x="74" y="38" font-family="Inter, Arial, Helvetica, sans-serif" font-weight="700" font-size="16" fill="#0b3ea6">FE CREDIT</text>
+</svg>

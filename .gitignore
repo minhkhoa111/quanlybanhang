@@ -1,0 +1,28 @@
+# Dependencies and generated builds
+node_modules/
+dist/
+.next/
+.vinext/
+.wrangler/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Logs and editor files
+*.log
+*.tsbuildinfo
+.DS_Store
+.idea/
+.vscode/
+
+# Local duplicate/archive project
+Nheo_Apple_Da_Sua_Loi_Local_Da_Ghep_Quan_Ly/
+
+# Test and coverage output
+coverage/
+test-results/
+playwright-report/
