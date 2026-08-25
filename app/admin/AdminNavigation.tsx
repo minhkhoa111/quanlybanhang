@@ -24,7 +24,11 @@ const groups: NavGroup[] = [
   ] },
   { label: "Tổ chức doanh nghiệp", roles: ["owner"], items: [
     { icon: "⌘", label: "Hệ thống chi nhánh", href: "/admin/branches" },
-    { icon: "♧", label: "Nhân sự & phân quyền", href: "/admin/staff" },
+    { icon: "♧", label: "Hồ sơ nhân sự", href: "/admin/hr" },
+    { icon: "⚿", label: "Tài khoản & phân quyền", href: "/admin/staff" },
+  ] },
+  { label: "Chấm công", items: [
+    { icon: "◷", label: "Chấm công nhân viên", href: "/admin/attendance" },
   ] },
   { label: "An ninh", items: [
     { icon: "◉", label: "Camera chi nhánh", href: "/admin/cameras" },

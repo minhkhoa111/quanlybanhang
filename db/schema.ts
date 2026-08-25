@@ -55,6 +55,21 @@ export const cameraBranchPermissions = sqliteTable("camera_branch_permissions", 
   branchId: text("branch_id").notNull(), createdAt: integer("created_at").notNull(),
 });
 
+export const employeeProfiles = sqliteTable("employee_profiles", {
+  adminUserId: text("admin_user_id").primaryKey(), dateOfBirth: text("date_of_birth").notNull().default(""),
+  joinedDate: text("joined_date").notNull().default(""), citizenIdEncrypted: text("citizen_id_encrypted").notNull().default(""),
+  permanentAddressEncrypted: text("permanent_address_encrypted").notNull().default(""), temporaryAddressEncrypted: text("temporary_address_encrypted").notNull().default(""),
+  photoKey: text("photo_key").notNull().default(""), bankName: text("bank_name").notNull().default(""),
+  bankAccountNameEncrypted: text("bank_account_name_encrypted").notNull().default(""), bankAccountNumberEncrypted: text("bank_account_number_encrypted").notNull().default(""),
+  monthlySalary: integer("monthly_salary").notNull().default(0), updatedAt: integer("updated_at").notNull(),
+});
+
+export const employeeAttendance = sqliteTable("employee_attendance", {
+  id: text("id").primaryKey(), adminUserId: text("admin_user_id").notNull(), workDate: text("work_date").notNull(),
+  checkIn: text("check_in").notNull().default(""), checkOut: text("check_out").notNull().default(""), status: text("status").notNull().default("present"),
+  note: text("note").notNull().default(""), recordedBy: text("recorded_by").notNull().default(""), createdAt: integer("created_at").notNull(), updatedAt: integer("updated_at").notNull(),
+});
+
 export const liveChatConversations = sqliteTable("live_chat_conversations", {
   id: text("id").primaryKey(), customerName: text("customer_name").notNull(), phone: text("phone").notNull(),
   token: text("token").notNull().unique(), status: text("status").notNull().default("waiting"),

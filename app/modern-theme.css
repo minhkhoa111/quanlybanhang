@@ -3360,6 +3360,103 @@ h1, h2, h3, h4 {
     display: none !important;
   }
 }
+
+/* Human resources and attendance */
+.admin-hr-heading,
+.admin-hr-profile-heading { align-items: flex-end; }
+.admin-hr-kpis article:nth-child(1) i { background: #e7f2ff; color: #1473cc; }
+.admin-hr-kpis article:nth-child(2) i { background: #e7f8ef; color: #15945a; }
+.admin-hr-kpis article:nth-child(3) i { background: #f0ebff; color: #7155ca; }
+.admin-hr-kpis article:nth-child(4) i { background: #fff1e3; color: #d87414; }
+.admin-hr-table { min-width: 1350px; }
+.admin-hr-person { display: flex; align-items: center; gap: 10px; min-width: 170px; }
+.admin-hr-person > img,
+.admin-hr-person > b { width: 42px; height: 42px; flex: 0 0 42px; border-radius: 11px; object-fit: cover; }
+.admin-hr-person > b { display: grid; place-items: center; background: #e7f2ff; color: #1473cc; font-size: 13px; }
+.admin-hr-person > span { display: grid; }
+.admin-sensitive-value { color: #556c84 !important; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .08em !important; }
+.admin-profile-progress { display: flex; align-items: center; gap: 7px; min-width: 90px; }
+.admin-profile-progress > span { width: 62px; height: 6px; overflow: hidden; border-radius: 99px; background: #e8eef5; }
+.admin-profile-progress i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #62b2f1, #1673c7); }
+.admin-profile-progress b { color: #526b84; font-size: 9px; }
+.hr-attendance-present { background: #dcfce7 !important; color: #166534 !important; }
+.hr-attendance-late { background: #fef3c7 !important; color: #92400e !important; }
+.hr-attendance-leave { background: #dbeafe !important; color: #1d4ed8 !important; }
+.hr-attendance-absent { background: #fee2e2 !important; color: #991b1b !important; }
+.hr-attendance-none { background: #eef2f6 !important; color: #667085 !important; }
+
+.admin-employee-identity { display: grid; grid-template-columns: 270px minmax(0, 1fr); gap: 16px; margin-bottom: 16px; }
+.admin-employee-profile-card { display: grid; place-items: center; text-align: center; }
+.admin-employee-photo { display: grid; width: 150px; height: 150px; overflow: hidden; place-items: center; margin-bottom: 13px; border: 6px solid #edf5fd; border-radius: 24px; background: linear-gradient(145deg, #eaf4ff, #f8fbff); box-shadow: 0 12px 28px rgba(35, 98, 165, .12); }
+.admin-employee-photo img { width: 100%; height: 100%; object-fit: cover; }
+.admin-employee-photo span { color: #2877c3; font-size: 52px; font-weight: 900; }
+.admin-employee-profile-card h2 { margin: 3px 0 0; color: #17304f; font-size: 21px; }
+.admin-employee-profile-card > p { margin: 0 0 15px; color: #7d90a5; font-size: 10px; }
+.admin-employee-profile-card dl { display: grid; width: 100%; gap: 8px; margin: 0; padding-top: 15px; border-top: 1px solid #e8eef5; }
+.admin-employee-profile-card dl div { display: flex; justify-content: space-between; gap: 12px; }
+.admin-employee-profile-card dt { color: #7a8da3; font-size: 9px; }
+.admin-employee-profile-card dd { margin: 0; color: #263f59; font-size: 10px; font-weight: 800; text-align: right; }
+.admin-employee-month-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.admin-employee-month-stats article { display: grid; align-content: center; min-height: 145px; padding: 20px; border: 1px solid #dfe8f2; border-radius: 15px; background: #fff; box-shadow: 0 8px 25px rgba(39, 75, 118, .045); }
+.admin-employee-month-stats span { color: #74879d; font-size: 10px; font-weight: 800; }
+.admin-employee-month-stats strong { color: #17304f; font-size: 25px; }
+.admin-employee-month-stats small { color: #8a9aaa; font-size: 9px; }
+
+.admin-hr-profile-form { display: grid; gap: 18px; margin-bottom: 16px; }
+.admin-private-data-badge { padding: 6px 9px; border-radius: 99px; background: #e8f8ef; color: #157948; font-size: 9px; }
+.admin-hr-profile-form fieldset { margin: 0; padding: 17px; border: 1px solid #e1e9f2; border-radius: 13px; }
+.admin-hr-profile-form legend { padding: 0 7px; color: #416383; font-size: 10px; font-weight: 900; }
+.admin-hr-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+.admin-hr-wide { grid-column: 1 / -1; }
+.admin-hr-form-grid input:disabled { background: #f3f6f9 !important; color: #6b7e91; }
+.admin-hr-form-grid input[type="file"] { padding: 8px; }
+.admin-hr-form-grid label small { color: #8494a6; font-size: 8px; font-weight: 600; }
+
+.admin-hr-attendance-layout { display: grid; grid-template-columns: .8fr 1.2fr; gap: 16px; }
+.admin-attendance-form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.admin-attendance-form > button { justify-self: start; }
+.admin-attendance-history > div:last-child { display: grid; max-height: 530px; gap: 7px; overflow: auto; }
+.admin-attendance-history article { display: grid; grid-template-columns: 100px 80px 105px minmax(0, 1fr); align-items: center; gap: 9px; padding: 10px; border: 1px solid #e8eef4; border-radius: 10px; }
+.admin-attendance-history time { color: #526b84; font-size: 9px; font-weight: 800; }
+.admin-attendance-history article > strong { color: #203a56; font-size: 10px; }
+.admin-attendance-history article > small { overflow: hidden; color: #8393a5; font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
+
+.admin-attendance-self { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 16px; }
+.admin-attendance-self > article { display: grid; align-content: center; min-height: 125px; }
+.admin-attendance-self span { color: #74879d; font-size: 10px; font-weight: 800; }
+.admin-attendance-self strong { color: #17304f; font-size: 26px; }
+.admin-attendance-self small { color: #8a9aaa; font-size: 9px; }
+.admin-attendance-actions { display: flex !important; align-items: center; justify-content: center; gap: 8px; }
+.admin-attendance-actions button:disabled { opacity: .45; cursor: not-allowed; }
+.admin-attendance-filter label input { min-height: 40px; padding: 7px 10px; border: 1px solid #d5e0eb; border-radius: 9px; }
+.admin-attendance-kpis article i { background: #e7f2ff !important; color: #1473cc !important; }
+.admin-attendance-board .admin-table { min-width: 1050px; }
+.admin-self-history { max-width: 900px; }
+
+@media (max-width: 1100px) {
+  .admin-employee-identity { grid-template-columns: 230px 1fr; }
+  .admin-hr-attendance-layout { grid-template-columns: 1fr; }
+  .admin-attendance-self { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 760px) {
+  .admin-hr-heading,
+  .admin-hr-profile-heading { align-items: flex-start; }
+  .admin-employee-identity { grid-template-columns: 1fr; }
+  .admin-employee-month-stats { grid-template-columns: 1fr 1fr; }
+  .admin-hr-form-grid,
+  .admin-attendance-form { grid-template-columns: 1fr; }
+  .admin-hr-wide { grid-column: auto; }
+  .admin-attendance-history article { grid-template-columns: 1fr auto; }
+  .admin-attendance-history article > strong,
+  .admin-attendance-history article > small { grid-column: 1 / -1; }
+}
+
+@media (max-width: 520px) {
+  .admin-employee-month-stats,
+  .admin-attendance-self { grid-template-columns: 1fr; }
+  .admin-attendance-actions { min-height: 90px !important; }
+}
 /* Light-blue order flow, matched to the storefront bands. */
 .consult-form.consult-form-horizontal {
   border: 1px solid var(--blue-layout-border);

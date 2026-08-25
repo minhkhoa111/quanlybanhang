@@ -418,3 +418,31 @@ test("runs a local FAQ and product chatbot without external AI services", async 
   assert.match(styles, /@media \(max-width: 620px\)/);
   assert.doesNotMatch(`${component}\n${engine}\n${knowledge}`, /openai|gemini|claude|dangerouslySetInnerHTML|eval\s*\(/i);
 });
+
+test("provides protected employee profiles, payroll details and attendance", async () => {
+  const [directory, profile, attendance, store, photoRoute, navigation, migration] = await Promise.all([
+    readFile(new URL("app/admin/hr/page.tsx", root), "utf8"),
+    readFile(new URL("app/admin/hr/[id]/page.tsx", root), "utf8"),
+    readFile(new URL("app/admin/attendance/page.tsx", root), "utf8"),
+    readFile(new URL("db/hr.ts", root), "utf8"),
+    readFile(new URL("app/api/admin/hr-photo/[id]/route.ts", root), "utf8"),
+    readFile(new URL("app/admin/AdminNavigation.tsx", root), "utf8"),
+    readFile(new URL("drizzle/0006_employee_hr.sql", root), "utf8"),
+  ]);
+
+  assert.match(directory, /Hồ sơ nhân sự/);
+  assert.match(profile, /Hộ khẩu thường trú/);
+  assert.match(profile, /Tài khoản nhận lương/);
+  assert.match(profile, /Lịch sử chấm công/);
+  assert.match(attendance, /Chấm công vào/);
+  assert.match(attendance, /Chấm công ra/);
+  assert.match(store, /AES-GCM/);
+  assert.match(store, /citizen_id_encrypted/);
+  assert.match(store, /bank_account_number_encrypted/);
+  assert.match(photoRoute, /user\.role !== "owner"/);
+  assert.match(photoRoute, /private, no-store/);
+  assert.match(navigation, /\/admin\/hr/);
+  assert.match(navigation, /\/admin\/attendance/);
+  assert.match(migration, /employee_profiles/);
+  assert.match(migration, /employee_attendance/);
+});

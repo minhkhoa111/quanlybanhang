@@ -2,6 +2,7 @@ import { requireOwnerPage } from "@/app/admin-auth";
 import { getAdminUsers } from "@/db/admin-users";
 import { createStaffAction, toggleStaffAction } from "./actions";
 import { getBranches } from "@/db/branches";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -17,7 +18,8 @@ export default async function StaffPage({
   return (
     <>
       <div className="admin-topline">
-        <div><span>Đội ngũ cửa hàng</span><h1>Quản lý nhân viên</h1><p className="admin-subtitle">Phân quyền bán hàng, tư vấn và quản lý theo từng chi nhánh.</p></div>
+        <div><span>Đội ngũ cửa hàng</span><h1>Tài khoản nhân viên</h1><p className="admin-subtitle">Tạo tài khoản đăng nhập, phân quyền và phân chi nhánh cho nhân viên.</p></div>
+        <Link className="admin-button" href="/admin/hr">Hồ sơ nhân sự</Link>
       </div>
 
       {query.status === "created" && <p className="admin-alert success">Đã tạo tài khoản nhân viên.</p>}
@@ -48,7 +50,7 @@ export default async function StaffPage({
         <div className="admin-card-head"><div><span>{users.length} tài khoản</span><h2>Danh sách nhân viên</h2></div></div>
         <div className="admin-table-wrap">
           <table className="admin-table">
-            <thead><tr><th>Nhân viên</th><th>Tên đăng nhập</th><th>Vai trò</th><th>Chi nhánh</th><th>Ngày tạo</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+            <thead><tr><th>Nhân viên</th><th>Tên đăng nhập</th><th>Vai trò</th><th>Chi nhánh</th><th>Ngày tạo</th><th>Trạng thái</th><th>Hồ sơ</th><th>Thao tác</th></tr></thead>
             <tbody>{users.map((user) => (
               <tr key={user.id}>
                 <td><strong>{user.name}</strong></td><td>{user.username}</td>
@@ -56,6 +58,7 @@ export default async function StaffPage({
                 <td>{branches.find(branch=>branch.id===user.branchId)?.name||user.branch||"Chưa phân chi nhánh"}</td>
                 <td>{new Date(user.createdAt).toLocaleDateString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })}</td>
                 <td><span className={`admin-badge ${user.active ? "status-active" : "status-inactive"}`}>{user.active ? "Đang hoạt động" : "Đã khóa"}</span></td>
+                <td><Link className="admin-table-link" href={`/admin/hr/${user.id}`}>Cập nhật</Link></td>
                 <td><form action={toggleStaffAction}><input type="hidden" name="id" value={user.id} /><input type="hidden" name="active" value={String(!user.active)} /><button className={`admin-button ${user.active ? "admin-button-danger" : "admin-button-muted"}`} type="submit">{user.active ? "Khóa" : "Mở khóa"}</button></form></td>
               </tr>
             ))}</tbody>
