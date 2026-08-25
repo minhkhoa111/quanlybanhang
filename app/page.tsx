@@ -3,6 +3,7 @@ import PromoGrid from "./components/PromoGrid";
 import VisualCategoryMenu from "./components/VisualCategoryMenu";
 import HomeProductShowcases from "./components/HomeProductShowcases";
 import HomeHero from "./components/hero";
+import AppleTechNews from "./components/AppleTechNews";
 import StudentOfferBanner from "./components/StudentOfferBanner";
 import { getPublicProducts } from "@/db/products";
 
@@ -23,6 +24,8 @@ export default async function Home() {
       <PromoGrid />
 
       <StudentOfferBanner />
+
+      <AppleTechNews />
 
       <HomeProductShowcases products={showcaseProducts} />
 

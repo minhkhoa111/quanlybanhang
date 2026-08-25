@@ -31,6 +31,40 @@ export const products = sqliteTable("products", {
   updatedAt: integer("updated_at").notNull(),
 });
 
+export const productViews = sqliteTable("product_views", {
+  id: text("id").primaryKey(),
+  productSlug: text("product_slug").notNull(),
+  visitorId: text("visitor_id").notNull(),
+  viewedAt: integer("viewed_at").notNull(),
+});
+
+export const branches = sqliteTable("branches", {
+  id:text("id").primaryKey(),code:text("code").notNull().unique(),name:text("name").notNull(),address:text("address").notNull(),
+  phone:text("phone").notNull().default(""),hours:text("hours").notNull().default("08:00–22:00"),active:integer("active").notNull().default(1),createdAt:integer("created_at").notNull(),
+});
+
+export const branchCameras = sqliteTable("branch_cameras", {
+  id: text("id").primaryKey(), branchId: text("branch_id").notNull(), name: text("name").notNull(),
+  location: text("location").notNull().default(""), streamUrl: text("stream_url").notNull(),
+  streamType: text("stream_type").notNull().default("embed"), active: integer("active").notNull().default(1),
+  createdAt: integer("created_at").notNull(),
+});
+
+export const cameraBranchPermissions = sqliteTable("camera_branch_permissions", {
+  id: text("id").primaryKey(), adminUserId: text("admin_user_id").notNull(),
+  branchId: text("branch_id").notNull(), createdAt: integer("created_at").notNull(),
+});
+
+export const liveChatConversations = sqliteTable("live_chat_conversations", {
+  id: text("id").primaryKey(), customerName: text("customer_name").notNull(), phone: text("phone").notNull(),
+  token: text("token").notNull().unique(), status: text("status").notNull().default("waiting"),
+  assignedAdmin: text("assigned_admin").notNull().default(""), createdAt: integer("created_at").notNull(), updatedAt: integer("updated_at").notNull(),
+});
+export const liveChatMessages = sqliteTable("live_chat_messages", {
+  id: text("id").primaryKey(), conversationId: text("conversation_id").notNull(), sender: text("sender").notNull(),
+  senderName: text("sender_name").notNull().default(""), text: text("text").notNull(), createdAt: integer("created_at").notNull(),
+});
+
 export const orders = sqliteTable("orders", {
   id: text("id").primaryKey(),
   orderCode: text("order_code").notNull().default(""),
@@ -68,6 +102,10 @@ export const orders = sqliteTable("orders", {
   customerId: text("customer_id").notNull().default(""),
   voucherCode: text("voucher_code").notNull().default(""),
   itemsJson: text("items_json").notNull().default("[]"),
+  branchId: text("branch_id").notNull().default(""),
+  branchName: text("branch_name").notNull().default(""),
+  assignedAdminId: text("assigned_admin_id").notNull().default(""),
+  assignedAdminName: text("assigned_admin_name").notNull().default(""),
   createdAt: integer("created_at").notNull(),
 });
 

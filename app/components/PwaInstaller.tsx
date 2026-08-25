@@ -11,7 +11,17 @@ export default function PwaInstaller() {
   const [prompt, setPrompt] = useState<InstallPromptEvent | null>(null);
 
   useEffect(() => {
-    if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => undefined);
+    if ("serviceWorker" in navigator) {
+      if (process.env.NODE_ENV === "production") {
+        navigator.serviceWorker.register("/sw.js").catch(() => undefined);
+      } else {
+        // A previously installed production worker can cache development chunks
+        // and make the dev server repeatedly reload the page.
+        void navigator.serviceWorker.getRegistrations().then((registrations) =>
+          Promise.all(registrations.map((registration) => registration.unregister())),
+        );
+      }
+    }
     const handlePrompt = (event: Event) => {
       event.preventDefault();
       setPrompt(event as InstallPromptEvent);

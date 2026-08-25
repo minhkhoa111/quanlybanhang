@@ -7,6 +7,7 @@ import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { createBotReply } from "@/app/chatbot/engine";
 import type { ChatContext, ChatMessage, ChatProduct } from "@/app/chatbot/types";
 import { CHATBOT_OPENING, CHATBOT_QUICK_REPLIES } from "@/app/data/chatbotKnowledge";
+import LiveSupportChat from "@/app/components/LiveSupportChat";
 
 const STORAGE_KEY = "huy-apple-local-chat-v1";
 const INITIAL_MESSAGE: ChatMessage = {
@@ -28,7 +29,16 @@ export default function LocalChatbot({ products }: { products: ChatProduct[] }) 
   const [context, setContext] = useState<ChatContext>({});
   const [typing, setTyping] = useState(false);
   const [ready, setReady] = useState(false);
+  const [staffOnline, setStaffOnline] = useState(false);
+  const [liveActive, setLiveActive] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const updateStatus = () => setStaffOnline(isVietnamSupportHours());
+    updateStatus();
+    const timer = window.setInterval(updateStatus, 60_000);
+    return () => window.clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     const restore = window.setTimeout(() => {
@@ -152,13 +162,16 @@ export default function LocalChatbot({ products }: { products: ChatProduct[] }) 
           <button className="chatbot-reset" type="button" onClick={clearConversation}>Xóa cuộc trò chuyện</button>
         </section>
       ) : (
-        <button className="chatbot-launcher" type="button" onClick={() => setOpen(true)} aria-label="Mở trợ lý tư vấn">
-          <span className="chatbot-launcher-icon" aria-hidden="true">
-            <Image src="/chatbot/consultant-avatar.png" alt="" width={54} height={54} unoptimized />
-          </span>
-          <span><strong>Tư vấn cùng Huy</strong><small>Đang trực tuyến</small></span>
-          <i aria-hidden="true" />
-        </button>
+        <div className="chatbot-launchers">
+          <LiveSupportChat online={staffOnline} onActiveChange={setLiveActive} />
+          {!liveActive && <button className="chatbot-launcher" type="button" onClick={() => setOpen(true)} aria-label="Mở trợ lý tư vấn tự động">
+            <span className="chatbot-launcher-icon" aria-hidden="true">
+              <Image src="/chatbot/consultant-avatar.png" alt="" width={54} height={54} unoptimized />
+            </span>
+            <span><strong>Tư vấn cùng Huy</strong><small>Trợ lý tự động · Phản hồi 24/7</small></span>
+            <i aria-hidden="true" />
+          </button>}
+        </div>
       )}
     </aside>
   );
@@ -191,4 +204,17 @@ function validMessage(value: unknown): value is ChatMessage {
 
 function newId() {
   return typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+}
+
+function isVietnamSupportHours() {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Asia/Ho_Chi_Minh",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).formatToParts(new Date());
+  const hour = Number(parts.find((part) => part.type === "hour")?.value || 0);
+  const minute = Number(parts.find((part) => part.type === "minute")?.value || 0);
+  const totalMinutes = hour * 60 + minute;
+  return totalMinutes >= 8 * 60 && totalMinutes < 22 * 60;
 }

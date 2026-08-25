@@ -63,6 +63,10 @@ export type ManagedOrder = {
   warrantyStartDate: string;
   warrantySerials: string;
   warrantyPolicy: string;
+  branchId: string;
+  branchName: string;
+  assignedAdminId: string;
+  assignedAdminName: string;
   createdAt: number;
 };
 
@@ -85,7 +89,8 @@ type AdminInvoiceField =
   | "invoiceTaxRate" | "invoiceTaxIncluded" | "invoiceNote" | "warrantyMonths"
   | "warrantyStartDate" | "warrantySerials" | "warrantyPolicy";
 
-export type OrderInput = Omit<ManagedOrder, "id" | "status" | "paymentStatus" | "shippingFee" | "createdAt" | AdminInvoiceField>;
+type OperationalField = "branchId" | "branchName" | "assignedAdminId" | "assignedAdminName";
+export type OrderInput = Omit<ManagedOrder, "id" | "status" | "paymentStatus" | "shippingFee" | "createdAt" | AdminInvoiceField | OperationalField>;
 
 export type OrderInvoiceInput = Pick<ManagedOrder, AdminInvoiceField>;
 
@@ -148,6 +153,10 @@ type OrderRow = {
   warranty_start_date?: string;
   warranty_serials?: string;
   warranty_policy?: string;
+  branch_id?: string;
+  branch_name?: string;
+  assigned_admin_id?: string;
+  assigned_admin_name?: string;
   created_at: number;
 };
 
@@ -231,6 +240,10 @@ async function initializeOrderStore() {
       warranty_start_date TEXT NOT NULL DEFAULT '',
       warranty_serials TEXT NOT NULL DEFAULT '',
       warranty_policy TEXT NOT NULL DEFAULT '',
+      branch_id TEXT NOT NULL DEFAULT '',
+      branch_name TEXT NOT NULL DEFAULT '',
+      assigned_admin_id TEXT NOT NULL DEFAULT '',
+      assigned_admin_name TEXT NOT NULL DEFAULT '',
       created_at INTEGER NOT NULL
     )`),
     database.prepare(
@@ -249,6 +262,10 @@ async function initializeOrderStore() {
     ),
   ]);
   await ensureOrderColumns(database);
+  await database.batch([
+    database.prepare("CREATE INDEX IF NOT EXISTS orders_branch_created_idx ON orders(branch_id, created_at)"),
+    database.prepare("CREATE INDEX IF NOT EXISTS orders_assigned_admin_idx ON orders(assigned_admin_id, created_at)"),
+  ]);
 }
 
 export async function createOrder(input: OrderInput) {
@@ -332,6 +349,14 @@ export async function getManagedOrders(): Promise<ManagedOrder[]> {
   return result.results.map(mapRow);
 }
 
+export async function getReportingOrders(): Promise<ManagedOrder[]> {
+  await ensureOrderStore();
+  const result = await db()
+    .prepare("SELECT * FROM orders ORDER BY created_at DESC LIMIT 2000")
+    .all<OrderRow>();
+  return result.results.map(mapRow);
+}
+
 export async function getManagedOrderById(id: string): Promise<ManagedOrder | undefined> {
   await ensureOrderStore();
   const row = await db()
@@ -355,6 +380,12 @@ export async function updateOrderPaymentStatus(id: string, paymentStatus: string
     .prepare("UPDATE orders SET payment_status = ? WHERE id = ?")
     .bind(paymentStatus, id)
     .run();
+}
+
+export async function updateOrderAssignment(id: string, input: { branchId: string; branchName: string; adminUserId: string; adminUserName: string }) {
+  await ensureOrderStore();
+  await db().prepare(`UPDATE orders SET branch_id = ?, branch_name = ?, assigned_admin_id = ?, assigned_admin_name = ? WHERE id = ?`)
+    .bind(input.branchId, input.branchName, input.adminUserId, input.adminUserName, id).run();
 }
 
 export async function updateOrderInvoice(id: string, input: OrderInvoiceInput) {
@@ -487,6 +518,10 @@ async function ensureOrderColumns(database: D1Database) {
     ["warranty_start_date", "TEXT NOT NULL DEFAULT ''"],
     ["warranty_serials", "TEXT NOT NULL DEFAULT ''"],
     ["warranty_policy", "TEXT NOT NULL DEFAULT ''"],
+    ["branch_id", "TEXT NOT NULL DEFAULT ''"],
+    ["branch_name", "TEXT NOT NULL DEFAULT ''"],
+    ["assigned_admin_id", "TEXT NOT NULL DEFAULT ''"],
+    ["assigned_admin_name", "TEXT NOT NULL DEFAULT ''"],
   ];
 
   for (const [name, definition] of columns) {
@@ -558,6 +593,10 @@ function mapRow(row: OrderRow): ManagedOrder {
     warrantyStartDate: row.warranty_start_date ?? "",
     warrantySerials: row.warranty_serials ?? "",
     warrantyPolicy: row.warranty_policy ?? "",
+    branchId: row.branch_id ?? "",
+    branchName: row.branch_name ?? "",
+    assignedAdminId: row.assigned_admin_id ?? "",
+    assignedAdminName: row.assigned_admin_name ?? "",
     createdAt: Number(row.created_at),
   };
 }

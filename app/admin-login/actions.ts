@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { createAdminSession } from "@/app/admin-auth";
+import { clearAdminSession, createAdminSession } from "@/app/admin-auth";
 
 export async function loginAdminAction(formData: FormData) {
   const username = fieldValue(formData, "username");
@@ -13,6 +13,11 @@ export async function loginAdminAction(formData: FormData) {
   }
 
   redirect(`/admin-login?error=invalid&returnTo=${encodeURIComponent(returnTo)}`);
+}
+
+export async function logoutAdminAction() {
+  await clearAdminSession();
+  redirect("/admin-login?status=signed-out");
 }
 
 function fieldValue(formData: FormData, key: string) {

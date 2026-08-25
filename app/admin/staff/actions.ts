@@ -4,16 +4,21 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireOwnerAction } from "@/app/admin-auth";
 import { createAdminUser, setAdminUserActive, type AdminRole } from "@/db/admin-users";
+import { getBranches } from "@/db/branches";
 
 export async function createStaffAction(formData: FormData) {
   await requireOwnerAction();
   try {
+    const branchId=value(formData,"branchId");
+    const branch=(await getBranches(false)).find(item=>item.id===branchId);
+    if(!branch) throw new Error("Vui lòng chọn một chi nhánh đang hoạt động.");
     await createAdminUser({
       username: value(formData, "username"),
       name: value(formData, "name"),
       password: value(formData, "password"),
       role: roleValue(formData),
-      branch: value(formData, "branch"),
+      branch: branch.name,
+      branchId,
     });
   } catch (error) {
     redirect(`/admin/staff?error=${encodeURIComponent(error instanceof Error ? error.message : "Không thể tạo tài khoản.")}`);
@@ -37,5 +42,6 @@ function value(formData: FormData, key: string) {
 }
 
 function roleValue(formData: FormData): AdminRole {
-  return value(formData, "role") === "manager" ? "manager" : "staff";
+  const role=value(formData,"role");
+  return role === "manager" || role === "consultant" ? role : "sales";
 }

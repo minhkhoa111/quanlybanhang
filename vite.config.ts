@@ -53,9 +53,22 @@ export default defineConfig(async () => {
   const { cloudflare } = await import("@cloudflare/vite-plugin");
 
   return {
-    server: isCodexSeatbeltSandbox
-      ? { watch: { useFsEvents: false, usePolling: true } }
-      : undefined,
+    server: {
+      watch: {
+        // Miniflare writes SQLite WAL/SHM files on every D1 read/write. They are
+        // runtime state, not source files, and must never trigger Vite HMR.
+        ignored: [
+          "**/.wrangler/**",
+          "**/.vinext/**",
+          "**/dist/**",
+          "**/*.sqlite-wal",
+          "**/*.sqlite-shm",
+        ],
+        ...(isCodexSeatbeltSandbox
+          ? { useFsEvents: false, usePolling: true }
+          : {}),
+      },
+    },
     plugins: [
       vinext(),
       sites(),

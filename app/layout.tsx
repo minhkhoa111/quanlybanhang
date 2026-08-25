@@ -67,7 +67,7 @@ function Footer() {
     <div className="shell footer-grid">
         <div className="footer-brand"><Link className="logo logo-footer" href="/"><Image src="/huy-apple-logo.png" alt="Huy Apple" width={180} height={180} className="site-logo site-logo-footer" unoptimized /></Link><p>Điện thoại phù hợp là chiếc máy giải quyết tốt nhu cầu của bạn — không nhất thiết là chiếc đắt nhất.</p></div>
       <div><h3>Sản phẩm</h3><Link href="/iphone">iPhone</Link><Link href="/ipad">iPad</Link><Link href="/macbook">MacBook</Link><Link href="/mac-mini-studio">Mac mini &amp; Mac Studio</Link><Link href="/imac">iMac</Link><Link href="/samsung">Samsung Galaxy</Link><Link href="/android">Android khác</Link><Link href="/laptop">Laptop</Link><Link href="/laptop-cu">Laptop cũ</Link><Link href="/phu-kien">Phụ kiện</Link></div>
-      <div><h3>Hỗ trợ</h3><Link href="/tu-van">Đăng ký tư vấn</Link><a href="tel:02879797999">Gọi cửa hàng</a><a href="https://zalo.me/02879797999" target="_blank" rel="noreferrer">Nhắn Zalo</a></div>
+      <div><h3>Hỗ trợ</h3><Link href="/tu-van">Đăng ký tư vấn</Link><a href="tel:02879797999">Gọi cửa hàng</a><a href="https://zalo.me/02879797999" target="_blank" rel="noreferrer">Nhắn Zalo</a><Link href="/admin-login">Cổng quản trị cửa hàng</Link></div>
       <div className="footer-contact">
         <h3>Ghé Huy Apple</h3>
         <p>122/4 Cô Giang<br />P.Cầu Kiệu, TP.HCM</p>

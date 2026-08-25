@@ -1,13 +1,14 @@
 import { env } from "cloudflare:workers";
 
 type Bindings = { DB: D1Database };
-export type AdminRole = "owner" | "manager" | "staff";
+export type AdminRole = "owner" | "manager" | "sales" | "consultant";
 export type AdminUser = {
   id: string;
   username: string;
   name: string;
   role: AdminRole;
   branch: string;
+  branchId: string;
   active: boolean;
   createdAt: number;
 };
@@ -20,6 +21,7 @@ type AdminUserRow = {
   password_salt: string;
   role: string;
   branch: string;
+  branch_id: string;
   active: number;
   created_at: number;
 };
@@ -60,13 +62,15 @@ async function initialize() {
     )`),
     database.prepare("CREATE INDEX IF NOT EXISTS admin_user_sessions_token_idx ON admin_user_sessions(token_hash)"),
   ]);
+  await ensureColumn(database,"admin_users","branch_id","TEXT NOT NULL DEFAULT ''");
 }
 
-export async function createAdminUser(input: { username: string; name: string; password: string; role: AdminRole; branch: string }) {
+export async function createAdminUser(input: { username: string; name: string; password: string; role: AdminRole; branch: string; branchId?: string }) {
   await ensureAdminUserStore();
   const username = normalizeUsername(input.username);
   const name = input.name.trim().replace(/\s+/g, " ").slice(0, 100);
   const branch = input.branch.trim().replace(/\s+/g, " ").slice(0, 120);
+  const branchId = (input.branchId ?? "").trim().slice(0, 50);
   if (!/^[a-z0-9._-]{4,32}$/.test(username)) throw new Error("Tên đăng nhập gồm 4–32 chữ thường, số, dấu chấm, gạch dưới hoặc gạch ngang.");
   if (name.length < 2) throw new Error("Vui lòng nhập tên nhân viên.");
   if (input.password.length < 8) throw new Error("Mật khẩu phải có ít nhất 8 ký tự.");
@@ -74,10 +78,10 @@ export async function createAdminUser(input: { username: string; name: string; p
   if (existing) throw new Error("Tên đăng nhập nhân viên đã tồn tại.");
   const salt = randomToken(16);
   await db().prepare(`INSERT INTO admin_users
-    (id, username, name, password_hash, password_salt, role, branch, active, created_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?)`).bind(
+    (id, username, name, password_hash, password_salt, role, branch, branch_id, active, created_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, ?)`).bind(
       crypto.randomUUID(), username, name, await passwordHash(input.password, salt), salt,
-      normalizeRole(input.role), branch, Date.now(),
+      normalizeRole(input.role), branch, branchId, Date.now(),
     ).run();
 }
 
@@ -129,10 +133,11 @@ export async function setAdminUserActive(id: string, active: boolean) {
 }
 
 function mapAdminUser(row: AdminUserRow): AdminUser {
-  return { id: row.id, username: row.username, name: row.name, role: normalizeRole(row.role), branch: row.branch, active: Number(row.active) === 1, createdAt: Number(row.created_at) };
+  return { id: row.id, username: row.username, name: row.name, role: normalizeRole(row.role), branch: row.branch, branchId: row.branch_id || "", active: Number(row.active) === 1, createdAt: Number(row.created_at) };
 }
 function normalizeUsername(value: string) { return value.trim().toLowerCase(); }
-function normalizeRole(value: string): AdminRole { return value === "owner" || value === "manager" ? value : "staff"; }
+function normalizeRole(value: string): AdminRole { return value === "owner" || value === "manager" || value === "consultant" ? value : "sales"; }
+async function ensureColumn(database:D1Database,table:string,column:string,definition:string){const info=await database.prepare(`PRAGMA table_info(${table})`).all<{name:string}>();if(!info.results.some(item=>item.name===column))await database.prepare(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`).run()}
 function randomToken(length: number) { return [...crypto.getRandomValues(new Uint8Array(length))].map((byte) => byte.toString(16).padStart(2, "0")).join(""); }
 async function passwordHash(password: string, saltHex: string) {
   const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveBits"]);

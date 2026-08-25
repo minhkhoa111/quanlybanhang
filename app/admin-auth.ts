@@ -97,7 +97,7 @@ async function adminUserFromCookie(): Promise<AdminUser | undefined> {
   const session = cookieStore.get(ADMIN_COOKIE)?.value;
   if (!session) return undefined;
   if (session === await ownerSessionToken()) {
-    return { id: "owner", username: "admin", name: "Chủ cửa hàng", role: "owner", branch: "Toàn hệ thống", active: true, createdAt: 0 };
+    return { id: "owner", username: "admin", name: "Chủ cửa hàng", role: "owner", branch: "Toàn hệ thống", branchId: "", active: true, createdAt: 0 };
   }
   try { return await adminUserFromSession(session); } catch { return undefined; }
 }

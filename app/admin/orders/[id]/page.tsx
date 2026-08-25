@@ -4,15 +4,29 @@ import { notFound } from "next/navigation";
 import { getManagedOrderById } from "@/db/orders";
 import { getManagedProducts } from "@/db/products";
 import { changeOrderPaymentStatusAction, changeOrderStatusAction, saveOrderInvoiceAction } from "../../actions";
+import { requireAdminPage } from "@/app/admin-auth";
+import { getBranches } from "@/db/branches";
+import { getAdminUsers } from "@/db/admin-users";
 import { formatDateTime, formatMoney, orderStatuses, orderTotalNumber, paymentStatuses, statusLabel } from "../../utils";
 import PrintButtons from "../../PrintButtons";
+import OrderAssignmentForm from "../OrderAssignmentForm";
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminOrderDetailPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ status?: string }> }) {
-  const [{ id }, query] = await Promise.all([params, searchParams]);
-  const [order, products] = await Promise.all([getManagedOrderById(id), getManagedProducts()]);
+export default async function AdminOrderDetailPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ status?: string; error?: string }> }) {
+  const [{ id }, query, currentUser] = await Promise.all([params, searchParams, requireAdminPage("/admin/orders")]);
+  const canAssign = currentUser.role === "owner" || currentUser.role === "manager";
+  const [order, products, allBranches, allStaff] = await Promise.all([
+    getManagedOrderById(id),
+    getManagedProducts(),
+    canAssign ? getBranches(false).catch(() => []) : Promise.resolve([]),
+    canAssign ? getAdminUsers().catch(() => []) : Promise.resolve([]),
+  ]);
   if (!order) notFound();
+  const canViewOrder = currentUser.role === "owner" || (currentUser.role === "manager" && order.branchId === currentUser.branchId) || (currentUser.role === "sales" && order.assignedAdminId === currentUser.id);
+  if (!canViewOrder) notFound();
+  const branches = currentUser.role === "manager" ? allBranches.filter((item) => item.id === currentUser.branchId) : allBranches;
+  const staff = allStaff.filter((item) => item.active && item.role !== "owner" && (currentUser.role !== "manager" || item.branchId === currentUser.branchId));
   const product = products.find((item) => item.slug === order.productSlug || item.name === order.productName);
   const unitPrice = product ? orderTotalNumber({ ...order, quantity: 1 }, products) : 0;
   const orderItems = order.items.length ? order.items : [{
@@ -41,7 +55,8 @@ export default async function AdminOrderDetailPage({ params, searchParams }: { p
           <Link className="admin-button" href="/admin/orders">Quay lại</Link>
         </div>
       </div>
-      {query.status && <p className="admin-alert success">{query.status === "invoice-saved" ? "Đã lưu thông tin hóa đơn và bảo hành." : "Đã cập nhật đơn hàng."}</p>}
+      {query.status && <p className="admin-alert success">{query.status === "invoice-saved" ? "Đã lưu thông tin hóa đơn và bảo hành." : query.status === "assigned" ? "Đã cập nhật chi nhánh và nhân viên phụ trách." : "Đã cập nhật đơn hàng."}</p>}
+      {query.error && <p className="admin-alert error">{query.error}</p>}
       <section className="admin-order-detail">
         <div className="admin-card">
           <div className="admin-card-head"><div><span>Thông tin đơn</span><h2>{formatDateTime(order.createdAt)}</h2></div></div>
@@ -69,6 +84,10 @@ export default async function AdminOrderDetailPage({ params, searchParams }: { p
             <select name="paymentStatus" defaultValue={order.paymentStatus}>{paymentStatuses.map((status) => <option key={status} value={status}>{statusLabel(status)}</option>)}</select>
             <button className="admin-button" type="submit">Update payment</button>
           </form>
+          <div className="admin-order-assignment">
+            <span>Phân công vận hành</span>
+            {canAssign ? <OrderAssignmentForm orderId={order.id} branches={branches} staff={staff} defaultBranchId={order.branchId || currentUser.branchId} defaultAdminId={order.assignedAdminId} lockBranch={currentUser.role === "manager"} /> : <div className="admin-assignment-readonly"><strong>{order.branchName || "Chưa phân chi nhánh"}</strong><small>{order.assignedAdminName || "Chưa có nhân viên phụ trách"}</small></div>}
+          </div>
         </div>
         {order.financeCompany && (
           <div className="admin-card admin-span-2 admin-sensitive">

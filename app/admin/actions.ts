@@ -10,7 +10,9 @@ import {
   saveManagedProduct,
   setProductActive,
 } from "@/db/products";
-import { updateOrderInvoice, updateOrderPaymentStatus, updateOrderStatus } from "@/db/orders";
+import { getManagedOrderById, updateOrderAssignment, updateOrderInvoice, updateOrderPaymentStatus, updateOrderStatus } from "@/db/orders";
+import { getBranches } from "@/db/branches";
+import { getAdminUsers } from "@/db/admin-users";
 import type { Product, ProductVariant } from "@/app/products";
 
 type Bindings = {
@@ -128,8 +130,8 @@ export async function bulkDeleteProductsAction(formData: FormData) {
 }
 
 export async function changeOrderStatusAction(formData: FormData) {
-  await requireAdminAction();
   const id = value(formData, "id");
+  await requireOrderOperation(id);
   const status = value(formData, "status");
   if (id && status) await updateOrderStatus(id, status);
   revalidatePath("/admin");
@@ -139,18 +141,56 @@ export async function changeOrderStatusAction(formData: FormData) {
 }
 
 export async function changeOrderPaymentStatusAction(formData: FormData) {
-  await requireAdminAction();
   const id = value(formData, "id");
+  await requireOrderOperation(id);
   const paymentStatus = value(formData, "paymentStatus");
   if (id && paymentStatus) await updateOrderPaymentStatus(id, paymentStatus);
   revalidatePath(`/admin/orders/${id}`);
   redirect(`/admin/orders/${id}?status=updated`);
 }
 
-export async function saveOrderInvoiceAction(formData: FormData) {
-  await requireAdminAction();
+export async function assignOrderAction(formData: FormData) {
+  const currentUser = await requireAdminAction();
   const id = value(formData, "id");
   if (!id) redirect("/admin/orders");
+  if (currentUser.role !== "owner" && currentUser.role !== "manager") {
+    throw new Error("Bạn không có quyền phân công đơn hàng.");
+  }
+  const existingOrder = await getManagedOrderById(id);
+  if (!existingOrder) redirect("/admin/orders");
+  if (currentUser.role === "manager" && existingOrder.branchId && existingOrder.branchId !== currentUser.branchId) {
+    throw new Error("Bạn không có quyền điều chuyển đơn của chi nhánh khác.");
+  }
+
+  const branches = await getBranches(false);
+  const requestedBranchId = value(formData, "branchId");
+  const branchId = currentUser.role === "manager" ? currentUser.branchId : requestedBranchId;
+  const branch = branches.find((item) => item.id === branchId);
+  if (!branch) redirect(`/admin/orders/${id}?error=${encodeURIComponent("Vui lòng chọn chi nhánh đang hoạt động.")}`);
+
+  const adminUserId = value(formData, "adminUserId");
+  const staff = adminUserId ? (await getAdminUsers()).find((item) => item.id === adminUserId && item.active) : undefined;
+  if (adminUserId && (!staff || staff.branchId !== branch.id)) {
+    redirect(`/admin/orders/${id}?error=${encodeURIComponent("Nhân viên phải đang hoạt động và thuộc chi nhánh đã chọn.")}`);
+  }
+
+  await updateOrderAssignment(id, {
+    branchId: branch.id,
+    branchName: branch.name,
+    adminUserId: staff?.id ?? "",
+    adminUserName: staff?.name ?? "",
+  });
+  revalidatePath("/admin");
+  revalidatePath("/admin/reports");
+  revalidatePath("/admin/orders");
+  revalidatePath(`/admin/orders/${id}`);
+  redirect(`/admin/orders/${id}?status=assigned`);
+}
+
+export async function saveOrderInvoiceAction(formData: FormData) {
+  const id = value(formData, "id");
+  if (!id) redirect("/admin/orders");
+  await requireOrderOperation(id);
 
   const allowedStatuses = ["not_created", "draft", "ready", "issued", "cancelled"];
   const invoiceStatus = allowedStatuses.includes(value(formData, "invoiceStatus"))
@@ -187,6 +227,18 @@ export async function saveOrderInvoiceAction(formData: FormData) {
   revalidatePath("/admin/orders");
   revalidatePath(`/admin/orders/${id}`);
   redirect(`/admin/orders/${id}?status=invoice-saved`);
+}
+
+async function requireOrderOperation(id: string) {
+  const user = await requireAdminAction();
+  if (!id) throw new Error("Đơn hàng không hợp lệ.");
+  const order = await getManagedOrderById(id);
+  if (!order) throw new Error("Không tìm thấy đơn hàng.");
+  const allowed = user.role === "owner"
+    || (user.role === "manager" && order.branchId === user.branchId)
+    || (user.role === "sales" && order.assignedAdminId === user.id);
+  if (!allowed) throw new Error("Bạn không có quyền thao tác đơn hàng này.");
+  return { user, order };
 }
 
 async function uploadImages(items: FormDataEntryValue[]) {

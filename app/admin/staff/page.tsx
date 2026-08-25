@@ -1,6 +1,7 @@
 import { requireOwnerPage } from "@/app/admin-auth";
 import { getAdminUsers } from "@/db/admin-users";
 import { createStaffAction, toggleStaffAction } from "./actions";
+import { getBranches } from "@/db/branches";
 
 export const dynamic = "force-dynamic";
 
@@ -11,17 +12,25 @@ export default async function StaffPage({
 }) {
   await requireOwnerPage("/admin/staff");
   const query = await searchParams;
-  const users = await getAdminUsers().catch(() => []);
+  const [users,branches] = await Promise.all([getAdminUsers().catch(() => []),getBranches(false).catch(()=>[])]);
 
   return (
     <>
       <div className="admin-topline">
-        <div><span>Phân quyền chi nhánh</span><h1>Nhân viên quản lý</h1></div>
+        <div><span>Đội ngũ cửa hàng</span><h1>Quản lý nhân viên</h1><p className="admin-subtitle">Phân quyền bán hàng, tư vấn và quản lý theo từng chi nhánh.</p></div>
       </div>
 
       {query.status === "created" && <p className="admin-alert success">Đã tạo tài khoản nhân viên.</p>}
       {query.status === "updated" && <p className="admin-alert success">Đã cập nhật trạng thái tài khoản.</p>}
       {query.error && <p className="admin-alert error">{query.error}</p>}
+      {!branches.length && <p className="admin-alert error">Bạn cần <a href="/admin/branches"><strong>tạo chi nhánh</strong></a> trước khi thêm nhân viên.</p>}
+
+      <section className="admin-branch-summary admin-staff-summary">
+        <article><span>Đang hoạt động</span><strong>{users.filter((user) => user.active).length}</strong></article>
+        <article><span>Quản lý chi nhánh</span><strong>{users.filter((user) => user.role === "manager" && user.active).length}</strong></article>
+        <article><span>Nhân viên bán hàng</span><strong>{users.filter((user) => user.role === "sales" && user.active).length}</strong></article>
+        <article><span>Nhân viên tư vấn</span><strong>{users.filter((user) => user.role === "consultant" && user.active).length}</strong></article>
+      </section>
 
       <section className="admin-card admin-staff-create">
         <div className="admin-card-head"><div><span>Tài khoản mới</span><h2>Cấp quyền cho nhân viên</h2></div></div>
@@ -29,9 +38,9 @@ export default async function StaffPage({
           <label className="admin-field"><span>Họ và tên</span><input name="name" required placeholder="Nguyễn Văn An" /></label>
           <label className="admin-field"><span>Tên đăng nhập</span><input name="username" required minLength={4} placeholder="nhanvien.quan1" autoComplete="off" /></label>
           <label className="admin-field"><span>Mật khẩu ban đầu</span><input name="password" type="password" required minLength={8} autoComplete="new-password" /></label>
-          <label className="admin-field"><span>Vai trò</span><select name="role" defaultValue="staff"><option value="staff">Nhân viên</option><option value="manager">Quản lý chi nhánh</option></select></label>
-          <label className="admin-field"><span>Chi nhánh</span><input name="branch" required placeholder="122/4 Cô Giang, Quận 1" /></label>
-          <button className="admin-button admin-button-primary" type="submit">Tạo tài khoản</button>
+          <label className="admin-field"><span>Vai trò</span><select name="role" defaultValue="sales"><option value="sales">Nhân viên bán hàng</option><option value="consultant">Nhân viên tư vấn</option><option value="manager">Quản lý chi nhánh</option></select></label>
+          <label className="admin-field"><span>Chi nhánh</span><select name="branchId" required defaultValue=""><option value="" disabled>Chọn chi nhánh</option>{branches.map(branch=><option key={branch.id} value={branch.id}>{branch.name}</option>)}</select></label>
+          <button className="admin-button admin-button-primary" type="submit" disabled={!branches.length}>Tạo tài khoản</button>
         </form>
       </section>
 
@@ -43,8 +52,8 @@ export default async function StaffPage({
             <tbody>{users.map((user) => (
               <tr key={user.id}>
                 <td><strong>{user.name}</strong></td><td>{user.username}</td>
-                <td>{user.role === "manager" ? "Quản lý" : "Nhân viên"}</td>
-                <td>{user.branch || "Chưa phân chi nhánh"}</td>
+                <td>{roleLabel(user.role)}</td>
+                <td>{branches.find(branch=>branch.id===user.branchId)?.name||user.branch||"Chưa phân chi nhánh"}</td>
                 <td>{new Date(user.createdAt).toLocaleDateString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })}</td>
                 <td><span className={`admin-badge ${user.active ? "status-active" : "status-inactive"}`}>{user.active ? "Đang hoạt động" : "Đã khóa"}</span></td>
                 <td><form action={toggleStaffAction}><input type="hidden" name="id" value={user.id} /><input type="hidden" name="active" value={String(!user.active)} /><button className={`admin-button ${user.active ? "admin-button-danger" : "admin-button-muted"}`} type="submit">{user.active ? "Khóa" : "Mở khóa"}</button></form></td>
@@ -57,3 +66,5 @@ export default async function StaffPage({
     </>
   );
 }
+
+function roleLabel(role:string){if(role==="manager")return "Quản lý chi nhánh";if(role==="consultant")return "Nhân viên tư vấn";if(role==="owner")return "Chủ cửa hàng";return "Nhân viên bán hàng"}
