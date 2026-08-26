@@ -67,15 +67,18 @@ export function canManageEmployee(
 export async function createAdminSession(username: string, password: string) {
   const normalizedUsername = username.trim().toLowerCase();
   let token = "";
+  let authenticatedUser: AdminUser | undefined;
   if ((!normalizedUsername || normalizedUsername === "admin" || normalizedUsername === "owner") && password === getAdminPassword()) {
     token = await ownerSessionToken();
+    authenticatedUser = { id: "owner", username: "admin", name: "Chủ cửa hàng", role: "owner", branch: "Toàn hệ thống", branchId: "", active: true, createdAt: 0 };
   } else {
     try {
       const user = await authenticateAdminUser(normalizedUsername, password);
-      if (!user) return false;
+      if (!user) return undefined;
       token = await createAdminUserSession(user.id);
+      authenticatedUser = user;
     } catch {
-      return false;
+      return undefined;
     }
   }
 
@@ -88,7 +91,7 @@ export async function createAdminSession(username: string, password: string) {
     path: "/",
     maxAge: 60 * 60 * 24 * 30,
   });
-  return true;
+  return authenticatedUser;
 }
 
 export async function clearAdminSession() {

@@ -25,7 +25,7 @@ export default async function StaffPage({
       {query.status === "created" && <p className="admin-alert success">Đã tạo tài khoản nhân viên.</p>}
       {query.status === "updated" && <p className="admin-alert success">Đã cập nhật trạng thái tài khoản.</p>}
       {query.error && <p className="admin-alert error">{query.error}</p>}
-      {!branches.length && <p className="admin-alert error">Bạn cần <a href="/admin/branches"><strong>tạo chi nhánh</strong></a> trước khi thêm nhân viên.</p>}
+      {!branches.length && <p className="admin-alert error">Bạn cần <Link href="/admin/branches"><strong>tạo chi nhánh</strong></Link> trước khi thêm nhân viên.</p>}
 
       <section className="admin-branch-summary admin-staff-summary">
         <article><span>Đang hoạt động</span><strong>{users.filter((user) => user.active).length}</strong></article>
@@ -39,6 +39,7 @@ export default async function StaffPage({
       <section className="admin-card admin-staff-create">
         <div className="admin-card-head"><div><span>Tài khoản mới</span><h2>Cấp quyền cho nhân viên</h2></div></div>
         <form action={createStaffAction} className="admin-staff-form">
+          <input type="hidden" name="returnTo" value="/admin/staff" />
           <label className="admin-field"><span>Họ và tên</span><input name="name" required placeholder="Nguyễn Văn An" /></label>
           <label className="admin-field"><span>Tên đăng nhập</span><input name="username" required minLength={4} placeholder="nhanvien.quan1" autoComplete="off" /></label>
           <label className="admin-field"><span>Mật khẩu ban đầu</span><input name="password" type="password" required minLength={8} autoComplete="new-password" /></label>

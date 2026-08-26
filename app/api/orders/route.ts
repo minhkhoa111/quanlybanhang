@@ -3,6 +3,7 @@ import { getPublicProducts } from "@/db/products";
 import { productUnitPrice } from "@/app/order-pricing";
 import { currentCustomer } from "@/app/customer-auth";
 import { redeemVoucher, validateVoucher } from "@/db/vouchers";
+import { getBranches } from "@/db/branches";
 import {
   calculateInstallmentPlan,
   DOWN_PAYMENT_OPTIONS,
@@ -14,6 +15,14 @@ import {
 export const dynamic = "force-dynamic";
 
 const INSTALLMENT_PAYMENT = "Trả góp qua công ty tài chính";
+const STORE_VISIT = "Đến cửa hàng xem máy";
+const NO_PAYMENT = "Không áp dụng - yêu cầu tư vấn";
+const ONLINE_PAYMENTS = [
+  "Chuyển khoản Techcombank 24/7 - 6820102010",
+  "MoMo - 0869275642",
+  "Apple Pay - xác nhận với cửa hàng",
+  INSTALLMENT_PAYMENT,
+];
 const FINANCE_RATES = new Map<string, number>(FINANCE_COMPANIES.map((company) => [company.name, company.monthlyRate]));
 
 export async function POST(request: Request) {
@@ -21,7 +30,7 @@ export async function POST(request: Request) {
     const payload = (await request.json()) as Partial<OrderInput> & { installmentConsent?: boolean; ram?: string; items?: unknown };
     const order = await normalizeOrder(payload);
     const saved = await createOrder(order);
-    if (order.voucherCode) await redeemVoucher(order.voucherCode);
+    if (order.voucherCode && order.deliveryMethod !== STORE_VISIT) await redeemVoucher(order.voucherCode);
     return Response.json({
       ok: true,
       id: saved.id,
@@ -48,7 +57,9 @@ async function normalizeOrder(payload: Partial<OrderInput> & { installmentConsen
     ? normalizeItems(requestedItems, products)
     : normalizeItems([{ productSlug: payload.productSlug, ram: payload.ram, storage: payload.storage, color: payload.color, quantity: payload.quantity }], products);
   const subtotal = items.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0);
-  const voucherResult = await validateVoucher(clean(payload.voucherCode), subtotal);
+  const requestedDelivery = clean(payload.deliveryMethod);
+  const isStoreVisit = requestedDelivery === STORE_VISIT;
+  const voucherResult = isStoreVisit ? { code: "", discount: 0 } : await validateVoucher(clean(payload.voucherCode), subtotal);
   const total = subtotal - voucherResult.discount;
   const firstItem = items[0];
   const productSlug = items.length === 1 ? firstItem.productSlug : "gio-hang";
@@ -60,7 +71,14 @@ async function normalizeOrder(payload: Partial<OrderInput> & { installmentConsen
   const orderCode = /^[A-Z0-9-]{6,25}$/.test(requestedOrderCode)
     ? requestedOrderCode
     : `HA${crypto.randomUUID().replaceAll("-", "").slice(0, 10).toUpperCase()}`;
-  const paymentMethod = clean(payload.paymentMethod);
+  const requestedPayment = clean(payload.paymentMethod);
+  const paymentMethod = isStoreVisit ? NO_PAYMENT : requestedPayment;
+  const branches = isStoreVisit ? await getBranches(false) : [];
+  const selectedBranch = branches.find((branch) => branch.id === clean(payload.branchId));
+  if (isStoreVisit && !selectedBranch) throw new Error("Vui lòng chọn chi nhánh muốn đến xem máy.");
+  if (!isStoreVisit && requestedDelivery !== "Giao hàng tận nơi") throw new Error("Đơn online phải chọn giao hàng tận nơi.");
+  if (!isStoreVisit && clean(payload.address).length < 5) throw new Error("Vui lòng nhập địa chỉ giao hàng.");
+  if (!isStoreVisit && !ONLINE_PAYMENTS.includes(paymentMethod)) throw new Error("Vui lòng chọn phương thức thanh toán online hợp lệ. COD không còn được hỗ trợ.");
   const isInstallment = paymentMethod === INSTALLMENT_PAYMENT;
   const financeCompany = isInstallment ? clean(payload.financeCompany) : "";
   const installmentName = isInstallment ? clean(payload.installmentName) : "";
@@ -116,12 +134,14 @@ async function normalizeOrder(payload: Partial<OrderInput> & { installmentConsen
     color,
     storage,
     quantity,
-    deliveryMethod: clean(payload.deliveryMethod),
-    address: clean(payload.address),
+    deliveryMethod: isStoreVisit ? STORE_VISIT : "Giao hàng tận nơi",
+    address: isStoreVisit ? selectedBranch?.address || "" : clean(payload.address),
     paymentMethod,
     total: total > 0 ? String(total) : "",
     discount: String(voucherResult.discount),
     voucherCode: voucherResult.code,
+    branchId: selectedBranch?.id || "",
+    branchName: selectedBranch?.name || "",
     items,
     customerId: (await currentCustomer())?.id ?? "",
     contactTime: clean(payload.contactTime),

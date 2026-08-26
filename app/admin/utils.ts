@@ -2,7 +2,7 @@ import type { ManagedOrder } from "@/db/orders";
 import type { ManagedProduct } from "@/db/products";
 
 export const orderStatuses = ["pending", "confirmed", "processing", "shipping", "delivered", "cancelled", "returned"];
-export const paymentStatuses = ["unpaid", "paid", "refunded", "failed"];
+export const paymentStatuses = ["not_required", "unpaid", "paid", "refunded", "failed"];
 
 export function formatDate(timestamp: number) {
   return new Date(timestamp).toLocaleDateString("vi-VN", {
@@ -53,6 +53,7 @@ export function statusLabel(status: string) {
     paid: "Đã thanh toán",
     refunded: "Hoàn tiền",
     failed: "Lỗi thanh toán",
+    not_required: "Không cần thanh toán",
   };
   return labels[status] ?? status;
 }

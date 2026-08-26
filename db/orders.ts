@@ -89,7 +89,7 @@ type AdminInvoiceField =
   | "invoiceTaxRate" | "invoiceTaxIncluded" | "invoiceNote" | "warrantyMonths"
   | "warrantyStartDate" | "warrantySerials" | "warrantyPolicy";
 
-type OperationalField = "branchId" | "branchName" | "assignedAdminId" | "assignedAdminName";
+type OperationalField = "assignedAdminId" | "assignedAdminName";
 export type OrderInput = Omit<ManagedOrder, "id" | "status" | "paymentStatus" | "shippingFee" | "createdAt" | AdminInvoiceField | OperationalField>;
 
 export type OrderInvoiceInput = Pick<ManagedOrder, AdminInvoiceField>;
@@ -273,9 +273,9 @@ export async function createOrder(input: OrderInput) {
   const id = crypto.randomUUID();
   const createdAt = Date.now();
   const isBankTransfer = input.paymentMethod.startsWith("Chuyển khoản Techcombank");
-  const isInstallment = input.paymentMethod === "Trả góp qua công ty tài chính";
-  const isAcceptedOnReceipt = input.paymentMethod === "Thanh toán khi nhận máy" || input.deliveryMethod === "Nhận tại cửa hàng";
-  const initialStatus = !isBankTransfer && !isInstallment && isAcceptedOnReceipt ? "confirmed" : "pending";
+  const isStoreConsultation = input.paymentMethod === "Không áp dụng - yêu cầu tư vấn";
+  const initialStatus = "pending";
+  const initialPaymentStatus = isStoreConsultation ? "not_required" : "unpaid";
 
   await db()
     .prepare(`INSERT INTO orders
@@ -284,8 +284,14 @@ export async function createOrder(input: OrderInput) {
        finance_company, installment_name, installment_phone, date_of_birth, citizen_id,
        citizen_id_issue_date, citizen_id_issue_place, down_payment_percent, down_payment_amount,
        financed_amount, installment_term, monthly_payment, estimated_interest, customer_id, voucher_code,
-       items_json, discount, created_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'unpaid', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+       items_json, discount, branch_id, branch_name, created_at)
+      VALUES (
+        ?, ?, ?, ?, ?, ?, ?, ?, ?,
+        ?, ?, ?, ?, ?, ?, ?, ?, ?,
+        ?, ?, ?, ?, ?, ?, ?, ?, ?,
+        ?, ?, ?, ?, ?, ?, ?, ?, ?,
+        ?, ?
+      )`)
     .bind(
       id,
       input.orderCode,
@@ -304,6 +310,7 @@ export async function createOrder(input: OrderInput) {
       input.note,
       input.total,
       initialStatus,
+      initialPaymentStatus,
       input.financeCompany,
       input.installmentName,
       input.installmentPhone,
@@ -321,6 +328,8 @@ export async function createOrder(input: OrderInput) {
       input.voucherCode,
       JSON.stringify(input.items),
       input.discount,
+      input.branchId,
+      input.branchName,
       createdAt,
     )
     .run();

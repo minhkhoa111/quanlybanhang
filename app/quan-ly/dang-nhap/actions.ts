@@ -8,8 +8,9 @@ export async function loginAdminAction(formData: FormData) {
   const password = value(formData, "password");
   const returnTo = safeReturnTo(value(formData, "returnTo"));
 
-  if (await createAdminSession(username, password)) {
-    redirect(returnTo);
+  const user = await createAdminSession(username, password);
+  if (user) {
+    redirect(returnTo !== "/admin" ? returnTo : user.role === "owner" ? "/admin" : user.role === "manager" ? "/manger" : "/staff");
   }
 
   redirect(`/admin-login?error=invalid&returnTo=${encodeURIComponent(returnTo)}`);

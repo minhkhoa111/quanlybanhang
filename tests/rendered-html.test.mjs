@@ -62,7 +62,7 @@ test("unifies /quan-ly with the modern product and order administration", async 
   ]);
 
   assert.match(adminEntry, /requireAdminPage/);
-  assert.match(adminEntry, /redirect\("\/admin\/products"\)/);
+  assert.match(adminEntry, /user\.role === "manager" \? "\/manger" : "\/staff"/);
   assert.match(productsPage, /Quản lý sản phẩm/);
   assert.match(productsPage, /Thêm sản phẩm/);
   assert.match(productsPage, /Tất cả danh mục/);
@@ -112,6 +112,40 @@ test("supports customer accounts, multi-product carts and managed vouchers", asy
   assert.match(orderRoute, /validateVoucher/);
   assert.match(voucherPage, /Quản lý voucher/);
   assert.match(voucherStore, /usage_limit/);
+});
+
+test("separates store consultation from online payment and removes COD", async () => {
+  const [quickOrder, cart, orderApi, orders, momoQr, orderPage, cartPage, adminDetail, adminUtils] = await Promise.all([
+    readFile(new URL("app/tu-van/ConsultationForm.tsx", root), "utf8"),
+    readFile(new URL("app/gio-hang/CartCheckout.tsx", root), "utf8"),
+    readFile(new URL("app/api/orders/route.ts", root), "utf8"),
+    readFile(new URL("db/orders.ts", root), "utf8"),
+    readFile(new URL("app/api/momo-qr/route.ts", root), "utf8"),
+    readFile(new URL("app/dat-hang/page.tsx", root), "utf8"),
+    readFile(new URL("app/gio-hang/page.tsx", root), "utf8"),
+    readFile(new URL("app/admin/orders/[id]/page.tsx", root), "utf8"),
+    readFile(new URL("app/admin/utils.ts", root), "utf8"),
+  ]);
+  for (const storefront of [quickOrder, cart]) {
+    assert.match(storefront, /Đến cửa hàng xem máy/);
+    assert.match(storefront, /Đặt hàng online/);
+    assert.match(storefront, /Chi nhánh/);
+    assert.match(storefront, /api\/momo-qr/);
+    assert.doesNotMatch(storefront, /Thanh toán khi nhận máy|payment-method-cod|>COD</);
+  }
+  assert.match(orderPage, /getBranches\(false\)/);
+  assert.match(cartPage, /getBranches\(false\)/);
+  assert.match(orderApi, /ONLINE_PAYMENTS/);
+  assert.match(orderApi, /COD không còn được hỗ trợ/);
+  assert.match(orderApi, /Vui lòng chọn chi nhánh muốn đến xem máy/);
+  assert.match(orderApi, /branchId: selectedBranch\?\.id/);
+  assert.match(orders, /initialPaymentStatus = isStoreConsultation \? "not_required"/);
+  assert.match(orders, /input\.branchId/);
+  assert.match(momoQr, /getOrderPaymentByCode/);
+  assert.match(momoQr, /order\.payment_method\.startsWith\("MoMo"\)/);
+  assert.match(momoQr, /QRCode\.toString/);
+  assert.match(adminDetail, /Yêu cầu xem máy tại/);
+  assert.match(adminUtils, /not_required: "Không cần thanh toán"/);
 });
 
 test("supports Google sign-in, member avatars and unique usernames", async () => {
@@ -337,7 +371,8 @@ test("offers a timed Techcombank QR with amount and order code", async () => {
   assert.match(orderStore, /order_code/);
   assert.match(orderStore, /bank_payment_events/);
   assert.match(orderStore, /amount >= \?/);
-  assert.match(orderStore, /Thanh toán khi nhận máy/);
+  assert.match(orderStore, /Không áp dụng - yêu cầu tư vấn/);
+  assert.doesNotMatch(orderStore, /Thanh toán khi nhận máy/);
   assert.match(orderStore, /finance_company/);
   assert.match(orderStore, /citizen_id_issue_place/);
   assert.match(orderStore, /down_payment_percent/);
@@ -551,4 +586,50 @@ test("stores member invoices and warranty records behind customer ownership chec
   assert.match(warrantyApi, /private, no-store/);
   assert.match(home, /Bảo hành điện tử, luôn có trong Member/);
   assert.match(mobileNav, /\/bao-hanh/);
+});
+
+test("separates owner, branch manager and staff workspaces with protected business ledgers", async () => {
+  const [managerPortal, staffPortal, login, adminHome, customers, vouchers, voucherActions, navigation, branchDetail, staffActions, payroll, payrollActions, payrollStore, payrollMigration, tax] = await Promise.all([
+    readFile(new URL("app/manger/page.tsx", root), "utf8"),
+    readFile(new URL("app/staff/page.tsx", root), "utf8"),
+    readFile(new URL("app/admin-login/actions.ts", root), "utf8"),
+    readFile(new URL("app/admin/page.tsx", root), "utf8"),
+    readFile(new URL("app/admin/customers/page.tsx", root), "utf8"),
+    readFile(new URL("app/admin/vouchers/page.tsx", root), "utf8"),
+    readFile(new URL("app/admin/vouchers/actions.ts", root), "utf8"),
+    readFile(new URL("app/admin/AdminNavigation.tsx", root), "utf8"),
+    readFile(new URL("app/admin/branches/[id]/page.tsx", root), "utf8"),
+    readFile(new URL("app/admin/staff/actions.ts", root), "utf8"),
+    readFile(new URL("app/admin/payroll/page.tsx", root), "utf8"),
+    readFile(new URL("app/admin/payroll/actions.ts", root), "utf8"),
+    readFile(new URL("db/payroll.ts", root), "utf8"),
+    readFile(new URL("drizzle/0008_employee_payroll.sql", root), "utf8"),
+    readFile(new URL("app/admin/tax/page.tsx", root), "utf8"),
+  ]);
+
+  assert.match(managerPortal, /Cổng quản lý chi nhánh/);
+  assert.match(managerPortal, /item\.branchId === user\.branchId/);
+  assert.match(managerPortal, /Thêm nhân sự cấp dưới/);
+  assert.match(staffPortal, /Cổng làm việc nhân viên/);
+  assert.match(staffPortal, /staffTools\(user\.role\)/);
+  assert.match(login, /user\.role === "manager" \? "\/manger" : "\/staff"/);
+  assert.match(adminHome, /redirect\("\/manger"\)/);
+  assert.match(adminHome, /redirect\("\/staff"\)/);
+  assert.match(customers, /requireOwnerPage\("\/admin\/customers"\)/);
+  assert.match(vouchers, /requireOwnerPage\("\/admin\/vouchers"\)/);
+  assert.match(voucherActions, /requireOwnerAction\(\)/);
+  assert.match(navigation, /Member khách hàng.*roles: \["owner"\]/);
+  assert.match(navigation, /Khuyến mãi & voucher.*roles: \["owner"\]/);
+  assert.match(branchDetail, /actor\.branchId !== branch\.id/);
+  assert.match(branchDetail, /createStaffAction/);
+  assert.match(staffActions, /requireHrManagerAction/);
+  assert.match(staffActions, /actor\.role === "manager" && role === "manager"/);
+  assert.match(staffActions, /actor\.role === "manager" \? actor\.branchId/);
+  assert.match(payroll, /Kiểm kê lương tháng/);
+  assert.match(payrollActions, /requireOwnerAction/);
+  assert.match(payrollStore, /ON CONFLICT\(admin_user_id,payroll_month\)/);
+  assert.match(payrollMigration, /employee_payroll_records/);
+  assert.match(tax, /requireOwnerPage\("\/admin\/tax"\)/);
+  assert.match(tax, /VAT đã thu ước tính/);
+  assert.match(tax, /không thay thế tờ khai thuế/i);
 });

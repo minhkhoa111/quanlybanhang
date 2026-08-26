@@ -2518,6 +2518,8 @@ h1, h2, h3, h4 {
 }
 
 @media (max-width: 760px) {
+  .order-fulfillment-choice > div,
+  .cart-order-mode > div { grid-template-columns: 1fr; }
   .admin-technical-grid {
     grid-template-columns: 1fr;
   }
@@ -2530,6 +2532,50 @@ h1, h2, h3, h4 {
     grid-column: auto;
   }
 }
+
+/* Role portals, branch people, payroll and tax ledgers */
+.admin-branch-people-link { display: block; margin: 16px 0 4px; padding: 11px 13px; border: 1px solid #cfe1f1; border-radius: 10px; background: #f4f9fd; color: #0868c9; font-size: 11px; font-weight: 900; text-align: center; }
+.admin-ledger-note { margin: 18px 0; padding: 14px 16px; border: 1px solid #cfe1f1; border-radius: 12px; background: #f4f9fd; color: #566b82; font-size: 11px; line-height: 1.65; }
+.admin-payroll-rows { display: grid; }
+.admin-payroll-row { display: grid; grid-template-columns: minmax(210px, 1.4fr) .55fr 1fr minmax(130px,.75fr) minmax(140px,.75fr) minmax(150px,1fr) auto; align-items: end; gap: 14px; padding: 16px 22px; border-top: 1px solid #e3ebf2; }
+.admin-payroll-row:first-child { border-top: 0; }
+.admin-payroll-row > div, .admin-payroll-row > label { display: grid; gap: 5px; min-width: 0; }
+.admin-payroll-row span, .admin-payroll-row label > span { color: #728196; font-size: 9px; font-weight: 800; text-transform: uppercase; }
+.admin-payroll-row strong { color: #1d344f; font-size: 12px; }
+.admin-payroll-row small { overflow: hidden; color: #7d8a9b; font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
+.admin-payroll-row input, .admin-payroll-row select { min-width: 0; height: 38px; padding: 0 10px; border: 1px solid #d5e0e9; border-radius: 9px; background: #fff; color: #203750; font: inherit; font-size: 10px; }
+.admin-payroll-person { display: flex !important; grid-template-columns: none !important; align-items: center; gap: 10px !important; }
+.admin-payroll-person > b { display: grid; flex: 0 0 38px; width: 38px; height: 38px; place-items: center; border-radius: 12px; background: #e7f3ff; color: #0868c9; }
+
+.role-portal { display: block !important; min-height: 100vh; padding: 0; background: linear-gradient(145deg,#eef7ff 0%,#f8fbfe 48%,#edf5fb 100%); color: #17314e; }
+.role-portal-shell { width: min(1180px,calc(100% - 36px)); margin: 0 auto; padding: 24px 0 60px; }
+.role-portal-shell > header { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 14px 18px; border: 1px solid rgba(184,211,234,.8); border-radius: 18px; background: rgba(255,255,255,.88); box-shadow: 0 15px 38px rgba(31,76,116,.08); backdrop-filter: blur(14px); }
+.role-portal-shell > header > a, .role-portal-shell > header > div, .role-portal-shell > header span { display: flex; align-items: center; gap: 11px; }
+.role-portal-shell > header span { align-items: flex-start; flex-direction: column; gap: 2px; }
+.role-portal-shell > header strong { color: #17314e; font-size: 13px; }
+.role-portal-shell > header small { color: #78889b; font-size: 9px; }
+.role-portal-shell > header form button { padding: 9px 12px; border: 1px solid #d5e2ed; border-radius: 10px; background: #fff; color: #496179; cursor: pointer; font: inherit; font-size: 10px; font-weight: 850; }
+.role-welcome { display: flex; align-items: center; justify-content: space-between; gap: 32px; margin-top: 22px; padding: 34px 38px; overflow: hidden; border-radius: 23px; background: linear-gradient(125deg,#075bab,#0b78d1); color: #fff; box-shadow: 0 20px 46px rgba(8,104,201,.2); }
+.role-welcome span { font-size: 9px; font-weight: 900; letter-spacing: .14em; }
+.role-welcome h1 { margin: 7px 0 7px; font-size: clamp(27px,4vw,43px); letter-spacing: -.035em; }
+.role-welcome p { max-width: 680px; margin: 0; color: rgba(255,255,255,.76); font-size: 11px; line-height: 1.65; }
+.role-welcome > a { flex: 0 0 auto; padding: 13px 17px; border-radius: 12px; background: #fff; color: #0868c9; font-size: 10px; font-weight: 900; }
+.role-metrics { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 16px; }
+.role-metrics article { display: grid; gap: 6px; padding: 20px; border: 1px solid #d7e5f0; border-radius: 17px; background: rgba(255,255,255,.9); }
+.role-metrics span { color: #718197; font-size: 9px; font-weight: 850; text-transform: uppercase; }
+.role-metrics strong { overflow-wrap: anywhere; color: #183653; font-size: 22px; }
+.role-metrics small { color: #8290a1; font-size: 9px; }
+.role-tool-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-top: 16px; }
+.role-tool-grid > a { display: grid; grid-template-columns: 43px 1fr auto; align-items: center; gap: 12px; min-height: 102px; padding: 17px; border: 1px solid #d7e5f0; border-radius: 17px; background: #fff; box-shadow: 0 12px 30px rgba(31,76,116,.06); transition: transform .2s,border-color .2s; }
+.role-tool-grid > a:hover { transform: translateY(-3px); border-color: #86bce8; }
+.role-tool-grid i { display: grid; width: 43px; height: 43px; place-items: center; border-radius: 13px; background: #e7f3ff; color: #0868c9; font-size: 19px; font-style: normal; font-weight: 900; }
+.role-tool-grid span { display: grid; gap: 5px; min-width: 0; }
+.role-tool-grid strong { color: #203750; font-size: 11px; }
+.role-tool-grid small { color: #78889b; font-size: 9px; line-height: 1.45; }
+.role-tool-grid b { color: #8aa0b4; }
+
+@media (max-width: 1100px) { .admin-payroll-row { grid-template-columns: 1.4fr .6fr 1fr 1fr; } .admin-payroll-row > label:nth-of-type(2), .admin-payroll-row > label:nth-of-type(3), .admin-payroll-row > button { grid-row: 2; } .role-tool-grid { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 680px) { .role-portal-shell { width: min(100% - 20px,1180px); padding-top: 10px; } .role-portal-shell > header { align-items: flex-start; } .role-portal-shell > header > div > span { display: none; } .role-welcome { align-items: flex-start; flex-direction: column; padding: 27px 22px; } .role-metrics, .role-tool-grid { grid-template-columns: 1fr; } .admin-payroll-row { grid-template-columns: 1fr 1fr; padding: 16px; } .admin-payroll-person { grid-column: 1/-1; } .admin-payroll-row > label, .admin-payroll-row > button { grid-row: auto !important; } }
 
 .admin-order-detail {
   grid-template-columns: minmax(0, 1fr) 340px;
@@ -3620,6 +3666,33 @@ h1, h2, h3, h4 {
 .consult-form-horizontal .payment-instructions-momo strong {
   color: #a50064;
 }
+
+.order-tabs.is-store-visit { grid-template-columns: 1fr; }
+.order-fulfillment-choice { margin: 0 0 18px; padding: 0; border: 0; }
+.order-fulfillment-choice legend { margin-bottom: 9px; color: #465a72; font-size: 11px; font-weight: 850; }
+.order-fulfillment-choice > div { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.order-fulfillment-choice label,
+.cart-order-mode label { display: flex; align-items: flex-start; gap: 10px; padding: 13px; border: 1px solid #c9d9e8; border-radius: 11px; background: #fff; cursor: pointer; }
+.order-fulfillment-choice label:has(input:checked),
+.cart-order-mode label:has(input:checked) { border-color: #0875df; background: #e9f4ff; box-shadow: inset 0 0 0 1px #0875df; }
+.order-fulfillment-choice input,
+.cart-order-mode input { width: 17px; min-height: 17px; margin-top: 2px; }
+.order-fulfillment-choice label > span,
+.cart-order-mode label > span { display: grid; gap: 3px; }
+.order-fulfillment-choice small,
+.cart-order-mode small { color: #708399; font-size: 10px; font-weight: 600; }
+.store-consultation-result,
+.cart-store-confirmation,
+.cart-consult-notice { display: grid; gap: 5px; margin: 18px auto; padding: 16px; border: 1px solid #abd6bc; border-radius: 12px; background: #ecfaf2; color: #17663b; }
+.store-consultation-result span,
+.cart-store-confirmation span,
+.cart-store-confirmation small,
+.cart-consult-notice span { color: #527464; font-size: 11px; }
+.post-order-bank-payment.is-momo .bank-transfer-panel,
+.cart-bank-qr.is-momo { border-color: #e1a8ca; background: #fff5fb; }
+.post-order-bank-payment.is-momo .bank-transfer-details > span,
+.post-order-bank-payment.is-momo .bank-transfer-details > strong,
+.cart-bank-qr.is-momo strong { color: #a50064; }
 
 .consult-form-horizontal .consent,
 .consult-form-horizontal .installment-consent {
@@ -5332,6 +5405,10 @@ body:has(.admin-login-shell) { padding-bottom: 0; background: #eef2f7; }
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
+
+.cart-order-mode { padding: 0; border: 0; }
+.cart-order-mode legend { margin-bottom: 8px; font-size: 12px; font-weight: 900; }
+.cart-order-mode > div { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
 
 .cart-voucher {
   display: grid;

@@ -21,7 +21,10 @@ const FORM_ENDPOINT = "https://formsubmit.co/ajax/aydomkhoa123@gmail.com";
 const ZALO_URL = "https://zalo.me/02879797999";
 const BANK_ACCOUNT = "6820102010";
 const BANK_PAYMENT = `Chuyển khoản Techcombank 24/7 - ${BANK_ACCOUNT}`;
+const MOMO_PAYMENT = "MoMo - 0869275642";
 const INSTALLMENT_PAYMENT = "Trả góp qua công ty tài chính";
+const STORE_VISIT = "Đến cửa hàng xem máy";
+type PublicBranch = { id: string; name: string; address: string; phone: string; hours: string };
 
 function normalizeOption(value?: string) {
   return (value ?? "").trim().toLocaleLowerCase("vi");
@@ -44,9 +47,11 @@ function colorsForProduct(product?: Product, storage = "", ram = ""): ProductCol
 
 export default function ConsultationForm({
   products = [],
+  branches = [],
   initialOrderCode,
 }: {
   products?: Product[];
+  branches?: PublicBranch[];
   initialOrderCode: string;
 }) {
   const formRef = useRef<HTMLFormElement>(null);
@@ -79,9 +84,10 @@ export default function ConsultationForm({
     initialColors.find((color) => normalizeOption(color.name) === normalizeOption(requestedColor))?.name ?? initialColors[0]?.name ?? "",
   );
   const [status, setStatus] = useState<SubmitStatus>("idle");
+  const [purchaseMode, setPurchaseMode] = useState<"online" | "store">("online");
+  const [branchId, setBranchId] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [paymentMethod, setPaymentMethod] = useState("");
-  const [copiedMomo, setCopiedMomo] = useState(false);
   const [copiedBank, setCopiedBank] = useState(false);
   const [orderCode, setOrderCode] = useState(initialOrderCode);
   const [qrExpiresAt, setQrExpiresAt] = useState<number | null>(null);
@@ -92,6 +98,8 @@ export default function ConsultationForm({
   const [submittedPaymentStatus, setSubmittedPaymentStatus] = useState("unpaid");
   const [submittedOrderStatus, setSubmittedOrderStatus] = useState("pending");
   const [submittedOrderTotal, setSubmittedOrderTotal] = useState(0);
+  const [submittedStoreVisit, setSubmittedStoreVisit] = useState(false);
+  const [submittedBranchName, setSubmittedBranchName] = useState("");
   const [financeCompany, setFinanceCompany] = useState("");
   const [downPaymentPercent, setDownPaymentPercent] = useState(10);
   const [installmentTerm, setInstallmentTerm] = useState(6);
@@ -123,6 +131,7 @@ export default function ConsultationForm({
   );
   const selectedInstallmentPlan = installmentPlans.find((plan) => plan.term === installmentTerm) ?? installmentPlans[0];
   const bankQrUrl = `/api/payment-qr?orderCode=${encodeURIComponent(orderCode)}&expiresAt=${qrExpiresAt ?? ""}`;
+  const momoQrUrl = `/api/momo-qr?orderCode=${encodeURIComponent(orderCode)}&expiresAt=${qrExpiresAt ?? ""}`;
   const qrExpired = qrExpiresAt !== null && remainingSeconds <= 0;
 
   useEffect(() => {
@@ -177,15 +186,6 @@ export default function ConsultationForm({
     setSelectedRam(nextRam);
     setSelectedColor(nextColor);
     setSelectedStorage(nextStorage);
-  }
-
-  async function copyMomoNumber() {
-    try {
-      await navigator.clipboard.writeText("0869275642");
-      setCopiedMomo(true);
-    } catch {
-      setCopiedMomo(false);
-    }
   }
 
   async function copyBankAccount() {
@@ -247,12 +247,17 @@ export default function ConsultationForm({
     setSubmittedPaymentStatus("unpaid");
     setSubmittedOrderStatus("pending");
     setSubmittedOrderTotal(0);
+    setSubmittedStoreVisit(false);
+    setSubmittedBranchName("");
+    setPurchaseMode("online");
+    setBranchId("");
     setFinanceCompany("");
     setDownPaymentPercent(10);
     setInstallmentTerm(6);
   }
 
   function openPaymentTab() {
+    if (purchaseMode === "store") return;
     const controls = formRef.current?.querySelectorAll<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >(".order-form-main input:not([type='hidden']), .order-form-main select, .order-form-main textarea");
@@ -275,7 +280,19 @@ export default function ConsultationForm({
     const form = event.currentTarget;
     const data = new FormData(form);
 
-    if (paymentMethod === INSTALLMENT_PAYMENT && !installmentEligible) {
+    const isStoreVisit = purchaseMode === "store";
+    const selectedBranch = branches.find((branch) => branch.id === branchId);
+    if (isStoreVisit && !selectedBranch) {
+      setPaymentError("Vui lòng chọn chi nhánh muốn đến xem máy.");
+      setActiveTab("details");
+      return;
+    }
+    if (!isStoreVisit && !paymentMethod) {
+      setPaymentError("Vui lòng chọn phương thức thanh toán online.");
+      setActiveTab("payment");
+      return;
+    }
+    if (!isStoreVisit && paymentMethod === INSTALLMENT_PAYMENT && !installmentEligible) {
       setPaymentError("Trả góp qua công ty tài chính chỉ áp dụng cho đơn hàng từ 8.000.000đ.");
       setActiveTab("payment");
       return;
@@ -298,9 +315,10 @@ export default function ConsultationForm({
       storage: String(data.get("storage") || ""),
       ram: String(data.get("ram") || ""),
       quantity: Number(data.get("quantity") || 1),
-      deliveryMethod: String(data.get("delivery") || ""),
-      address: String(data.get("address") || ""),
-      paymentMethod: String(data.get("payment") || ""),
+      deliveryMethod: isStoreVisit ? STORE_VISIT : "Giao hàng tận nơi",
+      branchId: isStoreVisit ? branchId : "",
+      address: isStoreVisit ? "" : String(data.get("address") || ""),
+      paymentMethod: isStoreVisit ? "" : String(data.get("payment") || ""),
       total: String(orderTotal),
       contactTime: "",
       note: String(data.get("note") || ""),
@@ -330,9 +348,10 @@ export default function ConsultationForm({
       `Màu: ${data.get("color") || "Chưa chọn"}`,
       `Cấu hình: ${[data.get("ram"), data.get("storage")].filter(Boolean).join(" / ") || "Chưa chọn"}`,
       `Số lượng: ${data.get("quantity") || "1"}`,
-      `Nhận hàng: ${data.get("delivery")}`,
-      `Địa chỉ: ${data.get("address") || "Nhận tại cửa hàng"}`,
-      `Thanh toán: ${data.get("payment")}`,
+      `Hình thức: ${isStoreVisit ? "Đến cửa hàng xem máy" : "Đặt hàng online"}`,
+      `Chi nhánh: ${selectedBranch?.name || "Không áp dụng"}`,
+      `Địa chỉ: ${isStoreVisit ? selectedBranch?.address : data.get("address")}`,
+      `Thanh toán: ${isStoreVisit ? "Không áp dụng - chờ tư vấn" : data.get("payment")}`,
       `Tổng tiền: ${formatOrderMoney(orderTotal)}`,
       `Ghi chú: ${data.get("note") || "Không có"}`,
     ].join("\n");
@@ -355,15 +374,17 @@ export default function ConsultationForm({
         status?: string;
         paymentStatus?: string;
       };
-      const submittedMethod = String(data.get("payment") || "");
+      const submittedMethod = isStoreVisit ? "" : String(data.get("payment") || "");
       const savedOrderCode = savedOrder.orderCode || orderCode;
       setOrderCode(savedOrderCode);
       setSubmittedPaymentMethod(submittedMethod);
       setSubmittedPaymentStatus(savedOrder.paymentStatus ?? "unpaid");
       setSubmittedOrderStatus(savedOrder.status ?? "pending");
       setSubmittedOrderTotal(orderTotal);
+      setSubmittedStoreVisit(isStoreVisit);
+      setSubmittedBranchName(selectedBranch?.name || "");
 
-      if (submittedMethod === BANK_PAYMENT) {
+      if (submittedMethod === BANK_PAYMENT || submittedMethod === MOMO_PAYMENT) {
         setQrExpiresAt(Date.now() + 10 * 60 * 1000);
         setRemainingSeconds(10 * 60);
       }
@@ -385,9 +406,10 @@ export default function ConsultationForm({
           "Màu": data.get("color") || "Chưa chọn",
           "Cấu hình": [data.get("ram"), data.get("storage")].filter(Boolean).join(" / ") || "Chưa chọn",
           "Số lượng": data.get("quantity") || "1",
-          "Hình thức nhận hàng": data.get("delivery"),
-          "Địa chỉ giao hàng": data.get("address") || "Nhận tại cửa hàng",
-          "Thanh toán": data.get("payment"),
+          "Hình thức": isStoreVisit ? "Đến cửa hàng xem máy" : "Đặt hàng online",
+          "Chi nhánh xem máy": selectedBranch?.name || "Không áp dụng",
+          "Địa chỉ": isStoreVisit ? selectedBranch?.address : data.get("address"),
+          "Thanh toán": isStoreVisit ? "Không áp dụng - chờ tư vấn" : data.get("payment"),
           "Công ty tài chính": financeCompany || "Không áp dụng",
           "Trả trước": paymentMethod === INSTALLMENT_PAYMENT ? `${downPaymentPercent}% (${formatOrderMoney(selectedInstallmentPlan?.downPaymentAmount ?? 0)})` : "Không áp dụng",
           "Kỳ hạn dự kiến": paymentMethod === INSTALLMENT_PAYMENT ? `${installmentTerm} tháng` : "Không áp dụng",
@@ -409,9 +431,8 @@ export default function ConsultationForm({
       setStatus("sent");
       setQuantity(1);
       setPaymentMethod("");
-      setCopiedMomo(false);
       setCopiedBank(false);
-      if (submittedMethod !== BANK_PAYMENT) {
+      if (submittedMethod !== BANK_PAYMENT && submittedMethod !== MOMO_PAYMENT) {
         setQrExpiresAt(null);
         setRemainingSeconds(0);
       }
@@ -424,14 +445,17 @@ export default function ConsultationForm({
 
   if (status === "sent") {
     const isBankTransfer = submittedPaymentMethod === BANK_PAYMENT;
+    const isMomoPayment = submittedPaymentMethod === MOMO_PAYMENT;
     const isInstallment = submittedPaymentMethod === INSTALLMENT_PAYMENT;
     const isPaid = submittedPaymentStatus === "paid";
     return (
-      <div className={`consult-success${isBankTransfer ? " is-bank-payment" : ""}`}>
+      <div className={`consult-success${isBankTransfer || isMomoPayment ? " is-bank-payment" : ""}`}>
         <span>✓</span>
-        <h2>{isPaid ? "Đã thanh toán" : isBankTransfer ? "Đang kiểm tra thanh toán" : isInstallment ? "Đã tiếp nhận hồ sơ trả góp" : "Đã tiếp nhận đơn hàng"}</h2>
+        <h2>{submittedStoreVisit ? "Đã chuyển yêu cầu đến chi nhánh" : isPaid ? "Đã thanh toán" : isBankTransfer ? "Đang kiểm tra thanh toán" : isMomoPayment ? "Đã tạo QR MoMo" : isInstallment ? "Đã tiếp nhận hồ sơ trả góp" : "Đã tiếp nhận đơn hàng"}</h2>
         <p>
-          {isPaid
+          {submittedStoreVisit
+            ? `Yêu cầu xem máy ${orderCode} đã được chuyển đến ${submittedBranchName}. Nhân viên sẽ liên hệ tư vấn và xác nhận máy trước khi bạn đến.`
+            : isPaid
             ? `Giao dịch cho đơn ${orderCode} đã được xác nhận. Huy Apple sẽ chuẩn bị sản phẩm để giao.`
             : isBankTransfer
               ? `Hệ thống đang đối soát giao dịch cho đơn ${orderCode}. Trạng thái sẽ tự cập nhật khi ngân hàng xác nhận.`
@@ -441,15 +465,16 @@ export default function ConsultationForm({
                 ? "Huy Apple đã tiếp nhận đơn. Cửa hàng sẽ xác nhận tồn kho, chuẩn bị máy và giao theo thông tin đã cung cấp."
                 : "Huy Apple đã ghi nhận đơn và sẽ liên hệ xác nhận trong thời gian sớm nhất."}
         </p>
-        <div className={`order-payment-result ${isPaid ? "is-paid" : "is-pending"}`}>
+        {!submittedStoreVisit && <div className={`order-payment-result ${isPaid ? "is-paid" : "is-pending"}`}>
           <span>{isInstallment ? "Hồ sơ" : "Thanh toán"}</span>
           <strong>{isPaid ? "Đã thanh toán" : isInstallment ? "Chờ tư vấn & xét duyệt" : "Chưa thanh toán"}</strong>
-        </div>
-        {isBankTransfer && !isPaid && qrExpiresAt && (
-          <div className="post-order-bank-payment" aria-live="polite">
+        </div>}
+        {submittedStoreVisit && <div className="store-consultation-result"><strong>Không có bước thanh toán</strong><span>Chi nhánh đã tiếp nhận thông tin để nhân viên chủ động tư vấn cho bạn.</span></div>}
+        {(isBankTransfer || isMomoPayment) && !isPaid && qrExpiresAt && (
+          <div className={`post-order-bank-payment${isMomoPayment ? " is-momo" : ""}`} aria-live="polite">
             <div className="bank-transfer-panel">
               <div className={`bank-qr-image${qrExpired ? " is-expired" : ""}`}>
-                <Image src={bankQrUrl} alt={`Mã QR thanh toán đơn ${orderCode}`} width={720} height={720} unoptimized />
+                <Image src={isMomoPayment ? momoQrUrl : bankQrUrl} alt={`Mã QR thanh toán đơn ${orderCode}`} width={720} height={720} unoptimized />
                 {qrExpired && (
                   <div className="bank-qr-expired">
                     <strong>QR đã hết hạn</strong>
@@ -458,19 +483,19 @@ export default function ConsultationForm({
                 )}
               </div>
               <div className="bank-transfer-details">
-                <span>Techcombank 24/7</span>
-                <strong>Nguyễn Minh Khoa</strong>
+                <span>{isMomoPayment ? "Ví MoMo" : "Techcombank 24/7"}</span>
+                <strong>{isMomoPayment ? "0869275642" : "Nguyễn Minh Khoa"}</strong>
                 <dl>
                   <div><dt>Số tiền</dt><dd>{formatOrderMoney(submittedOrderTotal)}</dd></div>
                   <div><dt>Mã đơn</dt><dd>{orderCode}</dd></div>
-                  <div><dt>Số tài khoản</dt><dd>{BANK_ACCOUNT}</dd></div>
+                  <div><dt>{isMomoPayment ? "Số MoMo" : "Số tài khoản"}</dt><dd>{isMomoPayment ? "0869275642" : BANK_ACCOUNT}</dd></div>
                 </dl>
                 <div className={`bank-payment-timer${qrExpired ? " is-expired" : ""}`}>
                   <span>Thời hạn thanh toán</span>
                   <strong>{formatCountdown(remainingSeconds)}</strong>
                 </div>
-                <button type="button" onClick={copyBankAccount}>{copiedBank ? "Đã sao chép" : "Sao chép số tài khoản"}</button>
-                <small>Quét QR để thanh toán đúng số tiền và mã đơn. Trạng thái sẽ tự cập nhật khi ngân hàng xác nhận.</small>
+                {!isMomoPayment && <button type="button" onClick={copyBankAccount}>{copiedBank ? "Đã sao chép" : "Sao chép số tài khoản"}</button>}
+                <small>{isMomoPayment ? `Sau khi quét, nhập đúng ${formatOrderMoney(submittedOrderTotal)} và nội dung ${orderCode} để cửa hàng đối soát.` : `Quét QR để thanh toán đúng ${formatOrderMoney(submittedOrderTotal)} với nội dung ${orderCode}. Trạng thái sẽ tự cập nhật khi ngân hàng xác nhận.`}</small>
               </div>
             </div>
           </div>
@@ -495,17 +520,17 @@ export default function ConsultationForm({
     <form ref={formRef} className="consult-form consult-form-horizontal" onSubmit={submit}>
       <div className="form-heading">
         <span>ĐẶT HÀNG NHANH</span>
-        <h2>Chọn máy, nhận hàng, thanh toán</h2>
+        <h2>Chọn máy và cách mua phù hợp</h2>
       </div>
 
-      <div className={`order-tabs${paymentMethod === INSTALLMENT_PAYMENT ? " has-installment" : ""}`} role="tablist" aria-label="Các bước đặt hàng">
+      <div className={`order-tabs${paymentMethod === INSTALLMENT_PAYMENT ? " has-installment" : ""}${purchaseMode === "store" ? " is-store-visit" : ""}`} role="tablist" aria-label="Các bước đặt hàng">
         <button type="button" role="tab" aria-selected={activeTab === "details"} aria-controls="order-details-panel" onClick={() => setActiveTab("details")}>
           <span>01</span><strong>Sản phẩm & nhận hàng</strong>
         </button>
-        <button type="button" role="tab" aria-selected={activeTab === "payment"} aria-controls="order-payment-panel" onClick={openPaymentTab}>
+        {purchaseMode === "online" && <button type="button" role="tab" aria-selected={activeTab === "payment"} aria-controls="order-payment-panel" onClick={openPaymentTab}>
           <span>02</span><strong>Phương thức thanh toán</strong>
-        </button>
-        {paymentMethod === INSTALLMENT_PAYMENT && (
+        </button>}
+        {purchaseMode === "online" && paymentMethod === INSTALLMENT_PAYMENT && (
           <button type="button" role="tab" aria-selected={activeTab === "installment"} aria-controls="order-installment-panel" onClick={() => setActiveTab("installment")}>
             <span>03</span><strong>Hồ sơ trả góp</strong>
           </button>
@@ -517,8 +542,16 @@ export default function ConsultationForm({
           <section className="order-step">
             <div className="order-step-title">
               <span>01</span>
-              <div><h3>Sản phẩm</h3><p>Chọn phiên bản cần đặt.</p></div>
+              <div><h3>Cách mua và sản phẩm</h3><p>Chọn đặt online hoặc đến chi nhánh xem máy.</p></div>
             </div>
+
+            <fieldset className="order-fulfillment-choice">
+              <legend>Hình thức mua hàng</legend>
+              <div>
+                <label><input type="radio" checked={purchaseMode === "online"} onChange={() => { setPurchaseMode("online"); setPaymentMethod(BANK_PAYMENT); setPaymentError(""); }} /><span><strong>Đặt hàng online</strong><small>Giao tận nơi và thanh toán trực tuyến</small></span></label>
+                <label><input type="radio" checked={purchaseMode === "store"} onChange={() => { setPurchaseMode("store"); setPaymentMethod(""); setActiveTab("details"); setPaymentError(""); }} /><span><strong>Đến cửa hàng xem máy</strong><small>Không thanh toán, nhân viên chi nhánh tư vấn</small></span></label>
+              </div>
+            </fieldset>
 
             {selectedProduct && (
               <div className="order-product-preview">
@@ -563,29 +596,22 @@ export default function ConsultationForm({
           <section className="order-step">
             <div className="order-step-title">
               <span>02</span>
-              <div><h3>Thông tin nhận hàng</h3><p>Cửa hàng dùng để xác nhận và giao máy.</p></div>
+              <div><h3>Thông tin khách hàng</h3><p>Cửa hàng dùng để tiếp nhận và liên hệ xác nhận.</p></div>
             </div>
             <div className="form-row">
               <label>Họ và tên<input name="name" required placeholder="Nguyễn Văn A" autoComplete="name" /></label>
               <label>Số điện thoại<input name="phone" required type="tel" pattern="[0-9 +]{9,15}" placeholder="09xx xxx xxx" autoComplete="tel" /></label>
             </div>
-            <label>
-              Hình thức nhận hàng
-              <select name="delivery" required defaultValue="">
-                <option value="" disabled>Chọn hình thức</option>
-                <option>Nhận tại cửa hàng</option>
-                <option>Giao hàng tận nơi</option>
-              </select>
-            </label>
-            <label>Địa chỉ giao hàng<textarea name="address" rows={2} placeholder="Bỏ trống nếu nhận tại cửa hàng" /></label>
+            {purchaseMode === "store" ? <label>Chi nhánh muốn xem máy<select value={branchId} onChange={(event) => setBranchId(event.target.value)} required><option value="" disabled>Chọn chi nhánh</option>{branches.map((branch) => <option key={branch.id} value={branch.id}>{branch.name} · {branch.address}</option>)}</select></label> : <label>Địa chỉ giao hàng<textarea name="address" rows={2} required placeholder="Số nhà, đường, phường/xã, tỉnh/thành" /></label>}
+            {purchaseMode === "store" && <label>Yêu cầu tư vấn<textarea name="note" rows={2} placeholder="Thời gian dự kiến đến, màu hoặc phiên bản muốn xem..." /></label>}
           </section>
 
           <div className="order-tab-actions order-tab-actions-next">
-            <button className="button button-primary" type="button" onClick={openPaymentTab}>Tiếp tục thanh toán <span>→</span></button>
+            {purchaseMode === "store" ? <button className="button button-primary" type="submit" disabled={status === "sending"}>{status === "sending" ? "Đang chuyển yêu cầu..." : "Gửi yêu cầu để nhân viên tư vấn"} <span>↗</span></button> : <button className="button button-primary" type="button" onClick={openPaymentTab}>Tiếp tục thanh toán <span>→</span></button>}
           </div>
         </div>
 
-        <aside id="order-payment-panel" role="tabpanel" className="order-checkout" hidden={activeTab !== "payment"}>
+        {purchaseMode === "online" && <aside id="order-payment-panel" role="tabpanel" className="order-checkout" hidden={activeTab !== "payment"}>
           <div className="order-tab-actions order-tab-actions-back">
             <button className="button button-secondary" type="button" onClick={() => setActiveTab("details")}><span>←</span> Quay lại chọn sản phẩm</button>
           </div>
@@ -619,15 +645,11 @@ export default function ConsultationForm({
               <legend>Phương thức thanh toán</legend>
               <div className="payment-method-grid">
                 <label className="payment-method-option">
-                  <input type="radio" name="payment" value="Thanh toán khi nhận máy" checked={paymentMethod === "Thanh toán khi nhận máy"} onChange={(event) => selectPayment(event.target.value)} required />
-                  <span className="payment-method-mark payment-method-cod" aria-hidden="true">COD</span><strong>Khi nhận máy</strong>
-                </label>
-                <label className="payment-method-option">
-                  <input type="radio" name="payment" value={BANK_PAYMENT} checked={paymentMethod === BANK_PAYMENT} onChange={(event) => selectPayment(event.target.value)} disabled={orderTotal <= 0} />
+                  <input type="radio" name="payment" value={BANK_PAYMENT} checked={paymentMethod === BANK_PAYMENT} onChange={(event) => selectPayment(event.target.value)} disabled={orderTotal <= 0} required />
                   <span className="payment-method-mark payment-method-bank" aria-hidden="true">TCB</span><strong>Chuyển khoản 24/7</strong>
                 </label>
                 <label className="payment-method-option payment-method-featured">
-                  <input type="radio" name="payment" value="MoMo - 0869275642" checked={paymentMethod === "MoMo - 0869275642"} onChange={(event) => selectPayment(event.target.value)} />
+                  <input type="radio" name="payment" value={MOMO_PAYMENT} checked={paymentMethod === MOMO_PAYMENT} onChange={(event) => selectPayment(event.target.value)} />
                   <span className="payment-logo-momo" aria-hidden="true">momo</span><strong>Ví MoMo</strong>
                 </label>
                 <label className="payment-method-option payment-method-featured">
@@ -654,10 +676,9 @@ export default function ConsultationForm({
 
             {paymentError && <div className="bank-payment-error" role="alert">{paymentError}</div>}
 
-            {paymentMethod === "MoMo - 0869275642" && (
+            {paymentMethod === MOMO_PAYMENT && (
               <div className="payment-instructions payment-instructions-momo" aria-live="polite">
-                <div><span>Thanh toán qua MoMo</span><strong>0869275642</strong><small>Nội dung: họ tên và sản phẩm.</small></div>
-                <button type="button" onClick={copyMomoNumber}>{copiedMomo ? "Đã sao chép" : "Sao chép số"}</button>
+                <div><span>Thanh toán qua MoMo</span><strong>QR sẽ xuất hiện sau khi tạo đơn</strong><small>Số tiền {formatOrderMoney(orderTotal)} và mã đơn sẽ hiển thị cạnh QR để bạn nhập chính xác.</small></div>
               </div>
             )}
 
@@ -674,10 +695,10 @@ export default function ConsultationForm({
           {status === "error" && <div className="order-form-error" role="alert">Chưa gửi được đơn. Thử lại hoặc liên hệ qua <a href={sms}>SMS</a> / <a href={ZALO_URL} target="_blank" rel="noreferrer">Zalo</a>.</div>}
 
           <button className="button button-primary form-submit" type="submit" disabled={status === "sending"}>
-            {status === "sending" ? "Đang tạo đơn..." : paymentMethod === BANK_PAYMENT ? "Đặt hàng & nhận mã QR" : "Gửi đơn đặt hàng"} <span>↗</span>
+            {status === "sending" ? "Đang tạo đơn..." : paymentMethod === BANK_PAYMENT || paymentMethod === MOMO_PAYMENT ? "Đặt hàng & nhận mã QR" : "Gửi đơn đặt hàng"} <span>↗</span>
           </button>
           <p className="privacy-note">Thông tin chỉ dùng để xác nhận và giao hàng.</p>
-        </aside>
+        </aside>}
 
         {paymentMethod === INSTALLMENT_PAYMENT && (
           <section id="order-installment-panel" role="tabpanel" className="order-installment" hidden={activeTab !== "installment"}>

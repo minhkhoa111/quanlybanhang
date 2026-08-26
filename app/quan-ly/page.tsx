@@ -9,6 +9,6 @@ export const metadata: Metadata = {
 };
 
 export default async function ProductManagementEntry() {
-  await requireAdminPage();
-  redirect("/admin/products");
+  const user = await requireAdminPage();
+  redirect(user.role === "owner" ? "/admin" : user.role === "manager" ? "/manger" : "/staff");
 }

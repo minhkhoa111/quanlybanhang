@@ -193,7 +193,7 @@ function orderStatusLabel(status?: string) {
 }
 
 function paymentStatusLabel(status?: string) {
-  return ({ unpaid: "chưa thanh toán", paid: "đã thanh toán", pending: "đang kiểm tra", failed: "thanh toán lỗi", refunded: "đã hoàn tiền" } as Record<string, string>)[status ?? ""] || "chưa cập nhật";
+  return ({ not_required: "không cần thanh toán, đang chờ nhân viên tư vấn", unpaid: "chưa thanh toán", paid: "đã thanh toán", pending: "đang kiểm tra", failed: "thanh toán lỗi", refunded: "đã hoàn tiền" } as Record<string, string>)[status ?? ""] || "chưa cập nhật";
 }
 
 function validMessage(value: unknown): value is ChatMessage {

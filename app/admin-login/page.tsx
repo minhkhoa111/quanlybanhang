@@ -15,7 +15,8 @@ export default async function AdminLoginPage({
 }: {
   searchParams: Promise<{ error?: string; returnTo?: string; status?: string }>;
 }) {
-  if (await currentAdminUser()) redirect("/admin");
+  const currentUser = await currentAdminUser();
+  if (currentUser) redirect(currentUser.role === "owner" ? "/admin" : currentUser.role === "manager" ? "/manger" : "/staff");
   const query = await searchParams;
   const returnTo = query.returnTo?.startsWith("/admin") ? query.returnTo : "/admin";
 

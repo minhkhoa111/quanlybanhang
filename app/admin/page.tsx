@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { requireAdminPage } from "@/app/admin-auth";
 import { getAdminUsers } from "@/db/admin-users";
 import { getBranches } from "@/db/branches";
@@ -14,6 +15,8 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminDashboardPage() {
   const currentUser = await requireAdminPage("/admin");
+  if (currentUser.role === "manager") redirect("/manger");
+  if (currentUser.role !== "owner") redirect("/staff");
   const [products, orders, viewStats, branches, staff, conversations] = await Promise.all([
     getManagedProducts(),
     getReportingOrders().catch(() => []),

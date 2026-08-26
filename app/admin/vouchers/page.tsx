@@ -1,10 +1,11 @@
 import { getManagedVouchers } from "@/db/vouchers";
 import { deleteVoucherAction, saveVoucherAction, toggleVoucherAction } from "./actions";
 import { formatMoney } from "../utils";
+import { requireOwnerPage } from "@/app/admin-auth";
 
 export const dynamic = "force-dynamic";
 export default async function VoucherPage({ searchParams }: { searchParams: Promise<{ status?: string; error?: string }> }) {
-  const query = await searchParams; const vouchers = await getManagedVouchers().catch(() => []);
+  await requireOwnerPage("/admin/vouchers"); const query = await searchParams; const vouchers = await getManagedVouchers().catch(() => []);
   return <><div className="admin-topline"><div><span>Khuyến mãi</span><h1>Quản lý voucher</h1></div></div>
     {query.status && <p className="admin-alert success">Đã lưu voucher.</p>}{query.error && <p className="admin-alert error">{query.error}</p>}
     <section className="admin-card"><div className="admin-card-head"><div><span>Tạo mã mới</span><h2>Thiết lập ưu đãi</h2></div></div><form action={saveVoucherAction} className="admin-form-grid">

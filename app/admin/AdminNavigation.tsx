@@ -14,8 +14,8 @@ const groups: NavGroup[] = [
   { label: "Bán hàng & khách hàng", items: [
     { icon: "▤", label: "Đơn hàng", href: "/admin/orders", roles: ["owner", "manager", "sales", "warranty", "repair"] },
     { icon: "✦", label: "Tư vấn trực tiếp", href: "/admin/live-chat", roles: ["owner", "manager", "consultant"] },
-    { icon: "♙", label: "Khách hàng", href: "/admin/customers", roles: ["owner", "manager", "sales", "consultant"] },
-    { icon: "◇", label: "Khuyến mãi & voucher", href: "/admin/vouchers", roles: ["owner", "manager", "sales"] },
+    { icon: "♙", label: "Member khách hàng", href: "/admin/customers", roles: ["owner"] },
+    { icon: "◇", label: "Khuyến mãi & voucher", href: "/admin/vouchers", roles: ["owner"] },
   ] },
   { label: "Sản phẩm & kho", roles: ["owner", "manager", "sales"], items: [
     { icon: "▦", label: "Danh mục sản phẩm", href: "/admin/products" },
@@ -26,6 +26,8 @@ const groups: NavGroup[] = [
     { icon: "⌘", label: "Hệ thống chi nhánh", href: "/admin/branches", roles: ["owner"] },
     { icon: "♧", label: "Hồ sơ nhân sự", href: "/admin/hr", roles: ["owner", "manager"] },
     { icon: "⚿", label: "Tài khoản & phân quyền", href: "/admin/staff", roles: ["owner"] },
+    { icon: "▤", label: "Kiểm kê lương tháng", href: "/admin/payroll", roles: ["owner"] },
+    { icon: "％", label: "Báo cáo thuế", href: "/admin/tax", roles: ["owner"] },
   ] },
   { label: "Chấm công", items: [
     { icon: "◷", label: "Chấm công nhân viên", href: "/admin/attendance" },

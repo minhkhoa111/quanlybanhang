@@ -46,6 +46,7 @@ export default async function AdminOrderDetailPage({ params, searchParams }: { p
     : 0;
   const invoiceTotal = order.invoiceTaxIncluded ? total : total + taxAmount;
   const warrantyPolicy = order.warrantyPolicy || DEFAULT_WARRANTY_POLICY;
+  const isStoreConsultation = order.deliveryMethod === "Đến cửa hàng xem máy";
 
   return (
     <>
@@ -58,6 +59,7 @@ export default async function AdminOrderDetailPage({ params, searchParams }: { p
       </div>
       {query.status && <p className="admin-alert success">{query.status === "invoice-saved" ? "Đã lưu thông tin hóa đơn và bảo hành." : query.status === "assigned" ? "Đã cập nhật chi nhánh và nhân viên phụ trách." : "Đã cập nhật đơn hàng."}</p>}
       {query.error && <p className="admin-alert error">{query.error}</p>}
+      {isStoreConsultation && <p className="admin-alert success">Yêu cầu xem máy tại {order.branchName || "chi nhánh đã chọn"} · Không thu tiền ở bước tiếp nhận · Nhân viên cần liên hệ tư vấn và xác nhận tồn kho.</p>}
       <section className="admin-order-detail">
         <div className="admin-card">
           <div className="admin-card-head"><div><span>Thông tin đơn</span><h2>{formatDateTime(order.createdAt)}</h2></div></div>
@@ -67,9 +69,10 @@ export default async function AdminOrderDetailPage({ params, searchParams }: { p
             <p><span>Phone</span><a href={`tel:${order.phone}`}>{order.phone}</a></p>
             <p><span>Email</span>{order.email || "Không có"}</p>
             <p><span>Payment method</span>{order.paymentMethod || "Chưa chọn"}</p>
+            <p><span>Loại yêu cầu</span><strong>{isStoreConsultation ? "Xem máy tại cửa hàng" : "Đặt hàng online"}</strong></p>
             <p><span>Tài khoản khách hàng</span>{order.customerId ? `#${order.customerId.slice(0, 8)}` : "Khách mua nhanh"}</p>
             <p><span>Voucher</span>{order.voucherCode || "Không sử dụng"}</p>
-            <p className="admin-span-2"><span>Shipping address</span>{order.address || "Nhận tại cửa hàng"}</p>
+            <p className="admin-span-2"><span>{isStoreConsultation ? "Chi nhánh tiếp nhận" : "Shipping address"}</span>{isStoreConsultation ? `${order.branchName} · ${order.address}` : order.address}</p>
             <p className="admin-span-2"><span>Note</span>{order.note || "Không có ghi chú"}</p>
           </div>
         </div>

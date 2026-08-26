@@ -28,7 +28,7 @@ export default async function AdminOrdersPage({
       <form className="admin-toolbar">
         <input name="q" defaultValue={query.q} placeholder="Mã đơn, khách hàng, số điện thoại..." />
         <select name="status" defaultValue={query.status ?? ""}><option value="">Tất cả trạng thái</option>{["pending", "confirmed", "processing", "shipping", "delivered", "cancelled", "returned"].map((status) => <option key={status} value={status}>{statusLabel(status)}</option>)}</select>
-        <select name="paymentStatus" defaultValue={query.paymentStatus ?? ""}><option value="">Thanh toán</option>{["unpaid", "paid", "refunded", "failed"].map((status) => <option key={status} value={status}>{statusLabel(status)}</option>)}</select>
+        <select name="paymentStatus" defaultValue={query.paymentStatus ?? ""}><option value="">Thanh toán</option>{["not_required", "unpaid", "paid", "refunded", "failed"].map((status) => <option key={status} value={status}>{statusLabel(status)}</option>)}</select>
         <select name="paymentMethod" defaultValue={query.paymentMethod ?? ""}><option value="">Phương thức</option>{paymentMethods.map((method) => <option key={method} value={method}>{method}</option>)}</select>
         {user.role === "owner" && <select name="branch" defaultValue={query.branch ?? ""}><option value="">Tất cả chi nhánh</option><option value="unassigned">Chưa phân bổ</option>{branchOptions.map(([id, name]) => <option key={id} value={id}>{name}</option>)}</select>}
         <input type="date" name="from" defaultValue={query.from} />
@@ -43,7 +43,7 @@ export default async function AdminOrdersPage({
               <tr key={order.id}>
                 <td><strong>{order.orderCode}</strong><span>#{order.id.slice(0, 8)}</span></td>
                 <td><strong>{order.customerName}</strong><span>{order.phone}</span></td>
-                <td>{order.items.length > 1 ? `${order.items.length} dòng sản phẩm` : order.productName}<span>{order.quantity} sản phẩm{order.voucherCode ? ` · Voucher ${order.voucherCode}` : ""}</span></td>
+                <td>{order.items.length > 1 ? `${order.items.length} dòng sản phẩm` : order.productName}<span>{order.deliveryMethod === "Đến cửa hàng xem máy" ? "Yêu cầu xem máy & tư vấn" : `${order.quantity} sản phẩm${order.voucherCode ? ` · Voucher ${order.voucherCode}` : ""}`}</span></td>
                 <td><strong>{order.branchName || "Chưa phân bổ"}</strong><span>{order.assignedAdminName || "Chưa có nhân viên"}</span></td>
                 <td>{formatMoney(orderTotalNumber(order, products))}</td>
                 <td>{order.paymentMethod || "Chưa chọn"}{order.financeCompany && <span>{order.financeCompany} · {order.installmentTerm} tháng</span>}</td>
