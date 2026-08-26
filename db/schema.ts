@@ -94,7 +94,8 @@ export const employeePayrollRecords = sqliteTable("employee_payroll_records", {
 export const liveChatConversations = sqliteTable("live_chat_conversations", {
   id: text("id").primaryKey(), customerName: text("customer_name").notNull(), phone: text("phone").notNull(),
   token: text("token").notNull().unique(), status: text("status").notNull().default("waiting"),
-  assignedAdmin: text("assigned_admin").notNull().default(""), createdAt: integer("created_at").notNull(), updatedAt: integer("updated_at").notNull(),
+  assignedAdmin: text("assigned_admin").notNull().default(""), branchId: text("branch_id").notNull().default(""),
+  branchName: text("branch_name").notNull().default(""), createdAt: integer("created_at").notNull(), updatedAt: integer("updated_at").notNull(),
 });
 export const liveChatMessages = sqliteTable("live_chat_messages", {
   id: text("id").primaryKey(), conversationId: text("conversation_id").notNull(), sender: text("sender").notNull(),

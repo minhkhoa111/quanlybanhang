@@ -22,7 +22,7 @@ export default async function BranchPeoplePage({ params, searchParams }: { param
     <section className="admin-branch-summary"><article><span>Tổng nhân sự</span><strong>{employees.length}</strong></article><article><span>Đang làm việc</span><strong>{employees.filter((item) => item.active).length}</strong></article><article><span>Nhân sự cấp dưới</span><strong>{employees.filter((item) => item.role !== "manager").length}</strong></article></section>
 
     <section className="admin-card admin-staff-create">
-      <div className="admin-card-head"><div><span>Tạo tại chi nhánh</span><h2>Thêm nhân sự mới</h2></div><small>{actor.role === "manager" ? "Quản lý chỉ được tạo tài khoản cấp dưới" : "Chủ hệ thống được tạo mọi vai trò"}</small></div>
+      <div className="admin-card-head"><div><span>Tạo tại chi nhánh</span><h2>Thêm nhân sự mới</h2></div><small>{actor.role === "manager" ? "Quản lý chỉ được tạo tài khoản cấp dưới" : "Giám đốc được tạo mọi vai trò"}</small></div>
       <form action={createStaffAction} className="admin-staff-form">
         <input type="hidden" name="branchId" value={branch.id}/><input type="hidden" name="returnTo" value={`/admin/branches/${branch.id}`}/>
         <label className="admin-field"><span>Họ và tên</span><input name="name" required placeholder="Nguyễn Văn An"/></label>

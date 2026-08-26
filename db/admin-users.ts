@@ -122,7 +122,7 @@ export async function deleteAdminUserSession(token?: string) {
 
 export async function getAdminUsers() {
   await ensureAdminUserStore();
-  const result = await db().prepare("SELECT * FROM admin_users ORDER BY created_at DESC").all<AdminUserRow>();
+  const result = await db().prepare("SELECT * FROM admin_users ORDER BY CASE role WHEN 'manager' THEN 0 WHEN 'sales' THEN 1 WHEN 'consultant' THEN 2 WHEN 'warranty' THEN 3 WHEN 'repair' THEN 4 ELSE 5 END, active DESC, name ASC").all<AdminUserRow>();
   return result.results.map(mapAdminUser);
 }
 

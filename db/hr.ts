@@ -93,7 +93,7 @@ export async function getEmployeeDirectory(): Promise<Array<EmployeeProfile & { 
     FROM admin_users u
     LEFT JOIN employee_profiles p ON p.admin_user_id=u.id
     LEFT JOIN employee_attendance a ON a.admin_user_id=u.id AND a.work_date=?
-    ORDER BY u.active DESC,u.name ASC`).bind(today).all<Record<string, unknown>>();
+    ORDER BY CASE u.role WHEN 'manager' THEN 0 WHEN 'sales' THEN 1 WHEN 'consultant' THEN 2 WHEN 'warranty' THEN 3 WHEN 'repair' THEN 4 ELSE 5 END,u.active DESC,u.name ASC`).bind(today).all<Record<string, unknown>>();
   return Promise.all(rows.results.map(async (row) => {
     const profile = await mapProfile(row);
     const fields = [profile.dateOfBirth, profile.joinedDate, profile.citizenId, profile.permanentAddress, profile.photoKey, profile.bankName, profile.bankAccountName, profile.bankAccountNumber];
@@ -158,6 +158,20 @@ export async function getEmployeeAttendance(adminUserId: string, limit = 120) {
   await ensureHrStore();
   const rows = await database().prepare(`SELECT a.*,u.name employee_name,u.branch FROM employee_attendance a JOIN admin_users u ON u.id=a.admin_user_id WHERE a.admin_user_id=? ORDER BY a.work_date DESC LIMIT ?`)
     .bind(adminUserId, Math.min(366, Math.max(1, limit))).all<Record<string, unknown>>();
+  return rows.results.map(mapAttendance);
+}
+
+export async function getAttendanceForMonth(month: string) {
+  await ensureHrStore();
+  const normalizedMonth = /^\d{4}-(0[1-9]|1[0-2])$/.test(month) ? month : vietnamDate().slice(0, 7);
+  const firstDay = `${normalizedMonth}-01`;
+  const [year, monthNumber] = normalizedMonth.split("-").map(Number);
+  const lastDay = `${normalizedMonth}-${String(new Date(Date.UTC(year, monthNumber, 0)).getUTCDate()).padStart(2, "0")}`;
+  const rows = await database().prepare(`SELECT a.*,u.name employee_name,u.branch
+    FROM employee_attendance a
+    JOIN admin_users u ON u.id=a.admin_user_id
+    WHERE a.work_date BETWEEN ? AND ?
+    ORDER BY a.work_date DESC,u.name ASC`).bind(firstDay, lastDay).all<Record<string, unknown>>();
   return rows.results.map(mapAttendance);
 }
 

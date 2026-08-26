@@ -1,6 +1,6 @@
 import { requireOwnerPage } from "@/app/admin-auth";
 import { getBranches } from "@/db/branches";
-import { getEmployeeAttendance, getEmployeeDirectory } from "@/db/hr";
+import { getAttendanceForMonth, getEmployeeDirectory } from "@/db/hr";
 import { getPayrollRecords } from "@/db/payroll";
 import PayrollEditorForm from "./PayrollEditorForm";
 
@@ -10,13 +10,16 @@ export default async function PayrollPage({ searchParams }: { searchParams: Prom
   await requireOwnerPage("/admin/payroll");
   const query = await searchParams;
   const month = /^\d{4}-(0[1-9]|1[0-2])$/.test(query.month || "") ? query.month! : currentMonth();
-  const [allEmployees, records, branches] = await Promise.all([getEmployeeDirectory().catch(() => []), getPayrollRecords(month).catch(() => []), getBranches().catch(() => [])]);
+  const [allEmployees, records, branches, monthAttendance] = await Promise.all([
+    getEmployeeDirectory().catch(() => []),
+    getPayrollRecords(month).catch(() => []),
+    getBranches().catch(() => []),
+    getAttendanceForMonth(month).catch(() => []),
+  ]);
   const selectedBranch = branches.some((branch) => branch.id === query.branch) ? query.branch! : "";
   const employees = selectedBranch ? allEmployees.filter((employee) => employee.branchId === selectedBranch) : allEmployees;
-  const attendance = new Map(await Promise.all(employees.map(async (employee) => {
-    const rows = await getEmployeeAttendance(employee.adminUserId, 366).catch(() => []);
-    return [employee.adminUserId, rows.filter((row) => row.workDate.startsWith(`${month}-`))] as const;
-  })));
+  const attendance = new Map<string, typeof monthAttendance>();
+  monthAttendance.forEach((row) => attendance.set(row.adminUserId, [...(attendance.get(row.adminUserId) || []), row]));
   const recordMap = new Map(records.map((record) => [record.adminUserId, record]));
   const rows = employees.map((employee) => {
     const monthAttendance = attendance.get(employee.adminUserId) || [];

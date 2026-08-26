@@ -36,7 +36,7 @@ export async function requireOwnerPage(returnTo = "/admin/staff") {
 
 export async function requireOwnerAction() {
   const user = await requireAdminAction();
-  if (user.role !== "owner") throw new Error("Chỉ tài khoản chủ cửa hàng được quản lý nhân viên.");
+  if (user.role !== "owner") throw new Error("Chỉ tài khoản Giám đốc được thực hiện chức năng này.");
   return user;
 }
 
@@ -49,7 +49,7 @@ export async function requireHrManagerPage(returnTo = "/admin/hr") {
 export async function requireHrManagerAction() {
   const user = await requireAdminAction();
   if (user.role !== "owner" && user.role !== "manager") {
-    throw new Error("Chỉ chủ hệ thống hoặc quản lý chi nhánh được cập nhật hồ sơ nhân viên.");
+    throw new Error("Chỉ Giám đốc hoặc quản lý chi nhánh được cập nhật hồ sơ nhân viên.");
   }
   return user;
 }
@@ -70,7 +70,7 @@ export async function createAdminSession(username: string, password: string) {
   let authenticatedUser: AdminUser | undefined;
   if ((!normalizedUsername || normalizedUsername === "admin" || normalizedUsername === "owner") && password === getAdminPassword()) {
     token = await ownerSessionToken();
-    authenticatedUser = { id: "owner", username: "admin", name: "Chủ cửa hàng", role: "owner", branch: "Toàn hệ thống", branchId: "", active: true, createdAt: 0 };
+    authenticatedUser = { id: "owner", username: "admin", name: "Giám đốc", role: "owner", branch: "Toàn hệ thống", branchId: "", active: true, createdAt: 0 };
   } else {
     try {
       const user = await authenticateAdminUser(normalizedUsername, password);
@@ -124,7 +124,7 @@ async function adminUserFromCookie(): Promise<AdminUser | undefined> {
   const session = cookieStore.get(ADMIN_COOKIE)?.value;
   if (!session) return undefined;
   if (session === await ownerSessionToken()) {
-    return { id: "owner", username: "admin", name: "Chủ cửa hàng", role: "owner", branch: "Toàn hệ thống", branchId: "", active: true, createdAt: 0 };
+    return { id: "owner", username: "admin", name: "Giám đốc", role: "owner", branch: "Toàn hệ thống", branchId: "", active: true, createdAt: 0 };
   }
   try { return await adminUserFromSession(session); } catch { return undefined; }
 }

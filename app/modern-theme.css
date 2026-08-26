@@ -20,6 +20,10 @@
   --space-section: 72px;
 }
 
+/* Live consultation routed by branch */
+.admin-live-chat aside button em { display: inline-flex; width: fit-content; max-width: 100%; margin-top: 5px; padding: 3px 6px; overflow: hidden; border-radius: 999px; background: #e7f3ff; color: #0868c9; font-size: 8px; font-style: normal; font-weight: 850; text-overflow: ellipsis; white-space: nowrap; }
+.admin-live-chat > main > header div > b { width: fit-content; margin-top: 4px; padding: 4px 7px; border-radius: 7px; background: #eaf5ff; color: #0868c9; font-size: 9px; }
+
 .admin-quick-actions{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:17px 20px;background:linear-gradient(135deg,#101b2e,#172842);color:#fff}.admin-quick-actions>div{display:grid}.admin-quick-actions>div span{color:#8296b2;font-size:9px;font-weight:850;text-transform:uppercase}.admin-quick-actions>div strong{font-size:14px}.admin-quick-actions nav{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.admin-quick-actions a{padding:8px 11px;border:1px solid #ffffff17;border-radius:8px;background:#ffffff09;color:#c8d4e5;font-size:10px;font-weight:750}.admin-quick-actions a:hover{background:#ffffff14;color:#fff}@media(max-width:760px){.admin-quick-actions{align-items:flex-start;flex-direction:column}.admin-quick-actions nav{justify-content:flex-start}}
 body:has(.admin-console)>.site-header,body:has(.admin-console) .site-footer,body:has(.admin-console) .local-chatbot,body:has(.admin-console) .mobile-app-nav,body:has(.admin-console) .pwa-install{display:none!important}body:has(.admin-console){padding-bottom:0;background:#f3f5f8}.admin-console{min-height:100vh!important}
 .admin-staff-summary{grid-template-columns:repeat(3,1fr)!important}@media(max-width:900px){.admin-staff-summary{grid-template-columns:1fr 1fr!important}}

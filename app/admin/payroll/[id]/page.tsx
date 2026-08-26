@@ -23,7 +23,7 @@ export default async function PayrollReceiptPage({ params, searchParams }: { par
       <section className="admin-payroll-receipt-lines"><div><span>Lương cơ bản</span><strong>{money(record.baseSalary)}</strong></div><div><span>Thưởng lương</span><strong className="is-plus">+ {money(record.bonusAmount)}</strong></div><div><span>Khấu trừ BHXH</span><strong className="is-minus">− {money(record.socialInsuranceAmount)}</strong></div><div><span>Khấu trừ thuế TNCN</span><strong className="is-minus">− {money(record.personalIncomeTaxAmount)}</strong></div><div className="is-gross"><span>Tổng thu nhập trước khấu trừ</span><strong>{money(gross)}</strong></div><div className="is-net"><span>Thực nhận</span><strong>{money(record.payableAmount)}</strong></div></section>
       {record.note && <section className="admin-payroll-receipt-note"><span>Ghi chú</span><p>{record.note}</p></section>}
       <p className="admin-payroll-receipt-disclaimer">Phiếu này là chứng từ đối soát lương nội bộ, không phải hóa đơn giá trị gia tăng hoặc tờ khai thuế. Khoản BHXH và thuế TNCN được ghi nhận theo số liệu đã được bộ phận phụ trách xác nhận.</p>
-      <footer><div><strong>Người lập phiếu</strong><span>Ký và ghi rõ họ tên</span></div><div><strong>Người nhận lương</strong><span>Ký và ghi rõ họ tên</span></div><div><strong>Chủ hệ thống</strong><span>Ký và ghi rõ họ tên</span></div></footer>
+      <footer><div><strong>Người lập phiếu</strong><span>Ký và ghi rõ họ tên</span></div><div><strong>Người nhận lương</strong><span>Ký và ghi rõ họ tên</span></div><div><strong>Giám đốc</strong><span>Ký và ghi rõ họ tên</span></div></footer>
     </article>
   </>;
 }

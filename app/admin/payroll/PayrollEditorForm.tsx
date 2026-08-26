@@ -25,9 +25,9 @@ export default function PayrollEditorForm({ employee, month, selectedBranch, wor
     <div className="admin-payroll-person"><b>{employee.name.slice(0, 1).toUpperCase()}</b><div><strong>{employee.name}</strong><span>{roleLabel(employee.role)}</span><small>{employee.branch || "Chưa phân chi nhánh"}</small></div></div>
     <div className="admin-payroll-attendance"><span>Ngày công</span><strong>{workDays}</strong><small>{lateDays} ngày đi trễ</small></div>
     <div className="admin-payroll-base"><span>Lương cơ bản</span><strong>{money(employee.monthlySalary)}</strong><small>{employee.bankName || "Chưa có ngân hàng"} · {employee.bankAccountMasked}</small></div>
-    <label><span>Thưởng lương</span><input name="bonusAmount" type="number" min="0" step="1000" value={bonus} onChange={(event) => setBonus(numberValue(event.target.value))}/></label>
-    <label><span>BHXH khấu trừ</span><input name="socialInsuranceAmount" type="number" min="0" step="1000" value={socialInsurance} onChange={(event) => setSocialInsurance(numberValue(event.target.value))}/></label>
-    <label><span>Thuế TNCN</span><input name="personalIncomeTaxAmount" type="number" min="0" step="1000" value={personalIncomeTax} onChange={(event) => setPersonalIncomeTax(numberValue(event.target.value))}/></label>
+    <label><span>Thưởng lương</span><input name="bonusAmount" type="text" inputMode="numeric" value={numberInput(bonus)} onChange={(event) => setBonus(numberValue(event.target.value))}/></label>
+    <label><span>BHXH khấu trừ</span><input name="socialInsuranceAmount" type="text" inputMode="numeric" value={numberInput(socialInsurance)} onChange={(event) => setSocialInsurance(numberValue(event.target.value))}/></label>
+    <label><span>Thuế TNCN</span><input name="personalIncomeTaxAmount" type="text" inputMode="numeric" value={numberInput(personalIncomeTax)} onChange={(event) => setPersonalIncomeTax(numberValue(event.target.value))}/></label>
     <div className="admin-payroll-net"><span>Thực nhận</span><strong>{money(net)}</strong><small>{gross > 12_000_000 ? "Cần rà soát TNCN" : "Dưới ngưỡng rà soát nội bộ"}</small></div>
     <label><span>Trạng thái</span><select name="status" defaultValue={record?.status || "draft"}><option value="draft">Chưa thanh toán</option><option value="paid">Đã thanh toán</option></select></label>
     <label className="admin-payroll-note"><span>Ghi chú</span><input name="note" defaultValue={record?.note || ""} placeholder="Thưởng, khấu trừ, lý do..."/></label>
@@ -35,6 +35,7 @@ export default function PayrollEditorForm({ employee, month, selectedBranch, wor
   </form>;
 }
 
-function numberValue(value: string) { const parsed = Number(value); return Number.isFinite(parsed) ? Math.max(0, Math.round(parsed)) : 0; }
+function numberValue(value: string) { const parsed = Number(value.replace(/\D/g, "")); return Number.isFinite(parsed) ? Math.max(0, Math.round(parsed)) : 0; }
+function numberInput(value: number) { return Math.max(0, Math.round(value)).toLocaleString("vi-VN"); }
 function money(value: number) { return `${Math.max(0, Math.round(value)).toLocaleString("vi-VN")}đ`; }
 function roleLabel(role: string) { if (role === "manager") return "Quản lý chi nhánh"; if (role === "consultant") return "Nhân viên tư vấn"; if (role === "warranty") return "Nhân viên bảo hành"; if (role === "repair") return "Nhân viên sửa chữa"; return "Nhân viên bán hàng"; }

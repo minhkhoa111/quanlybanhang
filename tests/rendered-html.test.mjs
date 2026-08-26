@@ -661,3 +661,52 @@ test("groups payroll by branch and generates salary receipts with statutory dedu
   assert.match(styles, /\.admin-payroll-person > div > strong/);
   assert.match(styles, /\.admin-payroll-receipt/);
 });
+
+test("loads monthly payroll attendance with one database query", async () => {
+  const [page, hr] = await Promise.all([
+    readFile(new URL("app/admin/payroll/page.tsx", root), "utf8"),
+    readFile(new URL("db/hr.ts", root), "utf8"),
+  ]);
+  assert.match(page, /getAttendanceForMonth\(month\)/);
+  assert.doesNotMatch(page, /employees\.map\(async/);
+  assert.match(hr, /export async function getAttendanceForMonth/);
+  assert.match(hr, /WHERE a\.work_date BETWEEN \? AND \?/);
+});
+
+test("routes live consultation to the selected branch and gives the director a manager-first HR view", async () => {
+  const [customerChat, publicApi, adminApi, inbox, chatStore, schema, chatMigration, hrStore, hrPage, staffStore, demoMigration, auth, layout, moneyInput] = await Promise.all([
+    readFile(new URL("app/components/LiveSupportChat.tsx", root), "utf8"),
+    readFile(new URL("app/api/live-chat/route.ts", root), "utf8"),
+    readFile(new URL("app/api/admin/live-chat/route.ts", root), "utf8"),
+    readFile(new URL("app/admin/live-chat/LiveChatInbox.tsx", root), "utf8"),
+    readFile(new URL("db/live-chat.ts", root), "utf8"),
+    readFile(new URL("db/schema.ts", root), "utf8"),
+    readFile(new URL("drizzle/0010_live_chat_branches.sql", root), "utf8"),
+    readFile(new URL("db/hr.ts", root), "utf8"),
+    readFile(new URL("app/admin/hr/page.tsx", root), "utf8"),
+    readFile(new URL("db/admin-users.ts", root), "utf8"),
+    readFile(new URL("drizzle/0011_demo_employee_profiles.sql", root), "utf8"),
+    readFile(new URL("app/admin-auth.ts", root), "utf8"),
+    readFile(new URL("app/admin/layout.tsx", root), "utf8"),
+    readFile(new URL("app/admin/AdminMoneyInput.tsx", root), "utf8"),
+  ]);
+  assert.match(customerChat, /Chi nhánh cần tư vấn/);
+  assert.match(customerChat, /branchId/);
+  assert.match(publicApi, /getBranches\(false\)/);
+  assert.match(publicApi, /createLiveConversation\(name,phone,\{id:branch\.id,name:branch\.name\}\)/);
+  assert.match(adminApi, /admin\.role === "owner" \? "" : admin\.branchId/);
+  assert.match(adminApi, /role === "consultant"/);
+  assert.match(inbox, /branchName/);
+  assert.match(chatStore, /WHERE c\.branch_id=\?/);
+  assert.match(schema, /branchName: text\("branch_name"\)/);
+  assert.match(chatMigration, /live_chat_conversations_branch_idx/);
+  assert.match(hrStore, /CASE u\.role WHEN 'manager' THEN 0/);
+  assert.match(staffStore, /CASE role WHEN 'manager' THEN 0/);
+  assert.match(hrPage, /roleOrder\(left\.role\)/);
+  assert.match(auth, /name: "Giám đốc"/);
+  assert.match(layout, /return "Giám đốc"/);
+  for (const salary of ["38000000", "20000000", "15000000", "12000000"]) assert.match(demoMigration, new RegExp(salary));
+  assert.match(demoMigration, /printf\('079%09d'/);
+  assert.match(demoMigration, /bank_account_number_encrypted/);
+  assert.match(moneyInput, /toLocaleString\("vi-VN"\)/);
+});

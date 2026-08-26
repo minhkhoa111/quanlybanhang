@@ -32,7 +32,7 @@ export default async function CamerasPage({
           <p className="admin-subtitle">
             {isOwner
               ? "Theo dõi toàn hệ thống và kiểm soát chính xác nhân viên được xem camera của từng chi nhánh."
-              : "Bạn chỉ nhìn thấy camera đang hoạt động tại những chi nhánh được chủ hệ thống cấp quyền."}
+              : "Bạn chỉ nhìn thấy camera đang hoạt động tại những chi nhánh được Giám đốc cấp quyền."}
           </p>
         </div>
         <div className="camera-security-pill"><i /> Quyền truy cập được bảo vệ</div>
@@ -73,7 +73,7 @@ export default async function CamerasPage({
           <div className="admin-card camera-empty-state">
             <span className="camera-lens" aria-hidden="true" />
             <h2>{isOwner ? "Chưa có camera nào" : "Tài khoản chưa được cấp quyền camera"}</h2>
-            <p>{isOwner ? "Thêm camera đầu tiên bằng biểu mẫu quản lý phía dưới." : "Vui lòng liên hệ chủ hệ thống để được cấp quyền xem camera của chi nhánh phù hợp."}</p>
+            <p>{isOwner ? "Thêm camera đầu tiên bằng biểu mẫu quản lý phía dưới." : "Vui lòng liên hệ Giám đốc để được cấp quyền xem camera của chi nhánh phù hợp."}</p>
           </div>
         )}
       </section>

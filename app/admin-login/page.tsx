@@ -31,7 +31,7 @@ export default async function AdminLoginPage({
             <p>Đơn hàng, sản phẩm, khách hàng, tư vấn trực tiếp, nhân sự và camera chi nhánh được bảo vệ theo từng vai trò.</p>
           </div>
           <ul>
-            <li><i>✓</i><span><strong>Chủ hệ thống</strong><small>Quản lý toàn bộ chi nhánh và phân quyền nhân viên</small></span></li>
+            <li><i>✓</i><span><strong>Giám đốc</strong><small>Quản lý toàn bộ chi nhánh và phân quyền nhân viên</small></span></li>
             <li><i>✓</i><span><strong>Nhân viên cửa hàng</strong><small>Chỉ sử dụng chức năng và dữ liệu được phép truy cập</small></span></li>
           </ul>
           <p className="admin-login-secure"><i /> Phiên đăng nhập được bảo vệ bằng cookie HTTP-only</p>
@@ -39,9 +39,9 @@ export default async function AdminLoginPage({
 
         <div className="admin-login-panel">
           <div>
-            <p className="eyebrow">Chủ hệ thống &amp; nhân viên</p>
+            <p className="eyebrow">Giám đốc &amp; nhân viên</p>
             <h2>Đăng nhập</h2>
-            <p>Sử dụng tài khoản quản trị hoặc tài khoản nhân viên do chủ hệ thống cấp.</p>
+            <p>Sử dụng tài khoản quản trị hoặc tài khoản nhân viên do Giám đốc cấp.</p>
           </div>
 
           {query.status === "signed-out" && (
@@ -64,7 +64,7 @@ export default async function AdminLoginPage({
             <button type="submit" className="button button-primary">Đăng nhập hệ thống <span>→</span></button>
           </form>
 
-          <div className="admin-login-help"><span>Nhân viên chưa có tài khoản?</span><small>Liên hệ chủ hệ thống để được tạo tài khoản và phân chi nhánh.</small></div>
+          <div className="admin-login-help"><span>Nhân viên chưa có tài khoản?</span><small>Liên hệ Giám đốc để được tạo tài khoản và phân chi nhánh.</small></div>
           <Link className="text-link admin-login-back" href="/">← Quay lại cửa hàng</Link>
         </div>
       </section>

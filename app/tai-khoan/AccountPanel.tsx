@@ -215,7 +215,7 @@ export default function AccountPanel() {
 
 function errorMessage(error: string | null) {
   if (error === "admin-only") {
-    return "Khu vực quản lý chỉ dành cho chủ cửa hàng và nhân viên được cấp quyền.";
+    return "Khu vực quản lý chỉ dành cho Giám đốc và nhân viên được cấp quyền.";
   }
   if (error === "google-config") return "Đăng nhập Google chưa được cấu hình trên hệ thống.";
   if (error === "google") return "Không thể đăng nhập Google. Vui lòng thử lại.";

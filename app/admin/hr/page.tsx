@@ -24,14 +24,14 @@ export default async function HrPage({ searchParams }: { searchParams: Promise<H
     if (selectedStatus === "incomplete" && item.profileScore === 100) return false;
     if (keyword && !`${item.name} ${item.username}`.toLocaleLowerCase("vi-VN").includes(keyword)) return false;
     return true;
-  });
+  }).sort((left, right) => roleOrder(left.role) - roleOrder(right.role) || left.name.localeCompare(right.name, "vi"));
   const todayWorking = employees.filter((item) => item.todayStatus === "present" || item.todayStatus === "late").length;
   const completeProfiles = employees.filter((item) => item.profileScore === 100).length;
 
   return (
     <>
       <div className="admin-topline admin-hr-heading">
-        <div><span>Human Resources</span><h1>Hồ sơ nhân sự</h1><p className="admin-subtitle">{user.role === "owner" ? "Quản lý hồ sơ nhân viên trên toàn hệ thống." : `Quản lý ảnh và thông tin nhân viên tại ${user.branch}.`}</p></div>
+        <div><span>Human Resources</span><h1>Hồ sơ nhân sự</h1><p className="admin-subtitle">{user.role === "owner" ? "Góc nhìn Giám đốc: quản lý chi nhánh được ưu tiên hiển thị ở đầu danh sách." : `Quản lý ảnh và thông tin nhân viên tại ${user.branch}.`}</p></div>
         <div className="admin-actions-row"><Link className="admin-button" href="/admin/attendance">Bảng chấm công</Link>{user.role === "owner" && <Link className="admin-button admin-button-primary" href="/admin/staff">＋ Tạo tài khoản nhân viên</Link>}</div>
       </div>
       {query.error && <p className="admin-alert error">{query.error}</p>}
@@ -85,3 +85,4 @@ function uniqueBranches(employees: Array<{ branchId: string; branch: string }>) 
   employees.forEach((employee) => { if (employee.branchId && employee.branch) branches.set(employee.branchId, employee.branch); });
   return [...branches].map(([id, name]) => ({ id, name })).sort((left, right) => left.name.localeCompare(right.name, "vi"));
 }
+function roleOrder(role: string) { return role === "manager" ? 0 : role === "sales" ? 1 : role === "consultant" ? 2 : role === "warranty" ? 3 : role === "repair" ? 4 : 5; }

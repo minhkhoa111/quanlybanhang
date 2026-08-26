@@ -22,7 +22,7 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
     getManagedProducts(),
     getBranches().catch(() => []),
     getAdminUsers().catch(() => []),
-    getAdminConversations().catch(() => []),
+    getAdminConversations(user.role === "manager" ? user.branchId : "").catch(() => []),
   ]);
   const requestedBranch = user.role === "manager" ? user.branchId : query.branch || "";
   const branchScopeId = branches.some((item) => item.id === requestedBranch) ? requestedBranch : "";

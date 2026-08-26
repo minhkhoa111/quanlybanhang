@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { canManageEmployee, requireHrManagerPage } from "@/app/admin-auth";
 import { getEmployeeAttendance, getEmployeeProfile, vietnamDate } from "@/db/hr";
+import AdminMoneyInput from "@/app/admin/AdminMoneyInput";
 import { formatMoney } from "../../utils";
 import { saveAttendanceAction, saveEmployeeProfileAction } from "../actions";
 
@@ -60,7 +61,7 @@ export default async function EmployeeProfilePage({ params, searchParams }: { pa
           <label className="admin-field"><span>Ngân hàng</span><input name="bankName" defaultValue={employee.bankName} placeholder="VD: Techcombank" /></label>
           <label className="admin-field"><span>Số tài khoản</span><input name="bankAccountNumber" defaultValue={employee.bankAccountNumber} inputMode="numeric" autoComplete="off" /></label>
           <label className="admin-field"><span>Tên chủ tài khoản</span><input name="bankAccountName" defaultValue={employee.bankAccountName} placeholder="NGUYEN VAN AN" /></label>
-          <label className="admin-field"><span>Lương cơ bản hàng tháng</span><input name="monthlySalary" type="number" min="0" step="100000" defaultValue={employee.monthlySalary || ""} placeholder="12000000" /></label>
+          <label className="admin-field"><span>Lương cơ bản hàng tháng</span><AdminMoneyInput name="monthlySalary" initialValue={employee.monthlySalary} placeholder="12.000.000" /></label>
         </div></fieldset>
         <div className="admin-form-actions"><button className="admin-button admin-button-primary" type="submit">Lưu hồ sơ nhân sự</button></div>
       </form>
