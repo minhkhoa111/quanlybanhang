@@ -679,6 +679,19 @@ test("loads monthly payroll attendance with one database query", async () => {
   assert.match(loading, /Đang tải bảng lương/);
 });
 
+test("keeps operational portals out of storefront reveal motion", async () => {
+  const [motionSystem, motionStyles] = await Promise.all([
+    readFile(new URL("app/components/MotionSystem.tsx", root), "utf8"),
+    readFile(new URL("app/motion.css", root), "utf8"),
+  ]);
+  assert.match(motionSystem, /operationalPortal/);
+  assert.match(motionSystem, /route-stage-static/);
+  assert.doesNotMatch(motionSystem, /"\.admin-card"/);
+  assert.doesNotMatch(motionSystem, /"\.admin-metric"/);
+  assert.match(motionStyles, /\.route-stage-static/);
+  assert.match(motionStyles, /animation: none/);
+});
+
 test("routes live consultation to the selected branch and gives the director a manager-first HR view", async () => {
   const [customerChat, publicApi, adminApi, inbox, chatStore, schema, chatMigration, hrStore, hrPage, staffStore, demoMigration, auth, layout, moneyInput] = await Promise.all([
     readFile(new URL("app/components/LiveSupportChat.tsx", root), "utf8"),

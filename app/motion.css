@@ -9,6 +9,12 @@
   animation: route-enter .52s var(--motion-spring) both;
 }
 
+.route-stage-static {
+  opacity: 1;
+  transform: none;
+  animation: none;
+}
+
 @keyframes route-enter {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }

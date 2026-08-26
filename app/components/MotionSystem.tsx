@@ -12,15 +12,14 @@ const revealSelector = [
   ".decision-list > *",
   ".footer-grid > *",
   ".finance-partner",
-  ".admin-metric",
-  ".admin-card",
-  ".admin-table-wrap",
 ].join(",");
 
 export default function MotionSystem({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const operationalPortal = /^\/(admin(?:\/|$)|manger(?:\/|$)|staff(?:\/|$)|quan-ly(?:\/|$))/.test(pathname || "");
 
   useEffect(() => {
+    if (operationalPortal) return;
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const elements = Array.from(document.querySelectorAll<HTMLElement>(revealSelector));
 
@@ -49,7 +48,7 @@ export default function MotionSystem({ children }: { children: React.ReactNode }
 
     elements.forEach((element) => observer.observe(element));
     return () => observer.disconnect();
-  }, [pathname]);
+  }, [pathname, operationalPortal]);
 
-  return <div key={pathname || "page"} className="route-stage">{children}</div>;
+  return <div key={pathname || "page"} className={operationalPortal ? "route-stage route-stage-static" : "route-stage"}>{children}</div>;
 }
