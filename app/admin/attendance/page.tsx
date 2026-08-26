@@ -2,7 +2,8 @@ import Link from "next/link";
 import { requireAdminPage } from "@/app/admin-auth";
 import { getAdminUsers } from "@/db/admin-users";
 import { getAttendanceForDate, getEmployeeAttendance, vietnamDate } from "@/db/hr";
-import { selfAttendanceAction } from "../hr/actions";
+import { getAttendancePasskeys } from "@/db/attendance-passkeys";
+import BiometricAttendance from "./BiometricAttendance";
 
 export const dynamic = "force-dynamic";
 
@@ -10,10 +11,11 @@ export default async function AttendancePage({ searchParams }: { searchParams: P
   const [user, query] = await Promise.all([requireAdminPage("/admin/attendance"), searchParams]);
   const selectedDate = /^\d{4}-\d{2}-\d{2}$/.test(query.date || "") ? query.date! : vietnamDate();
   const isSupervisor = user.role === "owner" || user.role === "manager";
-  const [allStaff, dateRecords, ownRecords] = await Promise.all([
+  const [allStaff, dateRecords, ownRecords, ownPasskeys] = await Promise.all([
     isSupervisor ? getAdminUsers().catch(() => []) : Promise.resolve([]),
     isSupervisor ? getAttendanceForDate(selectedDate).catch(() => []) : Promise.resolve([]),
     user.role !== "owner" ? getEmployeeAttendance(user.id, 31).catch(() => []) : Promise.resolve([]),
+    !isSupervisor ? getAttendancePasskeys(user.id).catch(() => []) : Promise.resolve([]),
   ]);
   const staff = user.role === "owner" ? allStaff : allStaff.filter((item) => item.branchId === user.branchId);
   const records = user.role === "owner" ? dateRecords : dateRecords.filter((item) => staff.some((employee) => employee.id === item.adminUserId));
@@ -33,8 +35,10 @@ export default async function AttendancePage({ searchParams }: { searchParams: P
         <article className="admin-card"><span>Ngày làm việc</span><strong>{formatDate(vietnamDate())}</strong><small>{ownToday ? attendanceLabel(ownToday.status) : "Chưa chấm công"}</small></article>
         <article className="admin-card"><span>Giờ vào</span><strong>{ownToday?.checkIn || "--:--"}</strong><small>{ownToday?.checkIn ? "Đã ghi nhận" : "Chưa ghi nhận"}</small></article>
         <article className="admin-card"><span>Giờ ra</span><strong>{ownToday?.checkOut || "--:--"}</strong><small>{ownToday?.checkOut ? "Đã hoàn thành ngày công" : "Chưa ghi nhận"}</small></article>
-        <article className="admin-card admin-attendance-actions"><form action={selfAttendanceAction}><input type="hidden" name="mode" value="in" /><button className="admin-button admin-button-primary" disabled={Boolean(ownToday?.checkIn)}>Chấm công vào</button></form><form action={selfAttendanceAction}><input type="hidden" name="mode" value="out" /><button className="admin-button" disabled={!ownToday?.checkIn || Boolean(ownToday?.checkOut)}>Chấm công ra</button></form></article>
+        <article className="admin-card admin-attendance-actions"><span>Bảo mật chấm công</span><strong>{ownPasskeys.length ? "Sinh trắc học đã sẵn sàng" : "Cần đăng ký thiết bị"}</strong><small>{ownPasskeys.length ? "Dùng nút quét bên dưới" : "Đăng ký Face ID/vân tay một lần"}</small></article>
       </section>}
+
+      {!isSupervisor && <BiometricAttendance registeredDevices={ownPasskeys.length} checkedIn={Boolean(ownToday?.checkIn)} checkedOut={Boolean(ownToday?.checkOut)} />}
 
       {isSupervisor ? <>
         <form className="admin-report-filters admin-attendance-filter"><label><span>Ngày theo dõi</span><input type="date" name="date" defaultValue={selectedDate} /></label><button className="admin-button admin-button-primary">Xem chấm công</button></form>

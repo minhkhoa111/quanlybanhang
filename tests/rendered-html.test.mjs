@@ -438,8 +438,8 @@ test("provides protected employee profiles, payroll details and attendance", asy
   assert.match(profile, /Hộ khẩu thường trú/);
   assert.match(profile, /Tài khoản nhận lương/);
   assert.match(profile, /Lịch sử chấm công/);
-  assert.match(attendance, /Chấm công vào/);
-  assert.match(attendance, /Chấm công ra/);
+  assert.match(attendance, /chấm công vào/i);
+  assert.match(attendance, /chấm công ra/i);
   assert.match(store, /AES-GCM/);
   assert.match(store, /citizen_id_encrypted/);
   assert.match(store, /bank_account_number_encrypted/);
@@ -457,6 +457,33 @@ test("provides protected employee profiles, payroll details and attendance", asy
   assert.match(navigation, /"warranty", "repair"/);
   assert.match(orderActions, /user\.role === "warranty"/);
   assert.match(orderActions, /user\.role === "repair"/);
+});
+
+test("requires device biometrics for employee self attendance", async () => {
+  const [component, page, optionsRoute, verifyRoute, passkeyStore, schema, migration, actions] = await Promise.all([
+    readFile(new URL("app/admin/attendance/BiometricAttendance.tsx", root), "utf8"),
+    readFile(new URL("app/admin/attendance/page.tsx", root), "utf8"),
+    readFile(new URL("app/api/admin/attendance/passkey/options/route.ts", root), "utf8"),
+    readFile(new URL("app/api/admin/attendance/passkey/verify/route.ts", root), "utf8"),
+    readFile(new URL("db/attendance-passkeys.ts", root), "utf8"),
+    readFile(new URL("db/schema.ts", root), "utf8"),
+    readFile(new URL("drizzle/0007_attendance_passkeys.sql", root), "utf8"),
+    readFile(new URL("app/admin/hr/actions.ts", root), "utf8"),
+  ]);
+
+  assert.match(page, /BiometricAttendance/);
+  assert.match(component, /startRegistration/);
+  assert.match(component, /startAuthentication/);
+  assert.match(component, /không nhận hay lưu ảnh khuôn mặt/i);
+  assert.match(optionsRoute, /userVerification: "required"/);
+  assert.match(optionsRoute, /authenticatorAttachment: "platform"/);
+  assert.match(verifyRoute, /requireUserVerification: true/);
+  assert.match(verifyRoute, /employeeCheck\(user\.id, mode/);
+  assert.match(passkeyStore, /employee_attendance_passkeys/);
+  assert.match(passkeyStore, /expires_at/);
+  assert.match(schema, /employeeAttendancePasskeys/);
+  assert.match(migration, /employee_attendance_challenges/);
+  assert.doesNotMatch(actions, /selfAttendanceAction/);
 });
 
 test("stores member invoices and warranty records behind customer ownership checks", async () => {

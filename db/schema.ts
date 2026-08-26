@@ -70,6 +70,18 @@ export const employeeAttendance = sqliteTable("employee_attendance", {
   note: text("note").notNull().default(""), recordedBy: text("recorded_by").notNull().default(""), createdAt: integer("created_at").notNull(), updatedAt: integer("updated_at").notNull(),
 });
 
+export const employeeAttendancePasskeys = sqliteTable("employee_attendance_passkeys", {
+  id: text("id").primaryKey(), adminUserId: text("admin_user_id").notNull(), publicKey: text("public_key").notNull(),
+  counter: integer("counter").notNull().default(0), transportsJson: text("transports_json").notNull().default("[]"),
+  deviceType: text("device_type").notNull().default("singleDevice"), backedUp: integer("backed_up").notNull().default(0),
+  createdAt: integer("created_at").notNull(), lastUsedAt: integer("last_used_at").notNull().default(0),
+});
+
+export const employeeAttendanceChallenges = sqliteTable("employee_attendance_challenges", {
+  id: text("id").primaryKey(), adminUserId: text("admin_user_id").notNull(), kind: text("kind").notNull(),
+  challenge: text("challenge").notNull(), expiresAt: integer("expires_at").notNull(), createdAt: integer("created_at").notNull(),
+});
+
 export const liveChatConversations = sqliteTable("live_chat_conversations", {
   id: text("id").primaryKey(), customerName: text("customer_name").notNull(), phone: text("phone").notNull(),
   token: text("token").notNull().unique(), status: text("status").notNull().default("waiting"),

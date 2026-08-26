@@ -3,8 +3,8 @@
 import { env } from "cloudflare:workers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { requireAdminAction, requireOwnerAction } from "@/app/admin-auth";
-import { employeeCheck, getEmployeeProfile, saveAttendance, saveEmployeeProfile, vietnamDate } from "@/db/hr";
+import { requireOwnerAction } from "@/app/admin-auth";
+import { getEmployeeProfile, saveAttendance, saveEmployeeProfile, vietnamDate } from "@/db/hr";
 
 type Bindings = { PRODUCT_IMAGES?: R2Bucket };
 
@@ -75,20 +75,6 @@ export async function saveAttendanceAction(formData: FormData) {
   revalidatePath("/admin/attendance");
   revalidatePath(`/admin/hr/${adminUserId}`);
   redirect(`/admin/hr/${adminUserId}?status=attendance-saved`);
-}
-
-export async function selfAttendanceAction(formData: FormData) {
-  const user = await requireAdminAction();
-  if (user.role === "owner") redirect("/admin/attendance");
-  const mode = value(formData, "mode") === "out" ? "out" : "in";
-  try {
-    await employeeCheck(user.id, mode, user.name);
-  } catch (error) {
-    redirect(`/admin/attendance?error=${encodeURIComponent(error instanceof Error ? error.message : "Không thể chấm công.")}`);
-  }
-  revalidatePath("/admin/attendance");
-  revalidatePath("/admin/hr");
-  redirect(`/admin/attendance?status=${mode === "in" ? "checked-in" : "checked-out"}`);
 }
 
 function value(formData: FormData, key: string) { const item = formData.get(key); return typeof item === "string" ? item.trim() : ""; }

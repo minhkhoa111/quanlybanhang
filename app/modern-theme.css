@@ -6099,3 +6099,48 @@ body:has(.admin-console) { background: #f4f7fb; }
   .member-invoice-document { max-width: none; padding: 10mm; border: 0; box-shadow: none; }
   .member-invoice-warranty, .member-invoice-parties { break-inside: avoid; }
 }
+
+/* Device biometric attendance */
+.biometric-attendance { margin: 18px 0; padding: 0 !important; overflow: hidden; border-color: #bfd8ec !important; background: linear-gradient(145deg, #fafdff, #eaf5ff) !important; }
+.biometric-heading { display: grid; grid-template-columns: 70px minmax(0, 1fr) auto; align-items: center; gap: 18px; padding: 25px; border-bottom: 1px solid #d3e4f1; }
+.biometric-mark { position: relative; display: grid; width: 64px; height: 64px; place-items: center; border-radius: 20px; background: #0868c9; color: #fff; box-shadow: 0 12px 28px rgba(8, 104, 201, .2); font-size: 28px; font-weight: 900; }
+.biometric-mark i { position: absolute; width: 17px; height: 17px; border-color: rgba(255,255,255,.9); border-style: solid; }
+.biometric-mark i:nth-child(1) { top: 14px; left: 14px; border-width: 2px 0 0 2px; border-radius: 6px 0 0; }
+.biometric-mark i:nth-child(2) { top: 14px; right: 14px; border-width: 2px 2px 0 0; border-radius: 0 6px 0 0; }
+.biometric-mark i:nth-child(3) { bottom: 14px; left: 14px; border-width: 0 0 2px 2px; border-radius: 0 0 0 6px; }
+.biometric-mark i:nth-child(4) { right: 14px; bottom: 14px; border-width: 0 2px 2px 0; border-radius: 0 0 6px; }
+.biometric-heading > div:nth-child(2) > span, .biometric-unsupported > div:last-child > span { color: #0868c9; font-size: 10px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.biometric-heading h2, .biometric-unsupported h2 { margin: 5px 0 5px; color: #18314e; font-size: 21px; }
+.biometric-heading p, .biometric-unsupported p { max-width: 720px; margin: 0; color: #65758a; font-size: 11px; line-height: 1.6; }
+.biometric-heading > em { padding: 7px 10px; border-radius: 999px; background: #fff1d9; color: #8a5a00; font-size: 9px; font-style: normal; font-weight: 900; white-space: nowrap; }
+.biometric-heading > em.is-ready { background: #dff7e9; color: #087443; }
+.biometric-setup { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 22px 25px; background: rgba(255,255,255,.68); }
+.biometric-setup strong { color: #203750; font-size: 13px; }
+.biometric-setup p { margin: 5px 0 0; color: #718095; font-size: 10px; line-height: 1.55; }
+.biometric-actions { display: grid; grid-template-columns: 1fr 1fr auto; gap: 12px; padding: 22px 25px; background: rgba(255,255,255,.68); }
+.biometric-actions > button:not(.biometric-remove) { display: grid; grid-template-columns: 42px 1fr; grid-template-rows: auto auto; align-items: center; gap: 2px 12px; min-height: 76px; padding: 13px 16px; border: 1px solid #bad4e9; border-radius: 14px; background: #fff; color: #1d344f; text-align: left; cursor: pointer; }
+.biometric-actions > button:not(.biometric-remove) > span { display: grid; grid-row: 1 / 3; width: 42px; height: 42px; place-items: center; border-radius: 12px; background: #e6f3ff; color: #0868c9; font-size: 20px; }
+.biometric-actions > button strong { font-size: 12px; }
+.biometric-actions > button small { color: #748398; font-size: 9px; }
+.biometric-actions > button:not(.biometric-remove):hover:not(:disabled) { border-color: #0868c9; box-shadow: 0 8px 24px rgba(8,104,201,.1); }
+.biometric-actions > button:disabled { cursor: not-allowed; opacity: .58; }
+.biometric-check-out > span { background: #edf7ef !important; color: #087443 !important; }
+.biometric-remove { align-self: center; padding: 8px; border: 0; background: transparent; color: #718095; cursor: pointer; font: inherit; font-size: 9px; font-weight: 850; }
+.biometric-remove:hover { color: #b42318; }
+.biometric-message { margin: 0; padding: 12px 25px; border-top: 1px solid #d5e4ef; font-size: 10px; font-weight: 750; }
+.biometric-message.is-success { background: #e7f8ef; color: #087443; }
+.biometric-message.is-error { background: #fff0ef; color: #b42318; }
+.biometric-attendance > footer { display: flex; flex-wrap: wrap; gap: 18px; padding: 11px 25px; border-top: 1px solid #d5e4ef; color: #718095; font-size: 9px; }
+.biometric-unsupported { display: grid; grid-template-columns: 64px 1fr; align-items: center; gap: 18px; padding: 25px !important; }
+.biometric-unsupported .biometric-mark { background: #8292a5; }
+
+@media (max-width: 760px) {
+  .biometric-heading { grid-template-columns: 58px 1fr; padding: 20px 16px; }
+  .biometric-mark { width: 54px; height: 54px; border-radius: 17px; }
+  .biometric-heading > em { grid-column: 1 / -1; justify-self: start; }
+  .biometric-setup { align-items: stretch; flex-direction: column; padding: 18px 16px; }
+  .biometric-actions { grid-template-columns: 1fr; padding: 18px 16px; }
+  .biometric-remove { justify-self: start; }
+  .biometric-attendance > footer { display: grid; gap: 6px; padding-inline: 16px; }
+  .biometric-unsupported { grid-template-columns: 54px 1fr; padding: 20px 16px !important; }
+}
