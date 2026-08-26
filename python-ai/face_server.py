@@ -4,8 +4,8 @@ Run locally:
     pip install -r requirements.txt
     FACE_API_KEY='change-me' uvicorn face_server:app --host 0.0.0.0 --port 8001
 
-The service never stores uploaded photos. It stores one 128-dimensional face
-encoding per employee in a local SQLite database.
+The service never stores uploaded photos. It stores one DeepFace embedding per
+employee in a local SQLite database.
 """
 
 from __future__ import annotations
@@ -21,8 +21,8 @@ import time
 from pathlib import Path
 from threading import Lock
 
-import face_recognition
 import numpy as np
+from deepface import DeepFace
 from fastapi import Depends, FastAPI, Header, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
@@ -33,7 +33,10 @@ APP_DIR = Path(__file__).resolve().parent
 DATA_DIR = Path(os.getenv("FACE_DATA_DIR", APP_DIR / "data")).resolve()
 DATABASE_PATH = DATA_DIR / "faces.sqlite3"
 MAX_IMAGE_BYTES = int(os.getenv("FACE_MAX_IMAGE_BYTES", str(8 * 1024 * 1024)))
-MATCH_THRESHOLD = float(os.getenv("FACE_MATCH_THRESHOLD", "0.5"))
+MODEL_NAME = os.getenv("FACE_MODEL_NAME", "Facenet512")
+DETECTOR_BACKEND = os.getenv("FACE_DETECTOR_BACKEND", "opencv")
+DISTANCE_METRIC = os.getenv("FACE_DISTANCE_METRIC", "cosine")
+MATCH_THRESHOLD = float(os.environ["FACE_MATCH_THRESHOLD"]) if os.getenv("FACE_MATCH_THRESHOLD") else None
 API_KEY = os.getenv("FACE_API_KEY", "")
 DATABASE_LOCK = Lock()
 
@@ -52,6 +55,16 @@ app.add_middleware(
     allow_methods=["GET", "POST", "DELETE"],
     allow_headers=["Content-Type", "X-API-Key"],
 )
+
+
+def require_api_key(x_api_key: str = Header(default="")) -> None:
+    if not API_KEY:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="FACE_API_KEY chưa được cấu hình trên máy chủ.",
+        )
+    if not hmac.compare_digest(x_api_key.encode("utf-8"), API_KEY.encode("utf-8")):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="API key không hợp lệ.")
 
 
 class FacePayload(BaseModel):
@@ -76,10 +89,12 @@ def initialize_database() -> None:
                 employee_id TEXT PRIMARY KEY,
                 encoding_json TEXT NOT NULL,
                 encoding_hash TEXT NOT NULL,
+                model_name TEXT NOT NULL DEFAULT '',
                 created_at INTEGER NOT NULL,
                 updated_at INTEGER NOT NULL
             )"""
         )
+        ensure_column(database, "employee_faces", "model_name", "TEXT NOT NULL DEFAULT ''")
 
 
 @app.get("/health")
@@ -98,13 +113,14 @@ def enroll(payload: FacePayload) -> dict[str, object]:
     now = int(time.time())
     with DATABASE_LOCK, connect() as database:
         database.execute(
-            """INSERT INTO employee_faces (employee_id,encoding_json,encoding_hash,created_at,updated_at)
-               VALUES (?,?,?,?,?)
+            """INSERT INTO employee_faces (employee_id,encoding_json,encoding_hash,model_name,created_at,updated_at)
+               VALUES (?,?,?,?,?,?)
                ON CONFLICT(employee_id) DO UPDATE SET
                  encoding_json=excluded.encoding_json,
                  encoding_hash=excluded.encoding_hash,
+                 model_name=excluded.model_name,
                  updated_at=excluded.updated_at""",
-            (employee_id, encoded_json, encoding_hash, now, now),
+            (employee_id, encoded_json, encoding_hash, MODEL_NAME, now, now),
         )
     return {"ok": True, "employee_id": employee_id, "message": "Đã đăng ký khuôn mặt nhân viên."}
 
@@ -114,17 +130,35 @@ def verify(payload: FacePayload) -> VerifyResponse:
     employee_id = clean_employee_id(payload.employee_id)
     with connect() as database:
         row = database.execute(
-            "SELECT encoding_json FROM employee_faces WHERE employee_id=? LIMIT 1",
+            "SELECT encoding_json,model_name FROM employee_faces WHERE employee_id=? LIMIT 1",
             (employee_id,),
         ).fetchone()
     if row is None:
         raise HTTPException(status_code=404, detail="Nhân viên chưa đăng ký khuôn mặt.")
 
-    known_encoding = np.asarray(json.loads(row[0]), dtype=np.float64)
+    if row[1] != MODEL_NAME:
+        raise HTTPException(status_code=409, detail="Dữ liệu khuôn mặt dùng model cũ. Vui lòng đăng ký lại.")
+
+    known_encoding = list(map(float, json.loads(row[0])))
     candidate_encoding = extract_single_face(payload.image_base64)
-    distance = float(face_recognition.face_distance([known_encoding], candidate_encoding)[0])
-    verified = distance <= MATCH_THRESHOLD
-    confidence = max(0.0, min(1.0, 1.0 - distance))
+    try:
+        result = DeepFace.verify(
+            img1_path=known_encoding,
+            img2_path=candidate_encoding.tolist(),
+            model_name=MODEL_NAME,
+            detector_backend="skip",
+            distance_metric=DISTANCE_METRIC,
+            enforce_detection=False,
+            align=False,
+            threshold=MATCH_THRESHOLD,
+            silent=True,
+        )
+    except (TypeError, ValueError) as error:
+        raise HTTPException(status_code=422, detail="Không thể đối chiếu khuôn mặt bằng DeepFace.") from error
+    distance = float(result.get("distance", 1.0))
+    verified = bool(result.get("verified", False))
+    deepface_confidence = float(result.get("confidence", max(0.0, 1.0 - distance) * 100))
+    confidence = max(0.0, min(1.0, deepface_confidence / 100))
     return VerifyResponse(
         verified=verified,
         employee_id=employee_id,
@@ -144,16 +178,6 @@ def delete_employee_face(employee_id: str) -> dict[str, object]:
     return {"ok": True, "employee_id": normalized_id, "message": "Đã xóa dữ liệu khuôn mặt."}
 
 
-def require_api_key(x_api_key: str = Header(default="")) -> None:
-    if not API_KEY:
-        raise HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="FACE_API_KEY chưa được cấu hình trên máy chủ.",
-        )
-    if not hmac.compare_digest(x_api_key.encode("utf-8"), API_KEY.encode("utf-8")):
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="API key không hợp lệ.")
-
-
 def extract_single_face(image_base64: str) -> np.ndarray:
     raw = decode_image(image_base64)
     try:
@@ -161,19 +185,27 @@ def extract_single_face(image_base64: str) -> np.ndarray:
             image = ImageOps.exif_transpose(source).convert("RGB")
             if image.width * image.height > 16_000_000:
                 image.thumbnail((4000, 4000))
-            pixels = np.asarray(image)
+            pixels = np.ascontiguousarray(np.asarray(image)[:, :, ::-1])
     except (UnidentifiedImageError, OSError, ValueError) as error:
         raise HTTPException(status_code=400, detail="Ảnh khuôn mặt không hợp lệ.") from error
 
-    locations = face_recognition.face_locations(pixels, model="hog")
-    if not locations:
-        raise HTTPException(status_code=422, detail="Không tìm thấy khuôn mặt trong ảnh.")
-    if len(locations) != 1:
+    try:
+        representations = DeepFace.represent(
+            img_path=pixels,
+            model_name=MODEL_NAME,
+            detector_backend=DETECTOR_BACKEND,
+            enforce_detection=True,
+            align=True,
+            max_faces=2,
+        )
+    except (TypeError, ValueError) as error:
+        raise HTTPException(status_code=422, detail="Không tìm thấy khuôn mặt hợp lệ trong ảnh.") from error
+    if len(representations) != 1:
         raise HTTPException(status_code=422, detail="Ảnh phải có đúng một khuôn mặt.")
-    encodings = face_recognition.face_encodings(pixels, known_face_locations=locations, num_jitters=1)
-    if not encodings:
+    embedding = representations[0].get("embedding")
+    if not isinstance(embedding, list) or not embedding:
         raise HTTPException(status_code=422, detail="Không thể trích xuất đặc trưng khuôn mặt.")
-    return encodings[0]
+    return np.asarray(embedding, dtype=np.float64)
 
 
 def decode_image(value: str) -> bytes:
@@ -200,3 +232,8 @@ def connect() -> sqlite3.Connection:
     database.execute("PRAGMA foreign_keys=ON")
     return database
 
+
+def ensure_column(database: sqlite3.Connection, table: str, column: str, definition: str) -> None:
+    columns = {str(row[1]) for row in database.execute(f"PRAGMA table_info({table})")}
+    if column not in columns:
+        database.execute(f"ALTER TABLE {table} ADD COLUMN {column} {definition}")
