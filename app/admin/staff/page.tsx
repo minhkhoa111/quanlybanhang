@@ -47,6 +47,7 @@ export default async function StaffPage({
           <label className="admin-field"><span>Chi nhánh</span><select name="branchId" required defaultValue=""><option value="" disabled>Chọn chi nhánh</option>{branches.map(branch=><option key={branch.id} value={branch.id}>{branch.name}</option>)}</select></label>
           <button className="admin-button admin-button-primary" type="submit" disabled={!branches.length}>Tạo tài khoản</button>
         </form>
+        <p className="admin-form-note">Nhân viên bảo hành và sửa chữa luôn được hệ thống đưa về Trung tâm bảo hành sửa chữa Apple.</p>
       </section>
 
       <section className="admin-card admin-staff-list">

@@ -12,6 +12,7 @@ export default async function BranchPeoplePage({ params, searchParams }: { param
   const branch = await getBranchById(id).catch(() => undefined);
   if (!branch || (actor.role === "manager" && actor.branchId !== branch.id)) notFound();
   const employees = (await getAdminUsers().catch(() => [])).filter((employee) => employee.branchId === branch.id && canManageEmployee(actor, employee));
+  const isServiceBranch = branch.code.toUpperCase().startsWith("BH") || branch.name.toLocaleUpperCase("vi-VN").includes("BẢO HÀNH");
 
   return <>
     <div className="admin-topline"><div><span>{branch.code} · {branch.active ? "Đang hoạt động" : "Tạm ngưng"}</span><h1>{branch.name}</h1><p className="admin-subtitle">{branch.address} · {branch.hours}</p></div><Link className="admin-button" href={actor.role === "owner" ? "/admin/branches" : "/manger"}>← Quay lại</Link></div>
@@ -28,7 +29,7 @@ export default async function BranchPeoplePage({ params, searchParams }: { param
         <label className="admin-field"><span>Họ và tên</span><input name="name" required placeholder="Nguyễn Văn An"/></label>
         <label className="admin-field"><span>Tên đăng nhập</span><input name="username" required minLength={4} placeholder="nhanvien.chinhanh" autoComplete="off"/></label>
         <label className="admin-field"><span>Mật khẩu ban đầu</span><input name="password" type="password" required minLength={8} autoComplete="new-password"/></label>
-        <label className="admin-field"><span>Vai trò</span><select name="role" defaultValue="sales"><option value="sales">Nhân viên bán hàng</option><option value="consultant">Nhân viên tư vấn</option><option value="warranty">Nhân viên bảo hành</option><option value="repair">Nhân viên sửa chữa</option>{actor.role === "owner" && <option value="manager">Quản lý chi nhánh</option>}</select></label>
+        <label className="admin-field"><span>Vai trò</span><select name="role" defaultValue={isServiceBranch ? "warranty" : "sales"}>{!isServiceBranch && <option value="sales">Nhân viên bán hàng</option>}{!isServiceBranch && <option value="consultant">Nhân viên tư vấn</option>}{isServiceBranch && <option value="warranty">Nhân viên bảo hành</option>}{isServiceBranch && <option value="repair">Nhân viên sửa chữa</option>}{actor.role === "owner" && <option value="manager">Quản lý chi nhánh</option>}</select></label>
         <label className="admin-field"><span>Chi nhánh</span><input value={branch.name} disabled/></label>
         <button className="admin-button admin-button-primary" type="submit" disabled={!branch.active}>Tạo tài khoản</button>
       </form>

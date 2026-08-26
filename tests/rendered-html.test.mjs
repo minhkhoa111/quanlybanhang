@@ -692,6 +692,21 @@ test("keeps operational portals out of storefront reveal motion", async () => {
   assert.match(motionStyles, /animation: none/);
 });
 
+test("centralizes warranty and repair staff in the service branch", async () => {
+  const [actions, staffPage, branchPage, migration] = await Promise.all([
+    readFile(new URL("app/admin/staff/actions.ts", root), "utf8"),
+    readFile(new URL("app/admin/staff/page.tsx", root), "utf8"),
+    readFile(new URL("app/admin/branches/[id]/page.tsx", root), "utf8"),
+    readFile(new URL("drizzle/0012_centralize_service_staff.sql", root), "utf8"),
+  ]);
+  assert.match(actions, /const serviceRole=role === "warranty" \|\| role === "repair"/);
+  assert.match(actions, /branchId: branch\.id/);
+  assert.match(staffPage, /luôn được hệ thống đưa về Trung tâm bảo hành sửa chữa Apple/);
+  assert.match(branchPage, /isServiceBranch/);
+  assert.match(migration, /WHERE role IN \('warranty', 'repair'\)/);
+  assert.match(migration, /UPPER\(code\) = 'BH1-1'/);
+});
+
 test("routes live consultation to the selected branch and gives the director a manager-first HR view", async () => {
   const [customerChat, publicApi, adminApi, inbox, chatStore, schema, chatMigration, hrStore, hrPage, staffStore, demoMigration, auth, layout, moneyInput] = await Promise.all([
     readFile(new URL("app/components/LiveSupportChat.tsx", root), "utf8"),
