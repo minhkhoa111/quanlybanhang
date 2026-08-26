@@ -22,12 +22,13 @@ export default async function AdminDashboardPage() {
     getAdminUsers().catch(() => []),
     getAdminConversations().catch(() => []),
   ]);
-  const analyticsOrders = currentUser.role === "owner" ? orders : currentUser.role === "manager" ? orders.filter((item) => item.branchId === currentUser.branchId) : currentUser.role === "sales" ? orders.filter((item) => item.assignedAdminId === currentUser.id) : [];
+  const isOrderWorker = currentUser.role === "sales" || currentUser.role === "warranty" || currentUser.role === "repair";
+  const analyticsOrders = currentUser.role === "owner" ? orders : currentUser.role === "manager" ? orders.filter((item) => item.branchId === currentUser.branchId) : isOrderWorker ? orders.filter((item) => item.assignedAdminId === currentUser.id) : [];
   const analyticsBranches = currentUser.role === "owner" ? branches : branches.filter((item) => item.id === currentUser.branchId);
-  const analyticsStaff = currentUser.role === "owner" ? staff : currentUser.role === "manager" ? staff.filter((item) => item.branchId === currentUser.branchId) : currentUser.role === "sales" ? staff.filter((item) => item.id === currentUser.id) : [];
+  const analyticsStaff = currentUser.role === "owner" ? staff : currentUser.role === "manager" ? staff.filter((item) => item.branchId === currentUser.branchId) : isOrderWorker ? staff.filter((item) => item.id === currentUser.id) : [];
   const branchScopeId = currentUser.role === "owner" ? "" : currentUser.branchId;
   const analytics = buildBusinessAnalytics({ orders: analyticsOrders, products, branches: analyticsBranches, staff: analyticsStaff, conversations, periodDays: 30, branchScopeId });
-  const visibleOrders = currentUser.role === "owner" ? orders : currentUser.role === "manager" ? orders.filter((item) => item.branchId === currentUser.branchId) : currentUser.role === "sales" ? orders.filter((item) => item.assignedAdminId === currentUser.id) : [];
+  const visibleOrders = currentUser.role === "owner" ? orders : currentUser.role === "manager" ? orders.filter((item) => item.branchId === currentUser.branchId) : isOrderWorker ? orders.filter((item) => item.assignedAdminId === currentUser.id) : [];
   const processing = visibleOrders.filter((order) => ["pending", "confirmed", "processing", "shipping"].includes(order.status)).length;
   const lowStock = products.filter((product) => (product.stock ?? 0) <= 3).length;
   const topProducts = [...products].sort((a, b) => productPriceNumber(b) - productPriceNumber(a)).slice(0, 5);
@@ -51,16 +52,16 @@ export default async function AdminDashboardPage() {
       <section className="admin-operational-strip">
         <article><i className="is-blue">▤</i><span><small>Đơn cần xử lý</small><strong>{processing}</strong></span><Link href="/admin/orders">Kiểm tra →</Link></article>
         <article><i className="is-orange">△</i><span><small>Sản phẩm sắp hết</small><strong>{lowStock}</strong></span><Link href="/admin/products?stock=low">Xem kho →</Link></article>
-        <article><i className="is-green">✦</i><span><small>Khách chờ tư vấn</small><strong>{conversations.filter((item) => item.status === "waiting").length}</strong></span><Link href="/admin/live-chat">Mở hộp thư →</Link></article>
+        {currentUser.role === "warranty" || currentUser.role === "repair" ? <article><i className="is-green">✓</i><span><small>Đơn được phân công</small><strong>{visibleOrders.length}</strong></span><Link href="/admin/orders">Mở công việc →</Link></article> : <article><i className="is-green">✦</i><span><small>Khách chờ tư vấn</small><strong>{conversations.filter((item) => item.status === "waiting").length}</strong></span><Link href="/admin/live-chat">Mở hộp thư →</Link></article>}
         <article><i className="is-violet">⌘</i><span><small>Chi nhánh hoạt động</small><strong>{branches.filter((item) => item.active).length}/{branches.length}</strong></span>{currentUser.role === "owner" ? <Link href="/admin/branches">Quản lý →</Link> : <small>{currentUser.branch}</small>}</article>
       </section>
 
       <section className="admin-card admin-quick-actions admin-business-actions">
         <div><span>Truy cập nhanh</span><strong>Công việc thường dùng</strong></div>
         <nav>
-          {currentUser.role !== "consultant" && <Link href="/admin/orders">▤ Xử lý đơn hàng</Link>}
-          <Link href="/admin/live-chat">✦ Tư vấn khách hàng</Link>
-          {currentUser.role !== "consultant" && <Link href="/admin/products">▦ Quản lý sản phẩm</Link>}
+          {(currentUser.role === "owner" || currentUser.role === "manager" || isOrderWorker) && <Link href="/admin/orders">▤ Xử lý đơn hàng</Link>}
+          {(currentUser.role === "owner" || currentUser.role === "manager" || currentUser.role === "consultant") && <Link href="/admin/live-chat">✦ Tư vấn khách hàng</Link>}
+          {(currentUser.role === "owner" || currentUser.role === "manager" || currentUser.role === "sales") && <Link href="/admin/products">▦ Quản lý sản phẩm</Link>}
           {currentUser.role === "owner" && <Link href="/admin/staff">♧ Quản lý nhân sự</Link>}
           {canViewReports && <Link href="/admin/reports">↗ Phân tích kinh doanh</Link>}
         </nav>

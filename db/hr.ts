@@ -216,7 +216,9 @@ function mapAttendance(row: Record<string, unknown>): AttendanceRecord {
   return { id: String(row.id), adminUserId: String(row.admin_user_id), employeeName: String(row.employee_name || ""), branch: String(row.branch || ""), workDate: String(row.work_date), checkIn: String(row.check_in || ""), checkOut: String(row.check_out || ""), status: String(row.status || "present"), note: String(row.note || ""), recordedBy: String(row.recorded_by || ""), createdAt: Number(row.created_at), updatedAt: Number(row.updated_at) };
 }
 
-function normalizeRole(value: string): AdminRole { return value === "manager" || value === "consultant" || value === "owner" ? value : "sales"; }
+function normalizeRole(value: string): AdminRole {
+  return value === "manager" || value === "consultant" || value === "owner" || value === "warranty" || value === "repair" ? value : "sales";
+}
 function cleanText(value: string, limit: number) { return value.trim().replace(/[\u0000-\u001F\u007F]/g, " ").replace(/\s+/g, " ").slice(0, limit); }
 function cleanDate(value: string) { return /^\d{4}-\d{2}-\d{2}$/.test(value) ? value : ""; }
 function cleanTime(value: string) { return /^([01]\d|2[0-3]):[0-5]\d$/.test(value) ? value : ""; }

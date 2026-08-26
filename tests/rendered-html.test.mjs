@@ -420,7 +420,7 @@ test("runs a local FAQ and product chatbot without external AI services", async 
 });
 
 test("provides protected employee profiles, payroll details and attendance", async () => {
-  const [directory, profile, attendance, store, photoRoute, navigation, migration] = await Promise.all([
+  const [directory, profile, attendance, store, photoRoute, navigation, migration, staff, staffActions, adminUsers, orderActions] = await Promise.all([
     readFile(new URL("app/admin/hr/page.tsx", root), "utf8"),
     readFile(new URL("app/admin/hr/[id]/page.tsx", root), "utf8"),
     readFile(new URL("app/admin/attendance/page.tsx", root), "utf8"),
@@ -428,6 +428,10 @@ test("provides protected employee profiles, payroll details and attendance", asy
     readFile(new URL("app/api/admin/hr-photo/[id]/route.ts", root), "utf8"),
     readFile(new URL("app/admin/AdminNavigation.tsx", root), "utf8"),
     readFile(new URL("drizzle/0006_employee_hr.sql", root), "utf8"),
+    readFile(new URL("app/admin/staff/page.tsx", root), "utf8"),
+    readFile(new URL("app/admin/staff/actions.ts", root), "utf8"),
+    readFile(new URL("db/admin-users.ts", root), "utf8"),
+    readFile(new URL("app/admin/actions.ts", root), "utf8"),
   ]);
 
   assert.match(directory, /Hồ sơ nhân sự/);
@@ -445,6 +449,14 @@ test("provides protected employee profiles, payroll details and attendance", asy
   assert.match(navigation, /\/admin\/attendance/);
   assert.match(migration, /employee_profiles/);
   assert.match(migration, /employee_attendance/);
+  assert.match(staff, /value="warranty">Nhân viên bảo hành/);
+  assert.match(staff, /value="repair">Nhân viên sửa chữa/);
+  assert.match(staffActions, /role === "warranty"/);
+  assert.match(staffActions, /role === "repair"/);
+  assert.match(adminUsers, /"warranty" \| "repair"/);
+  assert.match(navigation, /"warranty", "repair"/);
+  assert.match(orderActions, /user\.role === "warranty"/);
+  assert.match(orderActions, /user\.role === "repair"/);
 });
 
 test("stores member invoices and warranty records behind customer ownership checks", async () => {

@@ -23,7 +23,8 @@ export default async function AdminOrderDetailPage({ params, searchParams }: { p
     canAssign ? getAdminUsers().catch(() => []) : Promise.resolve([]),
   ]);
   if (!order) notFound();
-  const canViewOrder = currentUser.role === "owner" || (currentUser.role === "manager" && order.branchId === currentUser.branchId) || (currentUser.role === "sales" && order.assignedAdminId === currentUser.id);
+  const isAssignedWorker = currentUser.role === "sales" || currentUser.role === "warranty" || currentUser.role === "repair";
+  const canViewOrder = currentUser.role === "owner" || (currentUser.role === "manager" && order.branchId === currentUser.branchId) || (isAssignedWorker && order.assignedAdminId === currentUser.id);
   if (!canViewOrder) notFound();
   const branches = currentUser.role === "manager" ? allBranches.filter((item) => item.id === currentUser.branchId) : allBranches;
   const staff = allStaff.filter((item) => item.active && item.role !== "owner" && (currentUser.role !== "manager" || item.branchId === currentUser.branchId));

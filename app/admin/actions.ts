@@ -236,7 +236,7 @@ async function requireOrderOperation(id: string) {
   if (!order) throw new Error("Không tìm thấy đơn hàng.");
   const allowed = user.role === "owner"
     || (user.role === "manager" && order.branchId === user.branchId)
-    || (user.role === "sales" && order.assignedAdminId === user.id);
+    || ((user.role === "sales" || user.role === "warranty" || user.role === "repair") && order.assignedAdminId === user.id);
   if (!allowed) throw new Error("Bạn không có quyền thao tác đơn hàng này.");
   return { user, order };
 }

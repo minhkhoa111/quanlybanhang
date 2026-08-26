@@ -1,7 +1,7 @@
 import { env } from "cloudflare:workers";
 
 type Bindings = { DB: D1Database };
-export type AdminRole = "owner" | "manager" | "sales" | "consultant";
+export type AdminRole = "owner" | "manager" | "sales" | "consultant" | "warranty" | "repair";
 export type AdminUser = {
   id: string;
   username: string;
@@ -136,7 +136,9 @@ function mapAdminUser(row: AdminUserRow): AdminUser {
   return { id: row.id, username: row.username, name: row.name, role: normalizeRole(row.role), branch: row.branch, branchId: row.branch_id || "", active: Number(row.active) === 1, createdAt: Number(row.created_at) };
 }
 function normalizeUsername(value: string) { return value.trim().toLowerCase(); }
-function normalizeRole(value: string): AdminRole { return value === "owner" || value === "manager" || value === "consultant" ? value : "sales"; }
+function normalizeRole(value: string): AdminRole {
+  return value === "owner" || value === "manager" || value === "consultant" || value === "warranty" || value === "repair" ? value : "sales";
+}
 async function ensureColumn(database:D1Database,table:string,column:string,definition:string){const info=await database.prepare(`PRAGMA table_info(${table})`).all<{name:string}>();if(!info.results.some(item=>item.name===column))await database.prepare(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`).run()}
 function randomToken(length: number) { return [...crypto.getRandomValues(new Uint8Array(length))].map((byte) => byte.toString(16).padStart(2, "0")).join(""); }
 async function passwordHash(password: string, saltHex: string) {

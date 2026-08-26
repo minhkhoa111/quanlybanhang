@@ -42,4 +42,4 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   );
 }
 
-function roleLabel(role:string){if(role==="owner")return "Chủ cửa hàng";if(role==="manager")return "Quản lý";if(role==="consultant")return "Tư vấn viên";return "Nhân viên bán hàng"}
+function roleLabel(role:string){if(role==="owner")return "Chủ cửa hàng";if(role==="manager")return "Quản lý";if(role==="consultant")return "Tư vấn viên";if(role==="warranty")return "Nhân viên bảo hành";if(role==="repair")return "Nhân viên sửa chữa";return "Nhân viên bán hàng"}

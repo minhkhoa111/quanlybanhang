@@ -127,5 +127,7 @@ function streamTypeLabel(type: string) {
 function roleLabel(role: string) {
   if (role === "manager") return "Quản lý";
   if (role === "consultant") return "Tư vấn";
+  if (role === "warranty") return "Bảo hành";
+  if (role === "repair") return "Sửa chữa";
   return "Bán hàng";
 }

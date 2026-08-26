@@ -12,9 +12,9 @@ const groups: NavGroup[] = [
     { icon: "↗", label: "Báo cáo kinh doanh", href: "/admin/reports", roles: ["owner", "manager"] },
   ] },
   { label: "Bán hàng & khách hàng", items: [
-    { icon: "▤", label: "Đơn hàng", href: "/admin/orders", roles: ["owner", "manager", "sales"] },
-    { icon: "✦", label: "Tư vấn trực tiếp", href: "/admin/live-chat" },
-    { icon: "♙", label: "Khách hàng", href: "/admin/customers" },
+    { icon: "▤", label: "Đơn hàng", href: "/admin/orders", roles: ["owner", "manager", "sales", "warranty", "repair"] },
+    { icon: "✦", label: "Tư vấn trực tiếp", href: "/admin/live-chat", roles: ["owner", "manager", "consultant"] },
+    { icon: "♙", label: "Khách hàng", href: "/admin/customers", roles: ["owner", "manager", "sales", "consultant"] },
     { icon: "◇", label: "Khuyến mãi & voucher", href: "/admin/vouchers", roles: ["owner", "manager", "sales"] },
   ] },
   { label: "Sản phẩm & kho", roles: ["owner", "manager", "sales"], items: [

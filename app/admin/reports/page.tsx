@@ -83,6 +83,8 @@ function ReportMetric({ icon, label, value, note }: { icon: string; label: strin
 function roleLabel(role: string) {
   if (role === "manager") return "Quản lý chi nhánh";
   if (role === "consultant") return "Tư vấn viên";
+  if (role === "warranty") return "Nhân viên bảo hành";
+  if (role === "repair") return "Nhân viên sửa chữa";
   return "Nhân viên bán hàng";
 }
 

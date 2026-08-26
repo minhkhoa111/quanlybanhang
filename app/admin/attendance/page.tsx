@@ -56,4 +56,4 @@ export default async function AttendancePage({ searchParams }: { searchParams: P
 function AttendanceMetric({ label, value, note }: { label: string; value: number; note: string }) { return <article><i>◷</i><div><span>{label}</span><strong>{value}</strong><small>{note}</small></div></article>; }
 function formatDate(value: string) { return new Date(`${value}T00:00:00`).toLocaleDateString("vi-VN", { weekday: "long", day: "2-digit", month: "2-digit", year: "numeric" }); }
 function attendanceLabel(value: string) { if (value === "present") return "Có mặt"; if (value === "late") return "Đi trễ"; if (value === "leave") return "Nghỉ phép"; return "Vắng mặt"; }
-function roleLabel(role: string) { if (role === "manager") return "Quản lý"; if (role === "consultant") return "Tư vấn"; return "Bán hàng"; }
+function roleLabel(role: string) { if (role === "manager") return "Quản lý"; if (role === "consultant") return "Tư vấn"; if (role === "warranty") return "Bảo hành"; if (role === "repair") return "Sửa chữa"; return "Bán hàng"; }
