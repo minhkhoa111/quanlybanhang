@@ -85,6 +85,8 @@ export const employeeAttendanceChallenges = sqliteTable("employee_attendance_cha
 export const employeePayrollRecords = sqliteTable("employee_payroll_records", {
   id: text("id").primaryKey(), adminUserId: text("admin_user_id").notNull(), payrollMonth: text("payroll_month").notNull(),
   baseSalary: integer("base_salary").notNull().default(0), payableAmount: integer("payable_amount").notNull().default(0),
+  bonusAmount: integer("bonus_amount").notNull().default(0), socialInsuranceAmount: integer("social_insurance_amount").notNull().default(0),
+  personalIncomeTaxAmount: integer("personal_income_tax_amount").notNull().default(0),
   workDays: integer("work_days").notNull().default(0), status: text("status").notNull().default("draft"),
   paidAt: integer("paid_at").notNull().default(0), note: text("note").notNull().default(""), updatedAt: integer("updated_at").notNull(),
 });

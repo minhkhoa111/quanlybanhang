@@ -625,11 +625,39 @@ test("separates owner, branch manager and staff workspaces with protected busine
   assert.match(staffActions, /requireHrManagerAction/);
   assert.match(staffActions, /actor\.role === "manager" && role === "manager"/);
   assert.match(staffActions, /actor\.role === "manager" \? actor\.branchId/);
-  assert.match(payroll, /Kiểm kê lương tháng/);
+  assert.match(payroll, /Kiểm kê lương (tháng|theo chi nhánh)/);
   assert.match(payrollActions, /requireOwnerAction/);
   assert.match(payrollStore, /ON CONFLICT\(admin_user_id,payroll_month\)/);
   assert.match(payrollMigration, /employee_payroll_records/);
   assert.match(tax, /requireOwnerPage\("\/admin\/tax"\)/);
   assert.match(tax, /VAT đã thu ước tính/);
   assert.match(tax, /không thay thế tờ khai thuế/i);
+});
+
+test("groups payroll by branch and generates salary receipts with statutory deductions", async () => {
+  const [page, editor, actions, store, schema, migration, receipt, styles] = await Promise.all([
+    readFile(new URL("app/admin/payroll/page.tsx", root), "utf8"),
+    readFile(new URL("app/admin/payroll/PayrollEditorForm.tsx", root), "utf8"),
+    readFile(new URL("app/admin/payroll/actions.ts", root), "utf8"),
+    readFile(new URL("db/payroll.ts", root), "utf8"),
+    readFile(new URL("db/schema.ts", root), "utf8"),
+    readFile(new URL("drizzle/0009_payroll_breakdown.sql", root), "utf8"),
+    readFile(new URL("app/admin/payroll/[id]/page.tsx", root), "utf8"),
+    readFile(new URL("app/modern-theme.css", root), "utf8"),
+  ]);
+  assert.match(page, /name="branch"/);
+  assert.match(page, /groupByBranch/);
+  assert.match(page, /giảm trừ bản thân là 15,5 triệu đồng\/tháng/);
+  assert.match(editor, /name="bonusAmount"/);
+  assert.match(editor, /name="socialInsuranceAmount"/);
+  assert.match(editor, /name="personalIncomeTaxAmount"/);
+  assert.match(editor, /gross > 12_000_000/);
+  assert.match(actions, /employee\.monthlySalary/);
+  assert.match(store, /baseSalary \+ bonusAmount - socialInsuranceAmount - personalIncomeTaxAmount/);
+  assert.match(schema, /personalIncomeTaxAmount/);
+  assert.match(migration, /bonus_amount/);
+  assert.match(receipt, /PHIẾU LƯƠNG \/ XÁC NHẬN NHẬN LƯƠNG/);
+  assert.match(receipt, /không phải hóa đơn giá trị gia tăng/i);
+  assert.match(styles, /\.admin-payroll-person > div > strong/);
+  assert.match(styles, /\.admin-payroll-receipt/);
 });

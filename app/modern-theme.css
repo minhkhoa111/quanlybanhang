@@ -2577,6 +2577,66 @@ h1, h2, h3, h4 {
 @media (max-width: 1100px) { .admin-payroll-row { grid-template-columns: 1.4fr .6fr 1fr 1fr; } .admin-payroll-row > label:nth-of-type(2), .admin-payroll-row > label:nth-of-type(3), .admin-payroll-row > button { grid-row: 2; } .role-tool-grid { grid-template-columns: repeat(2,1fr); } }
 @media (max-width: 680px) { .role-portal-shell { width: min(100% - 20px,1180px); padding-top: 10px; } .role-portal-shell > header { align-items: flex-start; } .role-portal-shell > header > div > span { display: none; } .role-welcome { align-items: flex-start; flex-direction: column; padding: 27px 22px; } .role-metrics, .role-tool-grid { grid-template-columns: 1fr; } .admin-payroll-row { grid-template-columns: 1fr 1fr; padding: 16px; } .admin-payroll-person { grid-column: 1/-1; } .admin-payroll-row > label, .admin-payroll-row > button { grid-row: auto !important; } }
 
+/* Payroll by branch and printable salary receipt */
+.admin-payroll-branches { display: grid; gap: 22px; }
+.admin-payroll-branch-head { align-items: center; padding-bottom: 17px; border-bottom: 1px solid #e2ebf3; }
+.admin-payroll-branch-head p { margin: 5px 0 0; color: #7b8b9e; font-size: 10px; }
+.admin-payroll-branch-head > strong { display: grid; gap: 3px; color: #0868c9; font-size: 19px; text-align: right; }
+.admin-payroll-branch-head > strong small { color: #8390a1; font-size: 8px; font-weight: 800; text-transform: uppercase; }
+.admin-payroll-row { grid-template-columns: repeat(12,minmax(0,1fr)); align-items: end; gap: 12px; }
+.admin-payroll-row > label, .admin-payroll-row > .admin-payroll-actions { grid-row: auto !important; }
+.admin-payroll-person { grid-column: 1 / 4; align-self: center; }
+.admin-payroll-person > div { display: grid; min-width: 0; gap: 3px; }
+.admin-payroll-person > div > strong { display: block; overflow: hidden; color: #183653; font-size: 12px; line-height: 1.3; text-overflow: ellipsis; text-transform: none; white-space: normal; }
+.admin-payroll-person > div > span { display: block; color: #557089; font-size: 9px; font-weight: 850; line-height: 1.35; text-transform: none; }
+.admin-payroll-person > div > small { display: block; overflow: hidden; color: #8996a7; font-size: 9px; line-height: 1.35; text-overflow: ellipsis; text-transform: none; white-space: normal; }
+.admin-payroll-attendance { grid-column: 4 / 5; }
+.admin-payroll-base { grid-column: 5 / 7; }
+.admin-payroll-row > label:nth-of-type(1) { grid-column: 7 / 9; }
+.admin-payroll-row > label:nth-of-type(2) { grid-column: 9 / 11; }
+.admin-payroll-row > label:nth-of-type(3) { grid-column: 11 / 13; }
+.admin-payroll-net { grid-column: 1 / 4; padding: 10px 12px; border-radius: 10px; background: #ecf7ff; }
+.admin-payroll-net strong { color: #0868c9; font-size: 17px; }
+.admin-payroll-net small { color: #b35d00; white-space: normal; }
+.admin-payroll-row > label:nth-of-type(4) { grid-column: 4 / 6; }
+.admin-payroll-note { grid-column: 6 / 10 !important; }
+.admin-payroll-actions { display: flex !important; grid-column: 10 / 13; align-items: center; justify-content: flex-end; gap: 7px !important; }
+.admin-payroll-actions .admin-button { min-width: 0; padding-inline: 10px; font-size: 9px; white-space: nowrap; }
+
+.admin-payroll-receipt { max-width: 920px; margin: 0 auto; padding: 42px; border: 1px solid #d9e5ef; border-radius: 18px; background: #fff; box-shadow: 0 20px 55px rgba(29,66,103,.08); }
+.admin-payroll-receipt > header { display: flex; justify-content: space-between; gap: 34px; padding-bottom: 25px; border-bottom: 2px solid #146fc2; }
+.admin-payroll-receipt > header span { color: #0868c9; font-size: 10px; font-weight: 950; letter-spacing: .15em; }
+.admin-payroll-receipt > header h2 { margin: 7px 0; color: #173451; font-size: 22px; }
+.admin-payroll-receipt > header p { margin: 0; color: #718196; font-size: 11px; }
+.admin-payroll-receipt > header dl { min-width: 270px; margin: 0; }
+.admin-payroll-receipt > header dl div { display: flex; justify-content: space-between; gap: 18px; padding: 5px 0; }
+.admin-payroll-receipt dt { color: #75859a; font-size: 9px; }
+.admin-payroll-receipt dd { margin: 0; color: #213c58; font-size: 10px; font-weight: 900; }
+.admin-payroll-receipt-person { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; margin-top: 26px; overflow: hidden; border: 1px solid #dce7f0; border-radius: 12px; background: #dce7f0; }
+.admin-payroll-receipt-person > div { display: grid; gap: 5px; padding: 16px; background: #f8fbfe; }
+.admin-payroll-receipt-person span, .admin-payroll-receipt-note span { color: #7a899b; font-size: 8px; font-weight: 850; text-transform: uppercase; }
+.admin-payroll-receipt-person strong { color: #1c3854; font-size: 11px; }
+.admin-payroll-receipt-person p { margin: 0; color: #728196; font-size: 9px; }
+.admin-payroll-receipt-lines { display: grid; margin-top: 25px; }
+.admin-payroll-receipt-lines > div { display: flex; justify-content: space-between; gap: 20px; padding: 13px 4px; border-bottom: 1px solid #e3ebf2; color: #546b81; font-size: 11px; }
+.admin-payroll-receipt-lines strong { color: #1c3854; }
+.admin-payroll-receipt-lines .is-plus { color: #087443; }
+.admin-payroll-receipt-lines .is-minus { color: #b13f32; }
+.admin-payroll-receipt-lines .is-gross { margin-top: 5px; border-bottom: 0; background: #f5f9fc; }
+.admin-payroll-receipt-lines .is-net { align-items: center; margin-top: 4px; padding: 18px; border: 0; border-radius: 11px; background: #eaf5ff; color: #164d80; font-weight: 900; }
+.admin-payroll-receipt-lines .is-net strong { color: #0868c9; font-size: 22px; }
+.admin-payroll-receipt-note { margin-top: 20px; padding: 14px; border: 1px solid #e0e9f1; border-radius: 10px; }
+.admin-payroll-receipt-note p { margin: 6px 0 0; color: #52697f; font-size: 10px; }
+.admin-payroll-receipt-disclaimer { margin: 18px 0 0; color: #7c8999; font-size: 9px; line-height: 1.6; }
+.admin-payroll-receipt > footer { display: grid; grid-template-columns: repeat(3,1fr); gap: 25px; margin-top: 45px; }
+.admin-payroll-receipt > footer div { display: grid; gap: 45px; text-align: center; }
+.admin-payroll-receipt > footer strong { color: #263e57; font-size: 10px; }
+.admin-payroll-receipt > footer span { color: #8794a3; font-size: 8px; }
+
+@media(max-width:1100px){.admin-payroll-row{grid-template-columns:repeat(6,minmax(0,1fr))}.admin-payroll-person{grid-column:1/4}.admin-payroll-attendance{grid-column:4/5}.admin-payroll-base{grid-column:5/7}.admin-payroll-row>label:nth-of-type(1){grid-column:1/3}.admin-payroll-row>label:nth-of-type(2){grid-column:3/5}.admin-payroll-row>label:nth-of-type(3){grid-column:5/7}.admin-payroll-net{grid-column:1/3}.admin-payroll-row>label:nth-of-type(4){grid-column:3/4}.admin-payroll-note{grid-column:4/7!important}.admin-payroll-actions{grid-column:1/7;justify-content:flex-start}}
+@media(max-width:680px){.admin-payroll-row{display:grid;grid-template-columns:1fr 1fr}.admin-payroll-person,.admin-payroll-base,.admin-payroll-net,.admin-payroll-note,.admin-payroll-actions{grid-column:1/-1!important}.admin-payroll-attendance{grid-column:1/-1}.admin-payroll-row>label{grid-column:auto!important}.admin-payroll-actions{flex-wrap:wrap}.admin-payroll-branch-head{align-items:flex-start;flex-direction:column}.admin-payroll-branch-head>strong{text-align:left}.admin-payroll-receipt{padding:25px 18px;border-radius:12px}.admin-payroll-receipt>header{display:grid}.admin-payroll-receipt>header dl{min-width:0}.admin-payroll-receipt-person{grid-template-columns:1fr}.admin-payroll-receipt>footer{gap:10px}.admin-payroll-toolbar{align-items:stretch}.admin-payroll-toolbar .admin-actions-row{width:100%}}
+@media print{body:has(.admin-payroll-receipt) .admin-sidebar,body:has(.admin-payroll-receipt) .admin-mobile-header,body:has(.admin-payroll-receipt) .admin-mobile-nav,body:has(.admin-payroll-receipt) .admin-payroll-toolbar{display:none!important}body:has(.admin-payroll-receipt) .admin-console{display:block!important}body:has(.admin-payroll-receipt) .admin-content{padding:0!important}.admin-payroll-receipt{max-width:none;padding:8mm;border:0;box-shadow:none}.admin-payroll-receipt>footer,.admin-payroll-receipt-person{break-inside:avoid}}
+
 .admin-order-detail {
   grid-template-columns: minmax(0, 1fr) 340px;
   gap: 16px;
