@@ -482,6 +482,24 @@ test("allows owners and branch managers to update employee profiles within branc
   assert.match(attendance, /isSupervisor && <Link[^>]+href="\/admin\/hr"/);
 });
 
+test("filters the employee directory by owner and branch-manager scope", async () => {
+  const [directory, styles] = await Promise.all([
+    readFile(new URL("app/admin/hr/page.tsx", root), "utf8"),
+    readFile(new URL("app/modern-theme.css", root), "utf8"),
+  ]);
+  assert.match(directory, /name="keyword"/);
+  assert.match(directory, /name="role"/);
+  assert.match(directory, /name="branch"/);
+  assert.match(directory, /name="status"/);
+  assert.match(directory, /Nhân viên bán hàng/);
+  assert.match(directory, /Nhân viên bảo hành/);
+  assert.match(directory, /Nhân viên sửa chữa/);
+  assert.match(directory, /user\.role === "owner" \? allEmployees/);
+  assert.match(directory, /item\.branchId === user\.branchId/);
+  assert.match(directory, /user\.role === "owner" && <option value="manager"/);
+  assert.match(styles, /\.admin-hr-filters/);
+});
+
 test("requires device biometrics for employee self attendance", async () => {
   const [component, page, optionsRoute, verifyRoute, passkeyStore, schema, migration, actions] = await Promise.all([
     readFile(new URL("app/admin/attendance/BiometricAttendance.tsx", root), "utf8"),
