@@ -8,6 +8,7 @@ const items = [
   { label: "Trang chủ", href: "/", icon: "home" },
   { label: "Sản phẩm", href: "/iphone", icon: "shop" },
   { label: "Giỏ hàng", href: "/gio-hang", icon: "cart" },
+  { label: "Bảo hành", href: "/bao-hanh", icon: "shield" },
   { label: "Tài khoản", href: "/tai-khoan", icon: "user" },
 ] as const;
 
@@ -37,6 +38,7 @@ function AppIcon({ name }: { name: (typeof items)[number]["icon"] }) {
     home: <><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10M9 20v-6h6v6"/></>,
     shop: <><path d="M4 9h16l-1-5H5L4 9Z"/><path d="M5 9v11h14V9M9 20v-6h6v6"/></>,
     cart: <><path d="M3 4h2l2.2 10h10.9L21 7H6"/><circle cx="9" cy="19" r="1"/><circle cx="18" cy="19" r="1"/></>,
+    shield: <><path d="M12 3 5 6v5c0 4.6 2.8 8.1 7 10 4.2-1.9 7-5.4 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-5"/></>,
     user: <><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></>,
   };
   return <svg viewBox="0 0 24 24" aria-hidden="true">{paths[name]}</svg>;

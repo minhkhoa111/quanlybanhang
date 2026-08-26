@@ -446,3 +446,29 @@ test("provides protected employee profiles, payroll details and attendance", asy
   assert.match(migration, /employee_profiles/);
   assert.match(migration, /employee_attendance/);
 });
+
+test("stores member invoices and warranty records behind customer ownership checks", async () => {
+  const [account, purchasesApi, invoicePage, warrantyPage, warrantyApi, orders, home, mobileNav] = await Promise.all([
+    readFile(new URL("app/tai-khoan/AccountPanel.tsx", root), "utf8"),
+    readFile(new URL("app/api/account/purchases/route.ts", root), "utf8"),
+    readFile(new URL("app/tai-khoan/hoa-don/[id]/page.tsx", root), "utf8"),
+    readFile(new URL("app/bao-hanh/WarrantyLookup.tsx", root), "utf8"),
+    readFile(new URL("app/api/warranty/route.ts", root), "utf8"),
+    readFile(new URL("db/orders.ts", root), "utf8"),
+    readFile(new URL("app/page.tsx", root), "utf8"),
+    readFile(new URL("app/components/MobileAppNav.tsx", root), "utf8"),
+  ]);
+
+  assert.match(account, /Hóa đơn &amp; bảo hành/);
+  assert.match(account, /api\/account\/purchases/);
+  assert.match(purchasesApi, /currentCustomer/);
+  assert.match(purchasesApi, /getCustomerOrders\(customer\.id\)/);
+  assert.match(invoicePage, /getCustomerOrderById\(id, customer\.id\)/);
+  assert.match(invoicePage, /Bảo hành điện tử/);
+  assert.match(orders, /WHERE customer_id = \?/);
+  assert.match(warrantyPage, /mã đơn hàng và số điện thoại/i);
+  assert.match(warrantyApi, /getWarrantyOrder\(orderCode, phone\)/);
+  assert.match(warrantyApi, /private, no-store/);
+  assert.match(home, /Bảo hành điện tử, luôn có trong Member/);
+  assert.match(mobileNav, /\/bao-hanh/);
+});

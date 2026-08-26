@@ -21,6 +21,25 @@ type AuthResult = {
   message?: string;
 };
 
+type MemberPurchase = {
+  id: string;
+  orderCode: string;
+  productName: string;
+  items: Array<{ productSlug: string; productName: string; ram: string; storage: string; color: string; quantity: number; unitPrice: number; image: string }>;
+  quantity: number;
+  total: string;
+  status: string;
+  paymentStatus: string;
+  invoiceStatus: string;
+  invoiceNumber: string;
+  invoiceDate: string;
+  warrantyMonths: number;
+  warrantyStartDate: string;
+  warrantySerials: string;
+  branchName: string;
+  createdAt: number;
+};
+
 export default function AccountPanel() {
   const params = useSearchParams();
   const [customer, setCustomer] = useState<Customer | null>(null);
@@ -29,10 +48,18 @@ export default function AccountPanel() {
   const [sending, setSending] = useState(false);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState("");
+  const [purchases, setPurchases] = useState<MemberPurchase[]>([]);
+  const [purchasesLoading, setPurchasesLoading] = useState(false);
 
   const refresh = useCallback(async () => {
     const result = await fetch("/api/account/me").then((response) => response.json()) as { customer?: Customer };
-    setCustomer(result.customer || null);
+    const nextCustomer = result.customer || null;
+    setCustomer(nextCustomer);
+    if (!nextCustomer) { setPurchases([]); return; }
+    setPurchasesLoading(true);
+    const purchaseResult = await fetch("/api/account/purchases").then((response) => response.json()) as { purchases?: MemberPurchase[] };
+    setPurchases(purchaseResult.purchases || []);
+    setPurchasesLoading(false);
   }, []);
 
   useEffect(() => {
@@ -116,11 +143,13 @@ export default function AccountPanel() {
     setCustomer(nextCustomer);
     setMessage("");
     window.dispatchEvent(new Event("huy-account-change"));
+    if (nextCustomer) void refresh();
   }
 
   async function logout() {
     await fetch("/api/account/logout", { method: "POST" });
     setCustomer(null);
+    setPurchases([]);
     setMessage("");
     window.dispatchEvent(new Event("huy-account-change"));
   }
@@ -128,7 +157,9 @@ export default function AccountPanel() {
   if (customer) {
     const avatar = avatarPreview || customer.avatarUrl;
     const initials = customer.name.split(/\s+/).filter(Boolean).slice(-2).map((part) => part[0]).join("").toUpperCase() || "HA";
-    return <section className="account-panel account-member">
+    const invoiceCount = purchases.filter((purchase) => purchase.invoiceStatus === "issued" || purchase.invoiceStatus === "ready").length;
+    const warrantyCount = purchases.filter((purchase) => Boolean(purchase.warrantyStartDate)).length;
+    return <div className="member-account-shell"><section className="account-panel account-member">
       <aside className="member-summary">
         <div className="member-avatar-wrap">
           <div className="member-avatar">{avatar ? <Image src={avatar} alt={`Ảnh đại diện của ${customer.name}`} fill sizes="180px" unoptimized /> : <span>{initials}</span>}</div>
@@ -136,7 +167,7 @@ export default function AccountPanel() {
           <small>JPG, PNG hoặc WebP · tối đa 3 MB</small>
         </div>
         <div className="member-identity"><span>HUY APPLE MEMBER</span><h1>{customer.name || "Thành viên mới"}</h1><p>@{customer.username || "google-member"}</p></div>
-        <div className="member-shortcuts"><Link className="button button-primary" href="/gio-hang">Xem giỏ hàng</Link><Link className="button button-secondary" href="/tu-van">Đặt hàng</Link></div>
+        <div className="member-shortcuts"><Link className="button button-primary" href="/gio-hang">Giỏ hàng</Link><Link className="button button-secondary" href="/bao-hanh">Tra bảo hành</Link><Link className="button button-secondary member-shortcut-wide" href="#member-purchases">Hóa đơn đã mua</Link></div>
       </aside>
       <div className="member-details">
         <header><span>{customer.profileComplete ? "HỒ SƠ CÁ NHÂN" : "HOÀN THIỆN HỒ SƠ"}</span><h2>Thông tin member</h2><p>Cập nhật thông tin để cửa hàng xác nhận và giao đơn nhanh hơn.</p></header>
@@ -149,7 +180,20 @@ export default function AccountPanel() {
           <div className="member-form-actions member-field-wide"><button className="button button-primary" disabled={sending}>{sending ? "Đang lưu..." : "Lưu thay đổi"}</button><button type="button" className="button button-secondary" onClick={logout}>Đăng xuất</button></div>
         </form>
       </div>
-    </section>;
+    </section>
+
+    <section className="member-purchases" id="member-purchases">
+      <header className="member-purchases-heading"><div><span>LỊCH SỬ MEMBER</span><h2>Hóa đơn &amp; bảo hành</h2><p>Mọi đơn hàng được đặt khi đăng nhập sẽ tự động lưu vào tài khoản này.</p></div><div className="member-purchase-stats"><p><strong>{purchases.length}</strong><span>Đơn mua</span></p><p><strong>{invoiceCount}</strong><span>Hóa đơn</span></p><p><strong>{warrantyCount}</strong><span>Bảo hành</span></p></div></header>
+      {purchasesLoading ? <div className="member-purchases-empty"><strong>Đang tải lịch sử mua hàng...</strong></div> : purchases.length === 0 ? <div className="member-purchases-empty"><span aria-hidden="true">▤</span><strong>Chưa có đơn hàng trong tài khoản</strong><p>Hãy đăng nhập member trước khi đặt hàng để hóa đơn và bảo hành được lưu tự động.</p><Link className="button button-primary" href="/iphone">Xem sản phẩm</Link></div> : <div className="member-purchase-list">{purchases.map((purchase) => {
+        const products = purchase.items.length ? purchase.items : [{ productSlug: "", productName: purchase.productName, ram: "", storage: "", color: "", quantity: purchase.quantity, unitPrice: Number(purchase.total), image: "" }];
+        return <article className="member-purchase-card" key={purchase.id}>
+          <header><div><span>{purchase.orderCode}</span><time>{formatTimestamp(purchase.createdAt)}</time></div><div><i className={`member-order-status status-${purchase.status}`}>{orderStatusLabel(purchase.status)}</i><i className={`member-invoice-status invoice-${purchase.invoiceStatus}`}>{invoiceStatusLabel(purchase.invoiceStatus)}</i></div></header>
+          <div className="member-purchase-products">{products.slice(0, 3).map((item, index) => <div key={`${item.productSlug}-${index}`}>{item.image ? <Image src={item.image} alt="" width={58} height={58} unoptimized /> : <span aria-hidden="true">HA</span>}<p><strong>{item.productName}</strong><small>{[item.ram && `RAM ${item.ram}`, item.storage, item.color].filter(Boolean).join(" · ") || "Theo đơn hàng"}</small></p><b>x{item.quantity}</b></div>)}{products.length > 3 && <small className="member-purchase-more">+{products.length - 3} sản phẩm khác</small>}</div>
+          <div className="member-purchase-meta"><p><span>Tổng thanh toán</span><strong>{formatMoney(Number(purchase.total))}</strong></p><p><span>Bảo hành</span><strong>{purchase.warrantyStartDate ? `${purchase.warrantyMonths || 12} tháng · từ ${formatDate(purchase.warrantyStartDate)}` : "Chờ cửa hàng kích hoạt"}</strong></p><p><span>Serial / IMEI</span><strong>{purchase.warrantySerials || "Chưa cập nhật"}</strong></p></div>
+          <footer><span>{purchase.branchName || "Huy Apple"}</span><Link href={`/tai-khoan/hoa-don/${purchase.id}`}>Xem hóa đơn &amp; bảo hành →</Link></footer>
+        </article>;
+      })}</div>}
+    </section></div>;
   }
 
   return <section className="account-panel">
@@ -177,3 +221,9 @@ function errorMessage(error: string | null) {
   if (error === "google") return "Không thể đăng nhập Google. Vui lòng thử lại.";
   return "";
 }
+
+function formatMoney(value: number) { return `${Math.max(0, Math.round(value || 0)).toLocaleString("vi-VN")}đ`; }
+function formatTimestamp(value: number) { return new Intl.DateTimeFormat("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric" }).format(new Date(value)); }
+function formatDate(value: string) { if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return ""; return value.split("-").reverse().join("/"); }
+function orderStatusLabel(status: string) { return ({ pending: "Chờ xác nhận", confirmed: "Đã xác nhận", processing: "Đang xử lý", shipping: "Đang giao", completed: "Hoàn tất", cancelled: "Đã hủy" } as Record<string, string>)[status] || status; }
+function invoiceStatusLabel(status: string) { return ({ not_created: "Chưa lập hóa đơn", draft: "Hóa đơn nháp", ready: "Sẵn sàng xuất", issued: "Đã xuất hóa đơn", cancelled: "Hóa đơn đã hủy" } as Record<string, string>)[status] || "Chưa lập hóa đơn"; }

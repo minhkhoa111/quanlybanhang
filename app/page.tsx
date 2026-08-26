@@ -6,6 +6,7 @@ import HomeHero from "./components/hero";
 import AppleTechNews from "./components/AppleTechNews";
 import StudentOfferBanner from "./components/StudentOfferBanner";
 import { getPublicProducts } from "@/db/products";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -24,6 +25,20 @@ export default async function Home() {
       <PromoGrid />
 
       <StudentOfferBanner />
+
+      <section className="home-warranty shell" aria-labelledby="home-warranty-title">
+        <div className="home-warranty-copy">
+          <p className="eyebrow">Hậu mãi minh bạch</p>
+          <h2 id="home-warranty-title">Bảo hành điện tử, luôn có trong Member.</h2>
+          <p>Tra cứu thời hạn, ngày kích hoạt và serial/IMEI bằng mã đơn hàng. Khi mua bằng tài khoản member, hóa đơn và bảo hành được lưu tự động.</p>
+          <div><Link className="button button-primary" href="/bao-hanh">Tra cứu bảo hành</Link><Link className="button button-secondary" href="/tai-khoan">Mở Huy Apple Member</Link></div>
+        </div>
+        <div className="home-warranty-steps">
+          <article><span>01</span><div><strong>Nhập mã đơn &amp; số điện thoại</strong><p>Xác thực đúng thông tin người mua trước khi hiển thị hồ sơ.</p></div></article>
+          <article><span>02</span><div><strong>Xem thời hạn &amp; serial</strong><p>Biết ngày bắt đầu, hết hạn và chi nhánh tiếp nhận.</p></div></article>
+          <article><span>03</span><div><strong>Lưu cùng hóa đơn member</strong><p>Không lo thất lạc phiếu giấy khi cần hỗ trợ sau bán.</p></div></article>
+        </div>
+      </section>
 
       <AppleTechNews />
 

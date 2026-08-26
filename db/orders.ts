@@ -366,6 +366,39 @@ export async function getManagedOrderById(id: string): Promise<ManagedOrder | un
   return row ? mapRow(row) : undefined;
 }
 
+export async function getCustomerOrders(customerId: string, limit = 50): Promise<ManagedOrder[]> {
+  await ensureOrderStore();
+  if (!customerId) return [];
+  const result = await db()
+    .prepare("SELECT * FROM orders WHERE customer_id = ? ORDER BY created_at DESC LIMIT ?")
+    .bind(customerId, Math.min(100, Math.max(1, limit)))
+    .all<OrderRow>();
+  return result.results.map(mapRow);
+}
+
+export async function getCustomerOrderById(id: string, customerId: string): Promise<ManagedOrder | undefined> {
+  await ensureOrderStore();
+  if (!id || !customerId) return undefined;
+  const row = await db()
+    .prepare("SELECT * FROM orders WHERE id = ? AND customer_id = ? LIMIT 1")
+    .bind(id, customerId)
+    .first<OrderRow>();
+  return row ? mapRow(row) : undefined;
+}
+
+export async function getWarrantyOrder(orderCodeInput: string, phoneInput: string): Promise<ManagedOrder | undefined> {
+  await ensureOrderStore();
+  const orderCode = orderCodeInput.trim().toUpperCase();
+  const phone = normalizeLookupPhone(phoneInput);
+  if (!/^[A-Z0-9-]{6,25}$/.test(orderCode) || phone.length < 9) return undefined;
+  const row = await db()
+    .prepare("SELECT * FROM orders WHERE order_code = ? LIMIT 1")
+    .bind(orderCode)
+    .first<OrderRow>();
+  if (!row || normalizeLookupPhone(row.phone) !== phone) return undefined;
+  return mapRow(row);
+}
+
 export async function updateOrderStatus(id: string, status: string) {
   await ensureOrderStore();
   await db()
@@ -613,4 +646,10 @@ function parseItems(value?: string): OrderItem[] {
 function normalizeOrderStatus(status: string) {
   if (status === "new") return "pending";
   return status;
+}
+
+function normalizeLookupPhone(value: string) {
+  const digits = value.replace(/\D/g, "");
+  if (digits.startsWith("84") && digits.length >= 11) return `0${digits.slice(2)}`;
+  return digits;
 }
