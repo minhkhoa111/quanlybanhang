@@ -115,10 +115,14 @@ export async function getEmployeeProfile(adminUserId: string) {
   return row ? mapProfile(row) : undefined;
 }
 
-export async function saveEmployeeProfile(input: Omit<EmployeeProfile, "name" | "username" | "role" | "branchId" | "branch" | "active" | "updatedAt">) {
+export async function saveEmployeeProfile(input: Omit<EmployeeProfile, "username" | "role" | "branchId" | "branch" | "active" | "updatedAt">) {
   await ensureHrStore();
   const now = Date.now();
-  await database().prepare(`INSERT INTO employee_profiles (
+  const name = cleanText(input.name, 100);
+  if (name.length < 2) throw new Error("Vui lòng nhập họ tên nhân viên.");
+  const db = database();
+  await db.prepare("UPDATE admin_users SET name=? WHERE id=?").bind(name, input.adminUserId).run();
+  await db.prepare(`INSERT INTO employee_profiles (
     admin_user_id,date_of_birth,joined_date,citizen_id_encrypted,permanent_address_encrypted,
     temporary_address_encrypted,photo_key,bank_name,bank_account_name_encrypted,
     bank_account_number_encrypted,monthly_salary,updated_at

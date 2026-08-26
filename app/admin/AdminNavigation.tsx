@@ -22,10 +22,10 @@ const groups: NavGroup[] = [
     { icon: "＋", label: "Thêm sản phẩm", href: "/admin/products/new", roles: ["owner", "manager"] },
     { icon: "△", label: "Cảnh báo tồn kho", href: "/admin/products?stock=low" },
   ] },
-  { label: "Tổ chức doanh nghiệp", roles: ["owner"], items: [
-    { icon: "⌘", label: "Hệ thống chi nhánh", href: "/admin/branches" },
-    { icon: "♧", label: "Hồ sơ nhân sự", href: "/admin/hr" },
-    { icon: "⚿", label: "Tài khoản & phân quyền", href: "/admin/staff" },
+  { label: "Tổ chức doanh nghiệp", roles: ["owner", "manager"], items: [
+    { icon: "⌘", label: "Hệ thống chi nhánh", href: "/admin/branches", roles: ["owner"] },
+    { icon: "♧", label: "Hồ sơ nhân sự", href: "/admin/hr", roles: ["owner", "manager"] },
+    { icon: "⚿", label: "Tài khoản & phân quyền", href: "/admin/staff", roles: ["owner"] },
   ] },
   { label: "Chấm công", items: [
     { icon: "◷", label: "Chấm công nhân viên", href: "/admin/attendance" },

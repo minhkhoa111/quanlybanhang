@@ -443,7 +443,8 @@ test("provides protected employee profiles, payroll details and attendance", asy
   assert.match(store, /AES-GCM/);
   assert.match(store, /citizen_id_encrypted/);
   assert.match(store, /bank_account_number_encrypted/);
-  assert.match(photoRoute, /user\.role !== "owner"/);
+  assert.match(photoRoute, /user\.role !== "owner" && user\.role !== "manager"/);
+  assert.match(photoRoute, /canManageEmployee\(user, employee\)/);
   assert.match(photoRoute, /private, no-store/);
   assert.match(navigation, /\/admin\/hr/);
   assert.match(navigation, /\/admin\/attendance/);
@@ -457,6 +458,28 @@ test("provides protected employee profiles, payroll details and attendance", asy
   assert.match(navigation, /"warranty", "repair"/);
   assert.match(orderActions, /user\.role === "warranty"/);
   assert.match(orderActions, /user\.role === "repair"/);
+});
+
+test("allows owners and branch managers to update employee profiles within branch scope", async () => {
+  const [auth, directory, profile, actions, navigation, attendance] = await Promise.all([
+    readFile(new URL("app/admin-auth.ts", root), "utf8"),
+    readFile(new URL("app/admin/hr/page.tsx", root), "utf8"),
+    readFile(new URL("app/admin/hr/[id]/page.tsx", root), "utf8"),
+    readFile(new URL("app/admin/hr/actions.ts", root), "utf8"),
+    readFile(new URL("app/admin/AdminNavigation.tsx", root), "utf8"),
+    readFile(new URL("app/admin/attendance/page.tsx", root), "utf8"),
+  ]);
+  assert.match(auth, /requireHrManagerPage/);
+  assert.match(auth, /requireHrManagerAction/);
+  assert.match(auth, /user\.branchId === employee\.branchId/);
+  assert.match(directory, /user\.role === "owner" \? allEmployees/);
+  assert.match(profile, /canManageEmployee\(user, employee\)/);
+  assert.match(profile, /name="photo"/);
+  assert.match(profile, /name="name"/);
+  assert.match(actions, /canManageEmployee\(user, current\)/);
+  assert.match(actions, /name: value\(formData, "name"\)/);
+  assert.match(navigation, /roles: \["owner", "manager"\].*Hồ sơ nhân sự/s);
+  assert.match(attendance, /isSupervisor && <Link[^>]+href="\/admin\/hr"/);
 });
 
 test("requires device biometrics for employee self attendance", async () => {

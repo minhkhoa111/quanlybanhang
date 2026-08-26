@@ -3,16 +3,17 @@
 import { env } from "cloudflare:workers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { requireOwnerAction } from "@/app/admin-auth";
+import { canManageEmployee, requireHrManagerAction } from "@/app/admin-auth";
 import { getEmployeeProfile, saveAttendance, saveEmployeeProfile, vietnamDate } from "@/db/hr";
 
 type Bindings = { PRODUCT_IMAGES?: R2Bucket };
 
 export async function saveEmployeeProfileAction(formData: FormData) {
-  await requireOwnerAction();
+  const user = await requireHrManagerAction();
   const adminUserId = value(formData, "adminUserId");
   const current = await getEmployeeProfile(adminUserId);
   if (!current) redirect("/admin/hr?error=Không tìm thấy nhân viên.");
+  if (!canManageEmployee(user, current)) redirect("/admin/hr?error=Bạn không có quyền cập nhật nhân viên ngoài chi nhánh của mình.");
   let photoKey = current.photoKey;
   let uploadedKey = "";
   try {
@@ -31,6 +32,7 @@ export async function saveEmployeeProfileAction(formData: FormData) {
 
     await saveEmployeeProfile({
       adminUserId,
+      name: value(formData, "name"),
       dateOfBirth: value(formData, "dateOfBirth"),
       joinedDate: value(formData, "joinedDate"),
       citizenId: value(formData, "citizenId"),
@@ -55,10 +57,12 @@ export async function saveEmployeeProfileAction(formData: FormData) {
 }
 
 export async function saveAttendanceAction(formData: FormData) {
-  const owner = await requireOwnerAction();
+  const user = await requireHrManagerAction();
   const adminUserId = value(formData, "adminUserId");
   try {
-    if (!await getEmployeeProfile(adminUserId)) throw new Error("Không tìm thấy nhân viên.");
+    const employee = await getEmployeeProfile(adminUserId);
+    if (!employee) throw new Error("Không tìm thấy nhân viên.");
+    if (!canManageEmployee(user, employee)) throw new Error("Bạn không có quyền cập nhật nhân viên ngoài chi nhánh của mình.");
     await saveAttendance({
       adminUserId,
       workDate: value(formData, "workDate") || vietnamDate(),
@@ -66,7 +70,7 @@ export async function saveAttendanceAction(formData: FormData) {
       checkOut: value(formData, "checkOut"),
       status: value(formData, "attendanceStatus"),
       note: value(formData, "note"),
-      recordedBy: owner.name,
+      recordedBy: user.name,
     });
   } catch (error) {
     redirect(`/admin/hr/${adminUserId}?error=${encodeURIComponent(error instanceof Error ? error.message : "Không thể lưu chấm công.")}`);

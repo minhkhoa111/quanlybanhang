@@ -1,21 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
-import { requireOwnerPage } from "@/app/admin-auth";
+import { requireHrManagerPage } from "@/app/admin-auth";
 import { getEmployeeDirectory } from "@/db/hr";
 
 export const dynamic = "force-dynamic";
 
 export default async function HrPage({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
-  await requireOwnerPage("/admin/hr");
-  const [employees, query] = await Promise.all([getEmployeeDirectory().catch(() => []), searchParams]);
+  const [user, allEmployees, query] = await Promise.all([requireHrManagerPage("/admin/hr"), getEmployeeDirectory().catch(() => []), searchParams]);
+  const employees = user.role === "owner" ? allEmployees : allEmployees.filter((item) => item.branchId === user.branchId || (!item.branchId && item.branch === user.branch));
   const todayWorking = employees.filter((item) => item.todayStatus === "present" || item.todayStatus === "late").length;
   const completeProfiles = employees.filter((item) => item.profileScore === 100).length;
 
   return (
     <>
       <div className="admin-topline admin-hr-heading">
-        <div><span>Human Resources</span><h1>Hồ sơ nhân sự</h1><p className="admin-subtitle">Quản lý hồ sơ, thông tin cư trú, chấm công và tài khoản nhận lương của toàn bộ nhân viên.</p></div>
-        <div className="admin-actions-row"><Link className="admin-button" href="/admin/attendance">Bảng chấm công</Link><Link className="admin-button admin-button-primary" href="/admin/staff">＋ Tạo tài khoản nhân viên</Link></div>
+        <div><span>Human Resources</span><h1>Hồ sơ nhân sự</h1><p className="admin-subtitle">{user.role === "owner" ? "Quản lý hồ sơ nhân viên trên toàn hệ thống." : `Quản lý ảnh và thông tin nhân viên tại ${user.branch}.`}</p></div>
+        <div className="admin-actions-row"><Link className="admin-button" href="/admin/attendance">Bảng chấm công</Link>{user.role === "owner" && <Link className="admin-button admin-button-primary" href="/admin/staff">＋ Tạo tài khoản nhân viên</Link>}</div>
       </div>
       {query.error && <p className="admin-alert error">{query.error}</p>}
 

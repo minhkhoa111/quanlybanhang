@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { requireOwnerPage } from "@/app/admin-auth";
+import { canManageEmployee, requireHrManagerPage } from "@/app/admin-auth";
 import { getEmployeeAttendance, getEmployeeProfile, vietnamDate } from "@/db/hr";
 import { formatMoney } from "../../utils";
 import { saveAttendanceAction, saveEmployeeProfileAction } from "../actions";
@@ -9,10 +9,10 @@ import { saveAttendanceAction, saveEmployeeProfileAction } from "../actions";
 export const dynamic = "force-dynamic";
 
 export default async function EmployeeProfilePage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ status?: string; error?: string }> }) {
-  await requireOwnerPage("/admin/hr");
-  const [{ id }, query] = await Promise.all([params, searchParams]);
+  const [user, { id }, query] = await Promise.all([requireHrManagerPage("/admin/hr"), params, searchParams]);
   const [employee, attendance] = await Promise.all([getEmployeeProfile(id), getEmployeeAttendance(id).catch(() => [])]);
   if (!employee) notFound();
+  if (!canManageEmployee(user, employee)) notFound();
   const monthKey = vietnamDate().slice(0, 7);
   const monthRecords = attendance.filter((item) => item.workDate.startsWith(monthKey));
   const workedDays = monthRecords.filter((item) => item.status === "present" || item.status === "late").length;
@@ -46,7 +46,7 @@ export default async function EmployeeProfilePage({ params, searchParams }: { pa
         <input type="hidden" name="adminUserId" value={employee.adminUserId} />
         <div className="admin-card-head"><div><span>Thông tin cá nhân</span><h2>Cập nhật hồ sơ nhân sự</h2></div><strong className="admin-private-data-badge">Dữ liệu riêng tư · Đã mã hóa</strong></div>
         <fieldset><legend>Nhận diện và công việc</legend><div className="admin-hr-form-grid">
-          <label className="admin-field"><span>Họ và tên</span><input value={employee.name} disabled /></label>
+          <label className="admin-field"><span>Họ và tên</span><input name="name" defaultValue={employee.name} minLength={2} maxLength={100} required /></label>
           <label className="admin-field"><span>Ngày sinh</span><input type="date" name="dateOfBirth" defaultValue={employee.dateOfBirth} /></label>
           <label className="admin-field"><span>Ngày tham gia</span><input type="date" name="joinedDate" defaultValue={employee.joinedDate} /></label>
           <label className="admin-field"><span>Số CCCD</span><input name="citizenId" defaultValue={employee.citizenId} inputMode="numeric" maxLength={20} autoComplete="off" /></label>

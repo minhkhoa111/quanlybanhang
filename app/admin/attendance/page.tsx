@@ -25,7 +25,7 @@ export default async function AttendancePage({ searchParams }: { searchParams: P
     <>
       <div className="admin-topline">
         <div><span>Timekeeping</span><h1>Chấm công nhân viên</h1><p className="admin-subtitle">{isSupervisor ? `Theo dõi tình hình làm việc ${user.role === "owner" ? "toàn hệ thống" : `tại ${user.branch}`}.` : "Chấm công vào, ra và xem lịch sử làm việc của bạn."}</p></div>
-        {user.role === "owner" && <Link className="admin-button" href="/admin/hr">Quản lý hồ sơ nhân sự</Link>}
+        {isSupervisor && <Link className="admin-button" href="/admin/hr">Quản lý hồ sơ nhân sự</Link>}
       </div>
       {query.status === "checked-in" && <p className="admin-alert success">Đã chấm công vào thành công.</p>}
       {query.status === "checked-out" && <p className="admin-alert success">Đã chấm công ra thành công.</p>}
@@ -50,7 +50,7 @@ export default async function AttendancePage({ searchParams }: { searchParams: P
         </section>
         <section className="admin-card admin-attendance-board">
           <div className="admin-card-head"><div><span>{formatDate(selectedDate)}</span><h2>Bảng chấm công trong ngày</h2></div></div>
-          <div className="admin-table-wrap"><table className="admin-table"><thead><tr><th>Nhân viên</th><th>Chi nhánh</th><th>Vai trò</th><th>Giờ vào</th><th>Giờ ra</th><th>Trạng thái</th><th>Ghi chú</th><th>Hồ sơ</th></tr></thead><tbody>{staff.map((employee) => { const record = records.find((item) => item.adminUserId === employee.id); return <tr key={employee.id}><td><strong>{employee.name}</strong><span>@{employee.username}</span></td><td>{employee.branch}</td><td>{roleLabel(employee.role)}</td><td>{record?.checkIn || "--:--"}</td><td>{record?.checkOut || "--:--"}</td><td><span className={`admin-badge hr-attendance-${record?.status || "none"}`}>{record ? attendanceLabel(record.status) : "Chưa ghi nhận"}</span></td><td>{record?.note || "—"}</td><td>{user.role === "owner" ? <Link className="admin-table-link" href={`/admin/hr/${employee.id}`}>Cập nhật</Link> : "—"}</td></tr>; })}</tbody></table></div>
+          <div className="admin-table-wrap"><table className="admin-table"><thead><tr><th>Nhân viên</th><th>Chi nhánh</th><th>Vai trò</th><th>Giờ vào</th><th>Giờ ra</th><th>Trạng thái</th><th>Ghi chú</th><th>Hồ sơ</th></tr></thead><tbody>{staff.map((employee) => { const record = records.find((item) => item.adminUserId === employee.id); return <tr key={employee.id}><td><strong>{employee.name}</strong><span>@{employee.username}</span></td><td>{employee.branch}</td><td>{roleLabel(employee.role)}</td><td>{record?.checkIn || "--:--"}</td><td>{record?.checkOut || "--:--"}</td><td><span className={`admin-badge hr-attendance-${record?.status || "none"}`}>{record ? attendanceLabel(record.status) : "Chưa ghi nhận"}</span></td><td>{record?.note || "—"}</td><td><Link className="admin-table-link" href={`/admin/hr/${employee.id}`}>Cập nhật</Link></td></tr>; })}</tbody></table></div>
         </section>
       </> : <section className="admin-card admin-attendance-history admin-self-history"><div className="admin-card-head"><div><span>31 ngày gần nhất</span><h2>Lịch sử của tôi</h2></div></div><div>{ownRecords.map((record) => <article key={record.id}><time>{formatDate(record.workDate)}</time><span className={`admin-badge hr-attendance-${record.status}`}>{attendanceLabel(record.status)}</span><strong>{record.checkIn || "--:--"} → {record.checkOut || "--:--"}</strong><small>{record.note || "Không có ghi chú"}</small></article>)}</div></section>}
     </>

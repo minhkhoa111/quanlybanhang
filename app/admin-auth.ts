@@ -40,6 +40,30 @@ export async function requireOwnerAction() {
   return user;
 }
 
+export async function requireHrManagerPage(returnTo = "/admin/hr") {
+  const user = await requireAdminPage(returnTo);
+  if (user.role !== "owner" && user.role !== "manager") redirect("/admin?error=hr-manager-required");
+  return user;
+}
+
+export async function requireHrManagerAction() {
+  const user = await requireAdminAction();
+  if (user.role !== "owner" && user.role !== "manager") {
+    throw new Error("Chỉ chủ hệ thống hoặc quản lý chi nhánh được cập nhật hồ sơ nhân viên.");
+  }
+  return user;
+}
+
+export function canManageEmployee(
+  user: Pick<AdminUser, "role" | "branchId" | "branch">,
+  employee: Pick<AdminUser, "branchId" | "branch">,
+) {
+  if (user.role === "owner") return true;
+  if (user.role !== "manager") return false;
+  if (user.branchId && employee.branchId) return user.branchId === employee.branchId;
+  return Boolean(user.branch && employee.branch && normalizeBranch(user.branch) === normalizeBranch(employee.branch));
+}
+
 export async function createAdminSession(username: string, password: string) {
   const normalizedUsername = username.trim().toLowerCase();
   let token = "";
@@ -121,4 +145,8 @@ function getAdminPassword() {
   }
 
   return DEFAULT_ADMIN_PASSWORD;
+}
+
+function normalizeBranch(value: string) {
+  return value.trim().toLocaleLowerCase("vi-VN").replace(/\s+/g, " ");
 }
