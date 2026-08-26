@@ -1,6 +1,6 @@
 import { requireOwnerPage } from "@/app/admin-auth";
 import { getBranches } from "@/db/branches";
-import { getAttendanceForMonth, getEmployeeDirectory } from "@/db/hr";
+import { getAttendanceForMonth, getPayrollEmployeeDirectory } from "@/db/hr";
 import { getPayrollRecords } from "@/db/payroll";
 import PayrollEditorForm from "./PayrollEditorForm";
 
@@ -11,7 +11,7 @@ export default async function PayrollPage({ searchParams }: { searchParams: Prom
   const query = await searchParams;
   const month = /^\d{4}-(0[1-9]|1[0-2])$/.test(query.month || "") ? query.month! : currentMonth();
   const [allEmployees, records, branches, monthAttendance] = await Promise.all([
-    getEmployeeDirectory().catch(() => []),
+    getPayrollEmployeeDirectory().catch(() => []),
     getPayrollRecords(month).catch(() => []),
     getBranches().catch(() => []),
     getAttendanceForMonth(month).catch(() => []),

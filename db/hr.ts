@@ -39,6 +39,10 @@ export type AttendanceRecord = {
   updatedAt: number;
 };
 
+export type PayrollEmployee = Pick<EmployeeProfile, "adminUserId" | "name" | "role" | "branchId" | "branch" | "monthlySalary" | "bankName"> & {
+  bankAccountMasked: string;
+};
+
 const database = () => {
   const value = (env as unknown as Bindings).DB;
   if (!value) throw new Error("Cơ sở dữ liệu nhân sự chưa sẵn sàng.");
@@ -106,6 +110,28 @@ export async function getEmployeeDirectory(): Promise<Array<EmployeeProfile & { 
       bankAccountMasked: maskValue(profile.bankAccountNumber),
     };
   }));
+}
+
+export async function getPayrollEmployeeDirectory(): Promise<PayrollEmployee[]> {
+  await ensureHrStore();
+  const rows = await database().prepare(`SELECT
+      u.id,u.name,u.role,u.branch_id,u.branch,
+      p.monthly_salary,p.bank_name,p.bank_account_number_encrypted
+    FROM admin_users u
+    LEFT JOIN employee_profiles p ON p.admin_user_id=u.id
+    WHERE u.active=1
+    ORDER BY CASE u.role WHEN 'manager' THEN 0 WHEN 'sales' THEN 1 WHEN 'consultant' THEN 2 WHEN 'warranty' THEN 3 WHEN 'repair' THEN 4 ELSE 5 END,u.name ASC`)
+    .all<Record<string, unknown>>();
+  return Promise.all(rows.results.map(async (row) => ({
+    adminUserId: String(row.id || ""),
+    name: String(row.name || ""),
+    role: normalizeRole(String(row.role || "sales")),
+    branchId: String(row.branch_id || ""),
+    branch: String(row.branch || ""),
+    monthlySalary: Number(row.monthly_salary || 0),
+    bankName: String(row.bank_name || ""),
+    bankAccountMasked: maskValue(await decrypt(String(row.bank_account_number_encrypted || ""))),
+  })));
 }
 
 export async function getEmployeeProfile(adminUserId: string) {
@@ -244,11 +270,15 @@ function maskValue(value: string) { return value ? `${"•".repeat(Math.max(4, v
 export function vietnamDate(date = new Date()) { return new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Ho_Chi_Minh", year: "numeric", month: "2-digit", day: "2-digit" }).format(date); }
 function vietnamTime(date = new Date()) { return new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Ho_Chi_Minh", hour: "2-digit", minute: "2-digit", hour12: false }).format(date); }
 
+let encryptionKeyReady: Promise<CryptoKey> | null = null;
 async function encryptionKey() {
+  if (encryptionKeyReady) return encryptionKeyReady;
   const bindings = env as unknown as Bindings;
   const secret = bindings.HR_DATA_KEY || bindings.ADMIN_PASSWORD || process.env.HR_DATA_KEY || process.env.ADMIN_PASSWORD || "huy-apple-local-hr-data-key";
-  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(`hr:v1:${secret}`));
-  return crypto.subtle.importKey("raw", digest, "AES-GCM", false, ["encrypt", "decrypt"]);
+  encryptionKeyReady = crypto.subtle.digest("SHA-256", new TextEncoder().encode(`hr:v1:${secret}`))
+    .then((digest) => crypto.subtle.importKey("raw", digest, "AES-GCM", false, ["encrypt", "decrypt"]))
+    .catch((error) => { encryptionKeyReady = null; throw error; });
+  return encryptionKeyReady;
 }
 
 async function encrypt(value: string) {

@@ -663,14 +663,20 @@ test("groups payroll by branch and generates salary receipts with statutory dedu
 });
 
 test("loads monthly payroll attendance with one database query", async () => {
-  const [page, hr] = await Promise.all([
+  const [page, hr, loading] = await Promise.all([
     readFile(new URL("app/admin/payroll/page.tsx", root), "utf8"),
     readFile(new URL("db/hr.ts", root), "utf8"),
+    readFile(new URL("app/admin/payroll/loading.tsx", root), "utf8"),
   ]);
   assert.match(page, /getAttendanceForMonth\(month\)/);
+  assert.match(page, /getPayrollEmployeeDirectory\(\)/);
+  assert.doesNotMatch(page, /getEmployeeDirectory\(\)/);
   assert.doesNotMatch(page, /employees\.map\(async/);
   assert.match(hr, /export async function getAttendanceForMonth/);
+  assert.match(hr, /export async function getPayrollEmployeeDirectory/);
+  assert.match(hr, /let encryptionKeyReady: Promise<CryptoKey> \| null = null/);
   assert.match(hr, /WHERE a\.work_date BETWEEN \? AND \?/);
+  assert.match(loading, /Đang tải bảng lương/);
 });
 
 test("routes live consultation to the selected branch and gives the director a manager-first HR view", async () => {
