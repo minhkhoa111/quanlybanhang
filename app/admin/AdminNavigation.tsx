@@ -31,6 +31,7 @@ const groups: NavGroup[] = [
   ] },
   { label: "Chấm công", items: [
     { icon: "◷", label: "Chấm công nhân viên", href: "/admin/attendance" },
+    { icon: "◎", label: "Kiểm thử nhận diện", href: "/admin/face-test", roles: ["owner"] },
   ] },
   { label: "An ninh", items: [
     { icon: "◉", label: "Camera chi nhánh", href: "/admin/cameras" },

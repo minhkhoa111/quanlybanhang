@@ -562,6 +562,26 @@ test("requires device biometrics for employee self attendance", async () => {
   assert.doesNotMatch(actions, /selfAttendanceAction/);
 });
 
+test("provides a protected DeepFace camera testing console", async () => {
+  const [page, consolePage, navigation, styles] = await Promise.all([
+    readFile(new URL("app/admin/face-test/page.tsx", root), "utf8"),
+    readFile(new URL("app/admin/face-test/FaceTestConsole.tsx", root), "utf8"),
+    readFile(new URL("app/admin/AdminNavigation.tsx", root), "utf8"),
+    readFile(new URL("app/modern-theme.css", root), "utf8"),
+  ]);
+  assert.match(page, /requireOwnerPage\("\/admin\/face-test"\)/);
+  assert.match(page, /Facenet512 · DeepFace/);
+  assert.match(consolePage, /navigator\.mediaDevices\.getUserMedia/);
+  assert.match(consolePage, /"X-API-Key": apiKey\.trim\(\)/);
+  assert.match(consolePage, /employee_id: employeeId\.trim\(\)/);
+  assert.match(consolePage, /submitFace\("enroll"\)/);
+  assert.match(consolePage, /submitFace\("verify"\)/);
+  assert.match(navigation, /Kiểm thử nhận diện/);
+  assert.match(navigation, /href: "\/admin\/face-test", roles: \["owner"\]/);
+  assert.match(styles, /\.face-test-workspace/);
+  assert.match(styles, /@keyframes face-test-scan/);
+});
+
 test("stores member invoices and warranty records behind customer ownership checks", async () => {
   const [account, purchasesApi, invoicePage, warrantyPage, warrantyApi, orders, home, mobileNav] = await Promise.all([
     readFile(new URL("app/tai-khoan/AccountPanel.tsx", root), "utf8"),
