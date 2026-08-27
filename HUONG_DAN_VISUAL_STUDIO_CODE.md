@@ -1,4 +1,4 @@
-# Hướng dẫn mở source Huy Apple bằng Visual Studio Code
+# Hướng dẫn mở source Infinity Company bằng Visual Studio Code
 
 ## 1. Chuẩn bị
 
@@ -8,7 +8,7 @@
 
 ## 2. Chạy website trên máy
 
-1. Mở Visual Studio Code, chọn **File > Open Folder** và mở thư mục `huy-apple`.
+1. Mở Visual Studio Code, chọn **File > Open Folder** và mở thư mục `quanlybangdienthoai`.
 2. Mở **Terminal > New Terminal**.
 3. Chạy lần lượt:
 

@@ -166,7 +166,7 @@ export default function AccountPanel() {
           <div className="member-avatar-controls"><label className="member-avatar-button">{uploadingAvatar ? "Đang xử lý..." : "Đổi ảnh"}<input type="file" accept="image/jpeg,image/png,image/webp" onChange={uploadAvatar} disabled={uploadingAvatar} /></label>{customer.avatarUrl && <button type="button" onClick={removeAvatar} disabled={uploadingAvatar}>Gỡ ảnh</button>}</div>
           <small>JPG, PNG hoặc WebP · tối đa 3 MB</small>
         </div>
-        <div className="member-identity"><span>HUY APPLE MEMBER</span><h1>{customer.name || "Thành viên mới"}</h1><p>@{customer.username || "google-member"}</p></div>
+        <div className="member-identity"><span>INFINITY COMPANY MEMBER</span><h1>{customer.name || "Thành viên mới"}</h1><p>@{customer.username || "google-member"}</p></div>
         <div className="member-shortcuts"><Link className="button button-primary" href="/gio-hang">Giỏ hàng</Link><Link className="button button-secondary" href="/bao-hanh">Tra bảo hành</Link><Link className="button button-secondary member-shortcut-wide" href="#member-purchases">Hóa đơn đã mua</Link></div>
       </aside>
       <div className="member-details">
@@ -190,20 +190,20 @@ export default function AccountPanel() {
           <header><div><span>{purchase.orderCode}</span><time>{formatTimestamp(purchase.createdAt)}</time></div><div><i className={`member-order-status status-${purchase.status}`}>{orderStatusLabel(purchase.status)}</i><i className={`member-invoice-status invoice-${purchase.invoiceStatus}`}>{invoiceStatusLabel(purchase.invoiceStatus)}</i></div></header>
           <div className="member-purchase-products">{products.slice(0, 3).map((item, index) => <div key={`${item.productSlug}-${index}`}>{item.image ? <Image src={item.image} alt="" width={58} height={58} unoptimized /> : <span aria-hidden="true">HA</span>}<p><strong>{item.productName}</strong><small>{[item.ram && `RAM ${item.ram}`, item.storage, item.color].filter(Boolean).join(" · ") || "Theo đơn hàng"}</small></p><b>x{item.quantity}</b></div>)}{products.length > 3 && <small className="member-purchase-more">+{products.length - 3} sản phẩm khác</small>}</div>
           <div className="member-purchase-meta"><p><span>Tổng thanh toán</span><strong>{formatMoney(Number(purchase.total))}</strong></p><p><span>Bảo hành</span><strong>{purchase.warrantyStartDate ? `${purchase.warrantyMonths || 12} tháng · từ ${formatDate(purchase.warrantyStartDate)}` : "Chờ cửa hàng kích hoạt"}</strong></p><p><span>Serial / IMEI</span><strong>{purchase.warrantySerials || "Chưa cập nhật"}</strong></p></div>
-          <footer><span>{purchase.branchName || "Huy Apple"}</span><Link href={`/tai-khoan/hoa-don/${purchase.id}`}>Xem hóa đơn &amp; bảo hành →</Link></footer>
+          <footer><span>{purchase.branchName || "Infinity Company"}</span><Link href={`/tai-khoan/hoa-don/${purchase.id}`}>Xem hóa đơn &amp; bảo hành →</Link></footer>
         </article>;
       })}</div>}
     </section></div>;
   }
 
   return <section className="account-panel">
-    <div className="account-intro"><span>HUY APPLE MEMBER</span><h1>Mua hàng nhanh hơn.</h1><p>Đăng nhập để tự động điền thông tin nhận hàng, lưu giỏ hàng và liên kết đơn mua với tài khoản của bạn.</p></div>
+    <div className="account-intro"><span>INFINITY COMPANY MEMBER</span><h1>Mua hàng nhanh hơn.</h1><p>Đăng nhập để tự động điền thông tin nhận hàng, lưu giỏ hàng và liên kết đơn mua với tài khoản của bạn.</p></div>
     <div className="account-form-wrap">
       <a className="google-auth-button" href="/api/account/google/start"><span aria-hidden="true">G</span>Tiếp tục với Google</a>
       <div className="account-divider"><span>hoặc</span></div>
       <div className="account-tabs"><button type="button" className={mode === "login" ? "is-active" : ""} onClick={() => { setMode("login"); setMessage(""); }}>Đăng nhập</button><button type="button" className={mode === "register" ? "is-active" : ""} onClick={() => { setMode("register"); setMessage(""); }}>Đăng ký</button></div>
       <form onSubmit={submitAuth}>
-        {mode === "register" && <><label>Tên đăng nhập<input name="username" required minLength={4} maxLength={24} pattern="[a-zA-Z0-9._]+" autoComplete="username" placeholder="huyapple_member" /></label><label>Họ và tên<input name="name" required autoComplete="name" /></label><label>Số điện thoại<input name="phone" required type="tel" pattern="[0-9 +]{9,15}" autoComplete="tel" /></label><label>Email<input name="email" type="email" required autoComplete="email" /></label></>}
+        {mode === "register" && <><label>Tên đăng nhập<input name="username" required minLength={4} maxLength={24} pattern="[a-zA-Z0-9._]+" autoComplete="username" placeholder="infinity_member" /></label><label>Họ và tên<input name="name" required autoComplete="name" /></label><label>Số điện thoại<input name="phone" required type="tel" pattern="[0-9 +]{9,15}" autoComplete="tel" /></label><label>Email<input name="email" type="email" required autoComplete="email" /></label></>}
         {mode === "login" && <label>Tên đăng nhập hoặc email<input name="identifier" required autoComplete="username" /></label>}
         <label>Mật khẩu<input name="password" type="password" minLength={8} required autoComplete={mode === "login" ? "current-password" : "new-password"} /></label>
         {message && <p className="account-error">{message}</p>}

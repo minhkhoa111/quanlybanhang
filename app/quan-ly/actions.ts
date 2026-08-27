@@ -67,7 +67,7 @@ export async function saveProductAction(formData: FormData) {
       image,
       images: [image, ...(previous?.images ?? [])].filter((item, index, list) => list.indexOf(item) === index),
       badge: value(formData, "badge") || "Mới",
-      tagline: value(formData, "tagline") || `Khám phá ${name} tại Huy Apple.`,
+      tagline: value(formData, "tagline") || `Khám phá ${name} tại Infinity Company.`,
       price: value(formData, "price") || "Liên hệ giá tốt",
       costPrice: previous?.costPrice,
       sellingPrice: value(formData, "price") || previous?.sellingPrice || "Liên hệ giá tốt",

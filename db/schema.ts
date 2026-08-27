@@ -91,6 +91,21 @@ export const employeePayrollRecords = sqliteTable("employee_payroll_records", {
   paidAt: integer("paid_at").notNull().default(0), note: text("note").notNull().default(""), updatedAt: integer("updated_at").notNull(),
 });
 
+export const workTasks = sqliteTable("work_tasks", {
+  id: text("id").primaryKey(), title: text("title").notNull(), description: text("description").notNull().default(""),
+  priority: text("priority").notNull().default("normal"), dueDate: text("due_date").notNull().default(""), status: text("status").notNull().default("assigned"),
+  branchId: text("branch_id").notNull().default(""), branchName: text("branch_name").notNull().default(""), assignedTo: text("assigned_to").notNull(),
+  assignedName: text("assigned_name").notNull(), createdBy: text("created_by").notNull(), createdByName: text("created_by_name").notNull(),
+  attachmentKey: text("attachment_key").notNull().default(""), attachmentName: text("attachment_name").notNull().default(""),
+  attachmentType: text("attachment_type").notNull().default(""), createdAt: integer("created_at").notNull(), updatedAt: integer("updated_at").notNull(),
+});
+
+export const workTaskReports = sqliteTable("work_task_reports", {
+  id: text("id").primaryKey(), taskId: text("task_id").notNull(), authorId: text("author_id").notNull(), authorName: text("author_name").notNull(),
+  message: text("message").notNull(), progress: integer("progress").notNull().default(0), attachmentKey: text("attachment_key").notNull().default(""),
+  attachmentName: text("attachment_name").notNull().default(""), attachmentType: text("attachment_type").notNull().default(""), createdAt: integer("created_at").notNull(),
+});
+
 export const liveChatConversations = sqliteTable("live_chat_conversations", {
   id: text("id").primaryKey(), customerName: text("customer_name").notNull(), phone: text("phone").notNull(),
   token: text("token").notNull().unique(), status: text("status").notNull().default("waiting"),

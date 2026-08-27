@@ -4,7 +4,7 @@ import test from "node:test";
 
 const root = new URL("../", import.meta.url);
 
-test("keeps the storefront wired to Huy Apple order content", async () => {
+test("keeps the storefront wired to Infinity Company order content", async () => {
   const [page, layout, orderPage, products, categoryMenu, homeShowcases, studentOffer] = await Promise.all([
     readFile(new URL("app/page.tsx", root), "utf8"),
     readFile(new URL("app/layout.tsx", root), "utf8"),
@@ -15,7 +15,7 @@ test("keeps the storefront wired to Huy Apple order content", async () => {
     readFile(new URL("app/components/StudentOfferBanner.tsx", root), "utf8"),
   ]);
 
-  assert.match(layout, /Huy Apple \| Điện thoại & đặt hàng/);
+  assert.match(layout, /Infinity Company \| Điện thoại & đặt hàng/);
   assert.match(layout, /02879797999/);
   assert.match(page, /getPublicProducts/);
   assert.doesNotMatch(page, /Đặt đúng máy|để Huy giữ máy/);
@@ -62,7 +62,10 @@ test("unifies /quan-ly with the modern product and order administration", async 
   ]);
 
   assert.match(adminEntry, /requireAdminPage/);
-  assert.match(adminEntry, /user\.role === "manager" \? "\/manger" : "\/staff"/);
+  assert.match(adminEntry, /portalPathForRole\(user\.role\)/);
+  assert.match(adminAuth, /if \(role === "owner"\) return "\/admin"/);
+  assert.match(adminAuth, /if \(role === "manager"\) return "\/manager"/);
+  assert.match(adminAuth, /return "\/staff"/);
   assert.match(productsPage, /Quản lý sản phẩm/);
   assert.match(productsPage, /Thêm sản phẩm/);
   assert.match(productsPage, /Tất cả danh mục/);
@@ -455,7 +458,7 @@ test("runs a local FAQ and product chatbot without external AI services", async 
 });
 
 test("provides protected employee profiles, payroll details and attendance", async () => {
-  const [directory, profile, attendance, store, photoRoute, navigation, migration, staff, staffActions, adminUsers, orderActions] = await Promise.all([
+  const [directory, profile, attendance, store, photoRoute, navigation, migration, profileDefaultsMigration, staff, staffActions, adminUsers, orderActions] = await Promise.all([
     readFile(new URL("app/admin/hr/page.tsx", root), "utf8"),
     readFile(new URL("app/admin/hr/[id]/page.tsx", root), "utf8"),
     readFile(new URL("app/admin/attendance/page.tsx", root), "utf8"),
@@ -463,6 +466,7 @@ test("provides protected employee profiles, payroll details and attendance", asy
     readFile(new URL("app/api/admin/hr-photo/[id]/route.ts", root), "utf8"),
     readFile(new URL("app/admin/AdminNavigation.tsx", root), "utf8"),
     readFile(new URL("drizzle/0006_employee_hr.sql", root), "utf8"),
+    readFile(new URL("drizzle/0013_complete_employee_profiles.sql", root), "utf8"),
     readFile(new URL("app/admin/staff/page.tsx", root), "utf8"),
     readFile(new URL("app/admin/staff/actions.ts", root), "utf8"),
     readFile(new URL("db/admin-users.ts", root), "utf8"),
@@ -478,13 +482,17 @@ test("provides protected employee profiles, payroll details and attendance", asy
   assert.match(store, /AES-GCM/);
   assert.match(store, /citizen_id_encrypted/);
   assert.match(store, /bank_account_number_encrypted/);
-  assert.match(photoRoute, /user\.role !== "owner" && user\.role !== "manager"/);
+  assert.match(store, /ensureEmployeeProfileDefaults/);
+  for (const salary of ["38_000_000", "20_000_000", "15_000_000", "12_000_000"]) assert.match(store, new RegExp(salary));
+  assert.match(photoRoute, /user\.id !== id && !canManageEmployee\(user, employee\)/);
   assert.match(photoRoute, /canManageEmployee\(user, employee\)/);
   assert.match(photoRoute, /private, no-store/);
   assert.match(navigation, /\/admin\/hr/);
   assert.match(navigation, /\/admin\/attendance/);
   assert.match(migration, /employee_profiles/);
   assert.match(migration, /employee_attendance/);
+  assert.match(profileDefaultsMigration, /printf\('079%09d'/);
+  for (const salary of ["38000000", "20000000", "15000000", "12000000"]) assert.match(profileDefaultsMigration, new RegExp(salary));
   assert.match(staff, /value="warranty">Nhân viên bảo hành/);
   assert.match(staff, /value="repair">Nhân viên sửa chữa/);
   assert.match(staffActions, /role === "warranty"/);
@@ -535,55 +543,178 @@ test("filters the employee directory by owner and branch-manager scope", async (
   assert.match(styles, /\.admin-hr-filters/);
 });
 
-test("requires device biometrics for employee self attendance", async () => {
-  const [component, page, optionsRoute, verifyRoute, passkeyStore, schema, migration, actions] = await Promise.all([
-    readFile(new URL("app/admin/attendance/BiometricAttendance.tsx", root), "utf8"),
-    readFile(new URL("app/admin/attendance/page.tsx", root), "utf8"),
-    readFile(new URL("app/api/admin/attendance/passkey/options/route.ts", root), "utf8"),
-    readFile(new URL("app/api/admin/attendance/passkey/verify/route.ts", root), "utf8"),
-    readFile(new URL("db/attendance-passkeys.ts", root), "utf8"),
+test("creates printable employee cards with scoped QR and barcode identity", async () => {
+  const [page, preview, navigation, manager, styles] = await Promise.all([
+    readFile(new URL("app/admin/hr/cards/page.tsx", root), "utf8"),
+    readFile(new URL("app/admin/hr/cards/EmployeeCardPreview.tsx", root), "utf8"),
+    readFile(new URL("app/admin/AdminNavigation.tsx", root), "utf8"),
+    readFile(new URL("app/manager/page.tsx", root), "utf8"),
+    readFile(new URL("app/modern-theme.css", root), "utf8"),
+  ]);
+  assert.match(page, /requireHrManagerPage\("\/admin\/hr\/cards"\)/);
+  assert.match(page, /item\.branchId === user\.branchId/);
+  assert.match(page, /\.filter\(\(item\) => item\.active\)/);
+  assert.match(preview, /QRCode\.toDataURL/);
+  assert.match(preview, /EmployeeBarcode/);
+  assert.match(preview, /HỌ VÀ TÊN/);
+  assert.match(preview, /CHỨC VỤ/);
+  assert.match(preview, /CHI NHÁNH/);
+  assert.match(preview, /window\.print\(\)/);
+  assert.match(navigation, /Thẻ nhân sự/);
+  assert.match(manager, /Tạo thẻ nhân sự/);
+  assert.match(styles, /85\.6mm/);
+  assert.match(styles, /53\.98mm/);
+});
+
+test("assigns branch-scoped work with protected files, reports and read-only personal cards", async () => {
+  const [page, actions, store, download, schema, migration, card, photo, navigation, manager, staff] = await Promise.all([
+    readFile(new URL("app/admin/tasks/page.tsx", root), "utf8"),
+    readFile(new URL("app/admin/tasks/actions.ts", root), "utf8"),
+    readFile(new URL("db/tasks.ts", root), "utf8"),
+    readFile(new URL("app/api/admin/task-files/[kind]/[id]/route.ts", root), "utf8"),
     readFile(new URL("db/schema.ts", root), "utf8"),
-    readFile(new URL("drizzle/0007_attendance_passkeys.sql", root), "utf8"),
-    readFile(new URL("app/admin/hr/actions.ts", root), "utf8"),
+    readFile(new URL("drizzle/0014_work_tasks.sql", root), "utf8"),
+    readFile(new URL("app/staff/card/page.tsx", root), "utf8"),
+    readFile(new URL("app/api/admin/hr-photo/[id]/route.ts", root), "utf8"),
+    readFile(new URL("app/admin/AdminNavigation.tsx", root), "utf8"),
+    readFile(new URL("app/manager/page.tsx", root), "utf8"),
+    readFile(new URL("app/staff/page.tsx", root), "utf8"),
+  ]);
+  assert.match(page, /Giao việc & báo cáo/);
+  assert.match(page, /createTaskAction/);
+  assert.match(page, /reportTaskAction/);
+  assert.match(page, /reportAttachment/);
+  assert.match(actions, /actor\.role === "manager".*assignee\.branchId !== actor\.branchId/s);
+  assert.match(actions, /15 \* 1024 \* 1024/);
+  assert.match(actions, /PRODUCT_IMAGES\?\.delete/);
+  assert.match(store, /canAccessTask/);
+  assert.match(store, /WHERE assigned_to=\?/);
+  assert.match(download, /canAccessTask\(user, file\.task\)/);
+  assert.match(download, /private, no-store/);
+  assert.match(schema, /workTasks = sqliteTable\("work_tasks"/);
+  assert.match(migration, /CREATE TABLE IF NOT EXISTS work_task_reports/);
+  assert.match(card, /Thẻ của tôi/);
+  assert.match(card, /user\.role === "manager" && <Link/);
+  assert.match(photo, /user\.id !== id/);
+  assert.match(navigation, /Công việc & báo cáo/);
+  assert.match(navigation, /Thẻ nhân sự của tôi/);
+  assert.match(manager, /Giao việc & báo cáo/);
+  assert.match(staff, /Báo cáo công việc/);
+});
+
+test("keeps face camera as the only employee self-attendance interface", async () => {
+  const [component, page, attendanceApi, faceServer, styles] = await Promise.all([
+    readFile(new URL("app/admin/attendance/FaceAttendance.tsx", root), "utf8"),
+    readFile(new URL("app/admin/attendance/page.tsx", root), "utf8"),
+    readFile(new URL("app/api/face/attendance/route.ts", root), "utf8"),
+    readFile(new URL("python-ai/face_server.py", root), "utf8"),
+    readFile(new URL("app/modern-theme.css", root), "utf8"),
   ]);
 
-  assert.match(page, /BiometricAttendance/);
-  assert.match(component, /startRegistration/);
-  assert.match(component, /startAuthentication/);
-  assert.match(component, /không nhận hay lưu ảnh khuôn mặt/i);
-  assert.match(optionsRoute, /userVerification: "required"/);
-  assert.match(optionsRoute, /authenticatorAttachment: "platform"/);
-  assert.match(verifyRoute, /requireUserVerification: true/);
-  assert.match(verifyRoute, /employeeCheck\(user\.id, mode/);
-  assert.match(passkeyStore, /employee_attendance_passkeys/);
-  assert.match(passkeyStore, /expires_at/);
-  assert.match(schema, /employeeAttendancePasskeys/);
-  assert.match(migration, /employee_attendance_challenges/);
-  assert.doesNotMatch(actions, /selfAttendanceAction/);
+  assert.match(page, /FaceAttendance/);
+  assert.doesNotMatch(page, /BiometricAttendance|getAttendancePasskeys|admin-attendance-self|admin-self-history/);
+  assert.match(component, /navigator\.mediaDevices\.getUserMedia/);
+  assert.match(component, /face-attendance-camera/);
+  assert.match(component, /FaceDetector/);
+  assert.match(component, /mapFaceBox/);
+  assert.match(component, /Xác minh thành công/);
+  assert.match(component, /Xác minh không thành công/);
+  assert.match(attendanceApi, /facial_area/);
+  assert.match(faceServer, /facial_area=candidate_area/);
+  assert.match(styles, /\.face-attendance-tracker/);
 });
 
 test("provides a protected DeepFace camera testing console", async () => {
-  const [page, consolePage, navigation, styles] = await Promise.all([
+  const [page, consolePage, navigation, managerPortal, styles, enrollRoute, verifyRoute, detectRoute, statusRoute, deleteRoute, attendanceRoute, attendanceComponent, attendancePage, backend, pythonServer, envExample] = await Promise.all([
     readFile(new URL("app/admin/face-test/page.tsx", root), "utf8"),
     readFile(new URL("app/admin/face-test/FaceTestConsole.tsx", root), "utf8"),
     readFile(new URL("app/admin/AdminNavigation.tsx", root), "utf8"),
+    readFile(new URL("app/manager/page.tsx", root), "utf8"),
     readFile(new URL("app/modern-theme.css", root), "utf8"),
+    readFile(new URL("app/api/face/enroll/route.ts", root), "utf8"),
+    readFile(new URL("app/api/face/verify/route.ts", root), "utf8"),
+    readFile(new URL("app/api/face/detect/route.ts", root), "utf8"),
+    readFile(new URL("app/api/face/employees/route.ts", root), "utf8"),
+    readFile(new URL("app/api/face/employees/[employeeId]/route.ts", root), "utf8"),
+    readFile(new URL("app/api/face/attendance/route.ts", root), "utf8"),
+    readFile(new URL("app/admin/attendance/FaceAttendance.tsx", root), "utf8"),
+    readFile(new URL("app/admin/attendance/page.tsx", root), "utf8"),
+    readFile(new URL("app/api/face/_backend.ts", root), "utf8"),
+    readFile(new URL("python-ai/face_server.py", root), "utf8"),
+    readFile(new URL(".env.example", root), "utf8"),
   ]);
-  assert.match(page, /requireOwnerPage\("\/admin\/face-test"\)/);
+  assert.match(page, /requireHrManagerPage\("\/admin\/face-test"\)/);
+  assert.match(page, /canManageEmployee\(manager, employee\)/);
+  assert.match(page, /getAdminUsers/);
   assert.match(page, /Facenet512 · DeepFace/);
   assert.match(consolePage, /navigator\.mediaDevices\.getUserMedia/);
-  assert.match(consolePage, /"X-API-Key": apiKey\.trim\(\)/);
-  assert.match(consolePage, /employee_id: employeeId\.trim\(\)/);
+  assert.match(consolePage, /fetch\(`\/api\/face\/\$\{action\}`/);
+  assert.match(consolePage, /\/api\/face\/employees/);
+  assert.doesNotMatch(consolePage, /8001|X-API-Key/);
   assert.match(consolePage, /submitFace\("enroll"\)/);
   assert.match(consolePage, /submitFace\("verify"\)/);
-  assert.match(navigation, /Kiểm thử nhận diện/);
-  assert.match(navigation, /href: "\/admin\/face-test", roles: \["owner"\]/);
+  assert.match(consolePage, /fetch\("\/api\/face\/detect"/);
+  assert.match(consolePage, /mapSquareFaceBox/);
+  assert.match(consolePage, /pendingAction/);
+  assert.match(consolePage, /Giữ khuôn mặt ổn định/);
+  assert.match(consolePage, /Hệ thống sẽ tự chụp và xử lý, không cần bấm lại/);
+  assert.match(consolePage, /captureFrame\(video, 640, 0\.72\)/);
+  assert.match(consolePage, /faceLocated \? 350 : 1200/);
+  assert.match(consolePage, /có thể đeo kính trong suốt/i);
+  assert.match(consolePage, /Đã thêm khuôn mặt/);
+  assert.match(consolePage, /Đăng ký không thành công/);
+  assert.match(consolePage, /Điều chỉnh khuôn mặt để camera quét/);
+  assert.match(consolePage, /deleteRegistration/);
+  assert.match(consolePage, /Danh sách nhân viên/);
+  for (const route of [enrollRoute, verifyRoute, detectRoute, statusRoute, deleteRoute]) assert.match(route, /requireFaceManager/);
+  assert.match(enrollRoute, /requireManagedEmployee\(manager, payload\.employee_id\)/);
+  assert.match(deleteRoute, /requireManagedEmployee\(manager, rawEmployeeId\)/);
+  assert.match(enrollRoute, /faceBackend\("\/enroll"/);
+  assert.match(verifyRoute, /faceBackend\("\/verify"/);
+  assert.match(detectRoute, /faceBackend\("\/detect"/);
+  assert.match(deleteRoute, /method: "DELETE"/);
+  assert.match(backend, /FACE_API_KEY/);
+  assert.match(backend, /canManageEmployee/);
+  assert.match(backend, /user\.role !== "owner" && user\.role !== "manager"/);
+  assert.match(backend, /"X-API-Key": apiKey/);
+  assert.match(backend, /getAdminUsers/);
+  assert.match(pythonServer, /@app\.get\("\/employees"/);
+  assert.match(pythonServer, /load_local_environment/);
+  assert.match(pythonServer, /APP_DIR\.parent \/ "\.env"/);
+  assert.match(pythonServer, /credible_faces/);
+  assert.match(pythonServer, /left_eye/);
+  assert.match(pythonServer, /right_eye/);
+  assert.match(pythonServer, /@app\.post\("\/detect"/);
+  assert.match(pythonServer, /haarcascade_frontalface_default/);
+  assert.match(pythonServer, /haarcascade_frontalface_alt2/);
+  assert.match(pythonServer, /detect_face_fast/);
+  assert.match(pythonServer, /is_credible_face/);
+  assert.match(pythonServer, /known_encodings/);
+  assert.match(envExample, /FACE_API_URL=http:\/\/127\.0\.0\.1:8001/);
+  assert.match(attendancePage, /FaceAttendance/);
+  assert.match(attendanceComponent, /navigator\.mediaDevices\.getUserMedia/);
+  assert.match(attendanceComponent, /fetch\("\/api\/face\/attendance"/);
+  assert.match(attendanceComponent, /setInterval/);
+  assert.match(attendanceComponent, /startCamera\("in"\)/);
+  assert.match(attendanceComponent, /startCamera\("out"\)/);
+  assert.match(attendanceComponent, /face-attendance-live-status/);
+  assert.match(attendanceRoute, /readFacePayload\(request, user\.id\)/);
+  assert.match(attendanceRoute, /faceBackend\("\/verify"/);
+  assert.match(attendanceRoute, /employeeCheck\(user\.id, mode/);
+  assert.match(navigation, /Đăng ký khuôn mặt/);
+  assert.match(navigation, /href: "\/admin\/face-test", roles: \["owner", "manager"\]/);
+  assert.match(managerPortal, /href="\/admin\/face-test"/);
   assert.match(styles, /\.face-test-workspace/);
+  assert.match(styles, /\.face-test-tracker/);
+  assert.match(styles, /\.face-test-camera-status/);
+  assert.match(styles, /\.face-test-directory/);
   assert.match(styles, /@keyframes face-test-scan/);
+  assert.match(styles, /\.face-attendance/);
+  assert.match(styles, /\.face-attendance-live-status/);
 });
 
 test("stores member invoices and warranty records behind customer ownership checks", async () => {
-  const [account, purchasesApi, invoicePage, warrantyPage, warrantyApi, orders, home, mobileNav] = await Promise.all([
+  const [account, purchasesApi, invoicePage, warrantyPage, warrantyApi, orders, home, mobileNav, stamp] = await Promise.all([
     readFile(new URL("app/tai-khoan/AccountPanel.tsx", root), "utf8"),
     readFile(new URL("app/api/account/purchases/route.ts", root), "utf8"),
     readFile(new URL("app/tai-khoan/hoa-don/[id]/page.tsx", root), "utf8"),
@@ -592,6 +723,7 @@ test("stores member invoices and warranty records behind customer ownership chec
     readFile(new URL("db/orders.ts", root), "utf8"),
     readFile(new URL("app/page.tsx", root), "utf8"),
     readFile(new URL("app/components/MobileAppNav.tsx", root), "utf8"),
+    readFile(new URL("app/components/DocumentStamp.tsx", root), "utf8"),
   ]);
 
   assert.match(account, /Hóa đơn &amp; bảo hành/);
@@ -600,6 +732,9 @@ test("stores member invoices and warranty records behind customer ownership chec
   assert.match(purchasesApi, /getCustomerOrders\(customer\.id\)/);
   assert.match(invoicePage, /getCustomerOrderById\(id, customer\.id\)/);
   assert.match(invoicePage, /Bảo hành điện tử/);
+  assert.match(invoicePage, /paymentStatus === "paid"/);
+  assert.match(invoicePage, /kind="collected"/);
+  assert.match(stamp, /ĐÃ THU TIỀN/);
   assert.match(orders, /WHERE customer_id = \?/);
   assert.match(warrantyPage, /mã đơn hàng và số điện thoại/i);
   assert.match(warrantyApi, /getWarrantyOrder\(orderCode, phone\)/);
@@ -609,11 +744,14 @@ test("stores member invoices and warranty records behind customer ownership chec
 });
 
 test("separates owner, branch manager and staff workspaces with protected business ledgers", async () => {
-  const [managerPortal, staffPortal, login, adminHome, customers, vouchers, voucherActions, navigation, branchDetail, staffActions, payroll, payrollActions, payrollStore, payrollMigration, tax] = await Promise.all([
+  const [managerPortal, legacyManagerPortal, staffPortal, portalShell, login, adminHome, adminAuth, customers, vouchers, voucherActions, navigation, branchDetail, staffActions, payroll, payrollActions, payrollStore, payrollMigration, tax] = await Promise.all([
+    readFile(new URL("app/manager/page.tsx", root), "utf8"),
     readFile(new URL("app/manger/page.tsx", root), "utf8"),
     readFile(new URL("app/staff/page.tsx", root), "utf8"),
+    readFile(new URL("app/components/BusinessPortalShell.tsx", root), "utf8"),
     readFile(new URL("app/admin-login/actions.ts", root), "utf8"),
     readFile(new URL("app/admin/page.tsx", root), "utf8"),
+    readFile(new URL("app/admin-auth.ts", root), "utf8"),
     readFile(new URL("app/admin/customers/page.tsx", root), "utf8"),
     readFile(new URL("app/admin/vouchers/page.tsx", root), "utf8"),
     readFile(new URL("app/admin/vouchers/actions.ts", root), "utf8"),
@@ -627,13 +765,25 @@ test("separates owner, branch manager and staff workspaces with protected busine
     readFile(new URL("app/admin/tax/page.tsx", root), "utf8"),
   ]);
 
-  assert.match(managerPortal, /Cổng quản lý chi nhánh/);
+  assert.match(managerPortal, /BusinessPortalShell/);
+  assert.match(portalShell, /Cổng quản lý chi nhánh/);
   assert.match(managerPortal, /item\.branchId === user\.branchId/);
   assert.match(managerPortal, /Thêm nhân sự cấp dưới/);
-  assert.match(staffPortal, /Cổng làm việc nhân viên/);
+  assert.match(managerPortal, /requireAdminPage\("\/manager"\)/);
+  assert.match(managerPortal, /user\.role !== "manager"/);
+  assert.match(legacyManagerPortal, /redirect\("\/manager"\)/);
+  assert.match(staffPortal, /BusinessPortalShell/);
+  assert.match(portalShell, /Cổng làm việc nhân viên/);
   assert.match(staffPortal, /staffTools\(user\.role\)/);
-  assert.match(login, /user\.role === "manager" \? "\/manger" : "\/staff"/);
-  assert.match(adminHome, /redirect\("\/manger"\)/);
+  assert.match(staffPortal, /getEmployeeProfile\(user\.id\)/);
+  assert.match(staffPortal, /Thông tin nhân viên/);
+  assert.match(staffPortal, /staff-profile-hero/);
+  assert.match(staffPortal, /staff-personnel-grid/);
+  assert.match(staffPortal, /Trạng thái nhân sự/);
+  assert.match(staffPortal, /Đang làm việc/);
+  assert.match(login, /redirect\(portalPathForRole\(user\.role\)\)/);
+  assert.match(adminAuth, /if \(role === "manager"\) return "\/manager"/);
+  assert.match(adminHome, /redirect\("\/manager"\)/);
   assert.match(adminHome, /redirect\("\/staff"\)/);
   assert.match(customers, /requireOwnerPage\("\/admin\/customers"\)/);
   assert.match(vouchers, /requireOwnerPage\("\/admin\/vouchers"\)/);
@@ -655,7 +805,7 @@ test("separates owner, branch manager and staff workspaces with protected busine
 });
 
 test("groups payroll by branch and generates salary receipts with statutory deductions", async () => {
-  const [page, editor, actions, store, schema, migration, receipt, styles] = await Promise.all([
+  const [page, editor, actions, store, schema, migration, receipt, orderReceipt, stamp, styles] = await Promise.all([
     readFile(new URL("app/admin/payroll/page.tsx", root), "utf8"),
     readFile(new URL("app/admin/payroll/PayrollEditorForm.tsx", root), "utf8"),
     readFile(new URL("app/admin/payroll/actions.ts", root), "utf8"),
@@ -663,6 +813,8 @@ test("groups payroll by branch and generates salary receipts with statutory dedu
     readFile(new URL("db/schema.ts", root), "utf8"),
     readFile(new URL("drizzle/0009_payroll_breakdown.sql", root), "utf8"),
     readFile(new URL("app/admin/payroll/[id]/page.tsx", root), "utf8"),
+    readFile(new URL("app/admin/orders/[id]/page.tsx", root), "utf8"),
+    readFile(new URL("app/components/DocumentStamp.tsx", root), "utf8"),
     readFile(new URL("app/modern-theme.css", root), "utf8"),
   ]);
   assert.match(page, /name="branch"/);
@@ -678,8 +830,15 @@ test("groups payroll by branch and generates salary receipts with statutory dedu
   assert.match(migration, /bonus_amount/);
   assert.match(receipt, /PHIẾU LƯƠNG \/ XÁC NHẬN NHẬN LƯƠNG/);
   assert.match(receipt, /không phải hóa đơn giá trị gia tăng/i);
+  assert.match(receipt, /record\.status === "paid"/);
+  assert.match(receipt, /kind="disbursed"/);
+  assert.match(orderReceipt, /order\.paymentStatus === "paid"/);
+  assert.match(orderReceipt, /kind="collected"/);
+  assert.match(stamp, /ĐÃ GIẢI NGÂN/);
   assert.match(styles, /\.admin-payroll-person > div > strong/);
   assert.match(styles, /\.admin-payroll-receipt/);
+  assert.match(styles, /\.document-stamp/);
+  assert.match(styles, /\.document-stamp-collected \{ width: 170px; height: 88px; border-radius: 8px/);
 });
 
 test("loads monthly payroll attendance with one database query", async () => {

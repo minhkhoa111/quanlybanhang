@@ -16,7 +16,7 @@ export async function POST(request: Request) {
 
     const options = flow === "registration"
       ? await generateRegistrationOptions({
-          rpName: "Huy Apple Attendance",
+          rpName: "Infinity Company Attendance",
           rpID,
           userID: new TextEncoder().encode(user.id),
           userName: user.username,

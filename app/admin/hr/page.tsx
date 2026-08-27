@@ -32,7 +32,7 @@ export default async function HrPage({ searchParams }: { searchParams: Promise<H
     <>
       <div className="admin-topline admin-hr-heading">
         <div><span>Human Resources</span><h1>Hồ sơ nhân sự</h1><p className="admin-subtitle">{user.role === "owner" ? "Góc nhìn Giám đốc: quản lý chi nhánh được ưu tiên hiển thị ở đầu danh sách." : `Quản lý ảnh và thông tin nhân viên tại ${user.branch}.`}</p></div>
-        <div className="admin-actions-row"><Link className="admin-button" href="/admin/attendance">Bảng chấm công</Link>{user.role === "owner" && <Link className="admin-button admin-button-primary" href="/admin/staff">＋ Tạo tài khoản nhân viên</Link>}</div>
+        <div className="admin-actions-row"><Link className="admin-button" href="/admin/hr/cards">▣ Tạo thẻ nhân sự</Link><Link className="admin-button" href="/admin/attendance">Bảng chấm công</Link>{user.role === "owner" && <Link className="admin-button admin-button-primary" href="/admin/staff">＋ Tạo tài khoản nhân viên</Link>}</div>
       </div>
       {query.error && <p className="admin-alert error">{query.error}</p>}
 
@@ -66,7 +66,7 @@ export default async function HrPage({ searchParams }: { searchParams: Promise<H
               <td><strong>{employee.bankName || "Chưa cập nhật"}</strong><span>{employee.bankAccountMasked}</span></td>
               <td><span className={`admin-badge hr-attendance-${employee.todayStatus || "none"}`}>{attendanceLabel(employee.todayStatus)}</span>{employee.todayCheckIn && <span>Vào lúc {employee.todayCheckIn}</span>}</td>
               <td><div className="admin-profile-progress"><span><i style={{ width: `${employee.profileScore}%` }} /></span><b>{employee.profileScore}%</b></div></td>
-              <td><Link className="admin-table-link" href={`/admin/hr/${employee.adminUserId}`}>Mở hồ sơ</Link></td>
+              <td><div className="admin-hr-row-actions"><Link className="admin-table-link" href={`/admin/hr/${employee.adminUserId}`}>Mở hồ sơ</Link><Link className="admin-table-link" href={`/admin/hr/cards?employee=${employee.adminUserId}`}>Tạo thẻ</Link></div></td>
             </tr>)}</tbody>
           </table>
           {!employees.length && <div className="admin-empty-state">Không có nhân viên phù hợp với bộ lọc hiện tại.</div>}

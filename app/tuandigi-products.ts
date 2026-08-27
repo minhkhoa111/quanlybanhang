@@ -46,7 +46,7 @@ export const tuandigiProducts: Product[] = importedSeeds.map((seed) => {
     images: [seed.image],
     badge,
     tagline: `${label} tham khảo từ Tuấn Digi. Kiểm tra tình trạng và tồn kho trước khi chốt đơn.`,
-    description: `Sản phẩm ${seed.name}. Giá và thông tin được nhập từ trang sản phẩm tham khảo; nhân viên Huy Apple sẽ xác nhận tình trạng thực tế trước khi giao.`,
+    description: `Sản phẩm ${seed.name}. Giá và thông tin được nhập từ trang sản phẩm tham khảo; nhân viên Infinity Company sẽ xác nhận tình trạng thực tế trước khi giao.`,
     price: seed.price,
     sellingPrice: seed.price,
     salePrice: seed.price,

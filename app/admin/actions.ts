@@ -85,7 +85,7 @@ export async function saveAdminProductAction(formData: FormData) {
       image: primaryImage,
       images: allImages.length ? allImages : [primaryImage],
       badge: value(formData, "badge") || (status === "draft" ? "Nháp" : "Mới"),
-      tagline: value(formData, "tagline") || value(formData, "description") || `Khám phá ${name} tại Huy Apple.`,
+      tagline: value(formData, "tagline") || value(formData, "description") || `Khám phá ${name} tại Infinity Company.`,
       price: sellingPrice,
       costPrice: value(formData, "costPrice"),
       sellingPrice,

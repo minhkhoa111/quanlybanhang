@@ -4,7 +4,7 @@ import { CatalogPage } from "../ui";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Phụ kiện Apple",
-  description: "Apple Watch, âm thanh và phụ kiện tại Huy Apple.",
+  description: "Apple Watch, âm thanh và phụ kiện tại Infinity Company.",
 };
 
 export default function PhuKienPage() {

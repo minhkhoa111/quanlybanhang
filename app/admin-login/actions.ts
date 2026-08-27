@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { clearAdminSession, createAdminSession } from "@/app/admin-auth";
+import { clearAdminSession, createAdminSession, portalPathForRole } from "@/app/admin-auth";
 
 export async function loginAdminAction(formData: FormData) {
   const username = fieldValue(formData, "username");
@@ -10,7 +10,7 @@ export async function loginAdminAction(formData: FormData) {
 
   const user = await createAdminSession(username, password);
   if (user) {
-    redirect(returnTo !== "/admin" ? returnTo : user.role === "owner" ? "/admin" : user.role === "manager" ? "/manger" : "/staff");
+    redirect(portalPathForRole(user.role));
   }
 
   redirect(`/admin-login?error=invalid&returnTo=${encodeURIComponent(returnTo)}`);

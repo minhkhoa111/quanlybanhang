@@ -1,5 +1,5 @@
 const CACHE = "huy-apple-shell-v1";
-const SHELL = ["/", "/iphone", "/gio-hang", "/tai-khoan", "/huy-apple-logo.png"];
+const SHELL = ["/", "/iphone", "/gio-hang", "/tai-khoan"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(SHELL)).catch(() => undefined));

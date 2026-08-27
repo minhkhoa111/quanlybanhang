@@ -4,6 +4,7 @@ import { requireOwnerPage } from "@/app/admin-auth";
 import { getEmployeeProfile } from "@/db/hr";
 import { getPayrollRecord } from "@/db/payroll";
 import PayrollPrintButton from "./PayrollPrintButton";
+import DocumentStamp from "@/app/components/DocumentStamp";
 
 export const dynamic = "force-dynamic";
 
@@ -18,9 +19,10 @@ export default async function PayrollReceiptPage({ params, searchParams }: { par
   return <>
     <div className="admin-topline admin-payroll-toolbar"><div><span>Chứng từ nhân sự</span><h1>Phiếu lương nhân viên</h1><p className="admin-subtitle">Phiếu đối soát và xác nhận khoản lương thực nhận.</p></div><div className="admin-actions-row"><Link className="admin-button" href={`/admin/payroll?month=${month}&branch=${employee.branchId}`}>← Bảng lương</Link><PayrollPrintButton/></div></div>
     <article className="admin-payroll-receipt">
-      <header><div><span>HUY APPLE</span><h2>PHIẾU LƯƠNG / XÁC NHẬN NHẬN LƯƠNG</h2><p>Kỳ lương {monthLabel(month)}</p></div><dl><div><dt>Mã phiếu</dt><dd>PAY-{month.replace("-", "")}-{record.id.slice(0, 8).toUpperCase()}</dd></div><div><dt>Trạng thái</dt><dd>{record.status === "paid" ? "ĐÃ THANH TOÁN" : "CHƯA THANH TOÁN"}</dd></div><div><dt>Ngày thanh toán</dt><dd>{record.paidAt ? formatDate(record.paidAt) : "Chưa xác nhận"}</dd></div></dl></header>
+      <header><div><span>INFINITY COMPANY</span><h2>PHIẾU LƯƠNG / XÁC NHẬN NHẬN LƯƠNG</h2><p>Kỳ lương {monthLabel(month)}</p></div><dl><div><dt>Mã phiếu</dt><dd>PAY-{month.replace("-", "")}-{record.id.slice(0, 8).toUpperCase()}</dd></div><div><dt>Trạng thái</dt><dd>{record.status === "paid" ? "ĐÃ THANH TOÁN" : "CHƯA THANH TOÁN"}</dd></div><div><dt>Ngày thanh toán</dt><dd>{record.paidAt ? formatDate(record.paidAt) : "Chưa xác nhận"}</dd></div></dl></header>
       <section className="admin-payroll-receipt-person"><div><span>Người nhận</span><strong>{employee.name}</strong><p>{roleLabel(employee.role)}</p></div><div><span>Chi nhánh</span><strong>{employee.branch || "Chưa phân chi nhánh"}</strong><p>{record.workDays} ngày công trong kỳ</p></div><div><span>Tài khoản nhận lương</span><strong>{employee.bankName || "Chưa cập nhật"}</strong><p>{mask(employee.bankAccountNumber)} · {employee.bankAccountName || employee.name}</p></div></section>
       <section className="admin-payroll-receipt-lines"><div><span>Lương cơ bản</span><strong>{money(record.baseSalary)}</strong></div><div><span>Thưởng lương</span><strong className="is-plus">+ {money(record.bonusAmount)}</strong></div><div><span>Khấu trừ BHXH</span><strong className="is-minus">− {money(record.socialInsuranceAmount)}</strong></div><div><span>Khấu trừ thuế TNCN</span><strong className="is-minus">− {money(record.personalIncomeTaxAmount)}</strong></div><div className="is-gross"><span>Tổng thu nhập trước khấu trừ</span><strong>{money(gross)}</strong></div><div className="is-net"><span>Thực nhận</span><strong>{money(record.payableAmount)}</strong></div></section>
+      {record.status === "paid" && <div className="document-stamp-row admin-payroll-stamp"><DocumentStamp kind="disbursed" date={record.paidAt ? formatDate(record.paidAt) : ""} /></div>}
       {record.note && <section className="admin-payroll-receipt-note"><span>Ghi chú</span><p>{record.note}</p></section>}
       <p className="admin-payroll-receipt-disclaimer">Phiếu này là chứng từ đối soát lương nội bộ, không phải hóa đơn giá trị gia tăng hoặc tờ khai thuế. Khoản BHXH và thuế TNCN được ghi nhận theo số liệu đã được bộ phận phụ trách xác nhận.</p>
       <footer><div><strong>Người lập phiếu</strong><span>Ký và ghi rõ họ tên</span></div><div><strong>Người nhận lương</strong><span>Ký và ghi rõ họ tên</span></div><div><strong>Giám đốc</strong><span>Ký và ghi rõ họ tên</span></div></footer>

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { requireAdminPage } from "@/app/admin-auth";
+import { portalPathForRole, requireAdminPage } from "@/app/admin-auth";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -10,5 +10,5 @@ export const metadata: Metadata = {
 
 export default async function ProductManagementEntry() {
   const user = await requireAdminPage();
-  redirect(user.role === "owner" ? "/admin" : user.role === "manager" ? "/manger" : "/staff");
+  redirect(portalPathForRole(user.role));
 }

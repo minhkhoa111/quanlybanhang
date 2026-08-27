@@ -10,6 +10,7 @@ import { getAdminUsers } from "@/db/admin-users";
 import { formatDateTime, formatMoney, orderStatuses, orderTotalNumber, paymentStatuses, statusLabel } from "../../utils";
 import PrintButtons from "../../PrintButtons";
 import OrderAssignmentForm from "../OrderAssignmentForm";
+import DocumentStamp from "@/app/components/DocumentStamp";
 
 export const dynamic = "force-dynamic";
 
@@ -139,7 +140,7 @@ export default async function AdminOrderDetailPage({ params, searchParams }: { p
             <fieldset className="admin-invoice-section">
               <legend>Thông tin bên bán</legend>
               <div className="admin-invoice-grid">
-                <label><span>Tên đơn vị bán</span><input name="invoiceSellerName" defaultValue={order.invoiceSellerName || "HUY APPLE"} /></label>
+                <label><span>Tên đơn vị bán</span><input name="invoiceSellerName" defaultValue={order.invoiceSellerName || "INFINITY COMPANY"} /></label>
                 <label><span>Mã số thuế</span><input name="invoiceSellerTaxCode" inputMode="numeric" defaultValue={order.invoiceSellerTaxCode} placeholder="Nhập mã số thuế cửa hàng" /></label>
                 <label className="admin-span-2"><span>Địa chỉ</span><input name="invoiceSellerAddress" defaultValue={order.invoiceSellerAddress || "122/4 Cô Giang, P. Cầu Kiệu, TP.HCM"} /></label>
                 <label><span>Số điện thoại</span><input name="invoiceSellerPhone" defaultValue={order.invoiceSellerPhone || "02879797999"} /></label>
@@ -207,11 +208,11 @@ export default async function AdminOrderDetailPage({ params, searchParams }: { p
         </div>
         <article className="admin-invoice-print">
           <header>
-            <div><p>{order.invoiceSellerName || "HUY APPLE"}</p><h1>HÓA ĐƠN BÁN HÀNG</h1></div>
+            <div><p>{order.invoiceSellerName || "INFINITY COMPANY"}</p><h1>HÓA ĐƠN BÁN HÀNG</h1></div>
             <dl><div><dt>Số hóa đơn</dt><dd>{order.invoiceNumber || "Chưa cấp"}</dd></div><div><dt>Ký hiệu</dt><dd>{order.invoiceSeries || "-"}</dd></div><div><dt>Ngày</dt><dd>{formatInvoiceDate(invoiceDate)}</dd></div></dl>
           </header>
           <section className="admin-invoice-parties">
-            <div><h2>Bên bán</h2><p><strong>{order.invoiceSellerName || "HUY APPLE"}</strong></p><p>MST: {order.invoiceSellerTaxCode || "Chưa khai báo"}</p><p>{order.invoiceSellerAddress || "122/4 Cô Giang, P. Cầu Kiệu, TP.HCM"}</p><p>Điện thoại: {order.invoiceSellerPhone || "02879797999"}</p></div>
+            <div><h2>Bên bán</h2><p><strong>{order.invoiceSellerName || "INFINITY COMPANY"}</strong></p><p>MST: {order.invoiceSellerTaxCode || "Chưa khai báo"}</p><p>{order.invoiceSellerAddress || "122/4 Cô Giang, P. Cầu Kiệu, TP.HCM"}</p><p>Điện thoại: {order.invoiceSellerPhone || "02879797999"}</p></div>
             <div><h2>Người mua</h2><p><strong>{order.invoiceCompanyName || order.invoiceBuyerName || order.customerName}</strong></p>{order.invoiceCompanyName && <p>Người mua: {order.invoiceBuyerName || order.customerName}</p>}<p>MST: {order.invoiceTaxCode || "Không có"}</p><p>{order.invoiceAddress || order.address || "Nhận tại cửa hàng"}</p><p>Email: {order.invoiceEmail || order.email || "Không có"}</p></div>
           </section>
           <table>
@@ -226,6 +227,7 @@ export default async function AdminOrderDetailPage({ params, searchParams }: { p
             <p><span>VAT ({taxRate}%)</span><strong>{formatMoney(taxAmount)}</strong></p>
             <p className="total"><span>Tổng thanh toán</span><strong>{formatMoney(invoiceTotal)}</strong></p>
           </section>
+          {order.paymentStatus === "paid" && <div className="document-stamp-row admin-invoice-stamp"><DocumentStamp kind="collected" date={formatInvoiceDate(invoiceDate)} /></div>}
           <section className="admin-invoice-warranty">
             <h2>Thông tin bảo hành</h2>
             <p><strong>Thời hạn:</strong> {order.warrantyMonths || 12} tháng, từ ngày {formatInvoiceDate(warrantyStartDate)}</p>

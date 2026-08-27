@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { currentAdminUser } from "@/app/admin-auth";
+import { currentAdminUser, portalPathForRole } from "@/app/admin-auth";
 import { redirect } from "next/navigation";
 import { loginAdminAction } from "./actions";
 
@@ -16,7 +16,7 @@ export default async function AdminLoginPage({
   searchParams: Promise<{ error?: string; returnTo?: string; status?: string }>;
 }) {
   const currentUser = await currentAdminUser();
-  if (currentUser) redirect(currentUser.role === "owner" ? "/admin" : currentUser.role === "manager" ? "/manger" : "/staff");
+  if (currentUser) redirect(portalPathForRole(currentUser.role));
   const query = await searchParams;
   const returnTo = query.returnTo?.startsWith("/admin") ? query.returnTo : "/admin";
 
@@ -24,7 +24,7 @@ export default async function AdminLoginPage({
     <main className="admin-login-page shell">
       <section className="admin-login-shell">
         <aside className="admin-login-intro">
-          <Link href="/" className="admin-login-brand"><span>H</span><div><strong>Huy Apple</strong><small>Retail Console</small></div></Link>
+          <Link href="/" className="admin-login-brand"><span aria-hidden="true">∞</span><div><strong>Infinity Company</strong><small>Retail Console</small></div></Link>
           <div>
             <p className="eyebrow">Cổng vận hành nội bộ</p>
             <h1>Quản lý cửa hàng ở một nơi.</h1>

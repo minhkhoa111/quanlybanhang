@@ -16,7 +16,7 @@ const revealSelector = [
 
 export default function MotionSystem({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const operationalPortal = /^\/(admin(?:\/|$)|manger(?:\/|$)|staff(?:\/|$)|quan-ly(?:\/|$))/.test(pathname || "");
+  const operationalPortal = /^\/(admin(?:\/|$)|manager(?:\/|$)|manger(?:\/|$)|staff(?:\/|$)|quan-ly(?:\/|$))/.test(pathname || "");
 
   useEffect(() => {
     if (operationalPortal) return;

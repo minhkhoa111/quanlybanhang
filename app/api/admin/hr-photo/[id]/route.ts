@@ -7,11 +7,11 @@ export const dynamic = "force-dynamic";
 
 export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   const user = await currentAdminUser();
-  if (!user || (user.role !== "owner" && user.role !== "manager")) return new Response("Không có quyền truy cập.", { status: 403 });
+  if (!user) return new Response("Không có quyền truy cập.", { status: 403 });
   const { id } = await params;
   if (!/^[a-zA-Z0-9-]{8,80}$/.test(id)) return new Response("Mã nhân viên không hợp lệ.", { status: 400 });
   const employee = await getEmployeeProfile(id);
-  if (!employee || !canManageEmployee(user, employee)) return new Response("Không có quyền truy cập.", { status: 403 });
+  if (!employee || (user.id !== id && !canManageEmployee(user, employee))) return new Response("Không có quyền truy cập.", { status: 403 });
   const key = await getEmployeePhotoKey(id);
   if (!key) return new Response("Chưa có ảnh nhân sự.", { status: 404 });
   const object = await (env as unknown as Bindings).PRODUCT_IMAGES?.get(key);

@@ -9,7 +9,7 @@ export default async function VoucherPage({ searchParams }: { searchParams: Prom
   return <><div className="admin-topline"><div><span>Khuyến mãi</span><h1>Quản lý voucher</h1></div></div>
     {query.status && <p className="admin-alert success">Đã lưu voucher.</p>}{query.error && <p className="admin-alert error">{query.error}</p>}
     <section className="admin-card"><div className="admin-card-head"><div><span>Tạo mã mới</span><h2>Thiết lập ưu đãi</h2></div></div><form action={saveVoucherAction} className="admin-form-grid">
-      <label className="admin-field">Mã voucher<input name="code" required placeholder="HUYAPPLE10" /></label>
+      <label className="admin-field">Mã voucher<input name="code" required placeholder="INFINITY10" /></label>
       <label className="admin-field">Loại giảm<select name="type" defaultValue="percent"><option value="percent">Phần trăm (%)</option><option value="fixed">Số tiền cố định</option></select></label>
       <label className="admin-field">Giá trị<input name="value" required inputMode="numeric" placeholder="10" /></label>
       <label className="admin-field">Đơn tối thiểu<input name="minOrder" inputMode="numeric" placeholder="8000000" /></label>

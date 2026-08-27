@@ -11,6 +11,12 @@ type Bindings = {
   ADMIN_PASSWORD?: string;
 };
 
+export function portalPathForRole(role: AdminUser["role"]) {
+  if (role === "owner") return "/admin";
+  if (role === "manager") return "/manager";
+  return "/staff";
+}
+
 export async function requireAdminPage(returnTo = "/admin") {
   if (await hasCustomerSession()) {
     redirect("/tai-khoan?error=admin-only");

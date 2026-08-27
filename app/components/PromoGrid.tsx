@@ -45,7 +45,7 @@ export default async function PromoGrid() {
             className="promo-item"
             aria-label={p.alt || p.href}
           >
-            <Image src={p.image} alt={p.alt || "Khuyến mãi Huy Apple"} fill unoptimized sizes="(max-width: 700px) 100vw, (max-width: 1000px) 50vw, 33vw" />
+            <Image src={p.image} alt={p.alt || "Khuyến mãi Infinity Company"} fill unoptimized sizes="(max-width: 700px) 100vw, (max-width: 1000px) 50vw, 33vw" />
           </Link>
         ))}
       </div>

@@ -38,7 +38,7 @@ export default function PwaInstaller() {
       setPrompt(null);
     }}>
       <span aria-hidden="true">↓</span>
-      Cài ứng dụng Huy Apple
+      Cài ứng dụng Infinity Company
     </button>
   );
 }

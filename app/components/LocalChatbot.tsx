@@ -114,7 +114,7 @@ export default function LocalChatbot({ products }: { products: ChatProduct[] }) 
   }
 
   return (
-    <aside className={`local-chatbot${open ? " is-open" : ""}`} aria-label="Trợ lý tư vấn Huy Apple">
+    <aside className={`local-chatbot${open ? " is-open" : ""}`} aria-label="Trợ lý tư vấn Infinity Company">
       {open ? (
         <section className="chatbot-panel" role="dialog" aria-modal="false" aria-labelledby="chatbot-title">
           <header className="chatbot-header">
@@ -130,7 +130,7 @@ export default function LocalChatbot({ products }: { products: ChatProduct[] }) 
           </header>
 
           <div className="chatbot-messages" ref={listRef} aria-live="polite" aria-busy={typing}>
-            <div className="chatbot-local-note">Tư vấn tự động từ dữ liệu nội bộ của Huy Apple</div>
+            <div className="chatbot-local-note">Tư vấn tự động từ dữ liệu nội bộ của Infinity Company</div>
             {messages.map((message) => (
               <article key={message.id} className={`chatbot-message is-${message.role}`}>
                 {message.role === "bot" && <Image className="chatbot-avatar" src="/chatbot/consultant-avatar.png" alt="" width={28} height={28} unoptimized />}

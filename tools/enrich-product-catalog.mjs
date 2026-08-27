@@ -213,7 +213,7 @@ function fullImageUrl(url) {
 
 async function downloadImage(url, slug, label) {
   if (!url) return "";
-  const response = await fetch(url, { headers: { "user-agent": "Mozilla/5.0 HuyAppleCatalog/1.0" }, signal: AbortSignal.timeout(20000) });
+  const response = await fetch(url, { headers: { "user-agent": "Mozilla/5.0 InfinityCompanyCatalog/1.0" }, signal: AbortSignal.timeout(20000) });
   if (!response.ok) return "";
   const type = response.headers.get("content-type") || "image/webp";
   if (!type.startsWith("image/")) return "";

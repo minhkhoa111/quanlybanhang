@@ -15,7 +15,7 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminDashboardPage() {
   const currentUser = await requireAdminPage("/admin");
-  if (currentUser.role === "manager") redirect("/manger");
+  if (currentUser.role === "manager") redirect("/manager");
   if (currentUser.role !== "owner") redirect("/staff");
   const [products, orders, viewStats, branches, staff, conversations] = await Promise.all([
     getManagedProducts(),
@@ -62,6 +62,7 @@ export default async function AdminDashboardPage() {
       <section className="admin-card admin-quick-actions admin-business-actions">
         <div><span>Truy cập nhanh</span><strong>Công việc thường dùng</strong></div>
         <nav>
+          <Link href="/admin/tasks">✓ Giao việc & báo cáo</Link>
           {(currentUser.role === "owner" || currentUser.role === "manager" || isOrderWorker) && <Link href="/admin/orders">▤ Xử lý đơn hàng</Link>}
           {(currentUser.role === "owner" || currentUser.role === "manager" || currentUser.role === "consultant") && <Link href="/admin/live-chat">✦ Tư vấn khách hàng</Link>}
           {(currentUser.role === "owner" || currentUser.role === "manager" || currentUser.role === "sales") && <Link href="/admin/products">▦ Quản lý sản phẩm</Link>}

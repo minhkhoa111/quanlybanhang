@@ -52,7 +52,7 @@ export default function HeroCarousel() {
       <div className="vibe-hero-stage" key={active.slug}>
         <div className="vibe-hero-copy">
           <div className="vibe-hero-status">
-            <span>HUY APPLE / SẢN PHẨM NỔI BẬT</span>
+            <span>INFINITY COMPANY / SẢN PHẨM NỔI BẬT</span>
             <span>{meta.index} / 03</span>
           </div>
 

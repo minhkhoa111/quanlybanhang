@@ -53,7 +53,7 @@ export default function WarrantyLookup() {
         {message && <p className="warranty-error" role="alert">{message}</p>}
         <button className="button button-primary" disabled={loading}>{loading ? "Đang tra cứu..." : "Kiểm tra bảo hành"}</button>
       </form>
-      <div className="warranty-member-note"><strong>Đã là Huy Apple Member?</strong><span>Đăng nhập để xem toàn bộ đơn mua, hóa đơn và bảo hành trong một nơi.</span><Link href="/tai-khoan">Mở tài khoản member →</Link></div>
+      <div className="warranty-member-note"><strong>Đã là Infinity Company Member?</strong><span>Đăng nhập để xem toàn bộ đơn mua, hóa đơn và bảo hành trong một nơi.</span><Link href="/tai-khoan">Mở tài khoản member →</Link></div>
     </section>
 
     <section className={`warranty-result ${warranty ? "has-result" : ""}`} aria-live="polite">
@@ -63,7 +63,7 @@ export default function WarrantyLookup() {
           <div><span>Mã đơn hàng</span><strong>{warranty.orderCode}</strong></div>
           <div><span>Số hóa đơn</span><strong>{warranty.invoiceNumber || "Chưa phát hành"}</strong></div>
           <div><span>Thời hạn</span><strong>{warranty.warrantyMonths || 12} tháng</strong></div>
-          <div><span>Chi nhánh tiếp nhận</span><strong>{warranty.branchName || "Huy Apple"}</strong></div>
+          <div><span>Chi nhánh tiếp nhận</span><strong>{warranty.branchName || "Infinity Company"}</strong></div>
           <div><span>Ngày bắt đầu</span><strong>{formatDate(warranty.warrantyStartDate) || "Chưa kích hoạt"}</strong></div>
           <div><span>Ngày hết hạn</span><strong>{formatDate(warranty.warrantyEndDate) || "Chưa xác định"}</strong></div>
         </div>

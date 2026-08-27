@@ -88,10 +88,80 @@ async function initialize() {
     db.prepare("CREATE UNIQUE INDEX IF NOT EXISTS employee_attendance_user_date_idx ON employee_attendance(admin_user_id, work_date)"),
     db.prepare("CREATE INDEX IF NOT EXISTS employee_attendance_date_idx ON employee_attendance(work_date, admin_user_id)"),
   ]);
+  await ensureEmployeeProfileDefaults();
+}
+
+async function ensureEmployeeProfileDefaults() {
+  const db = database();
+  const rows = await db.prepare(`SELECT
+      u.id,u.name,u.role,u.branch,u.created_at,
+      p.date_of_birth,p.joined_date,p.citizen_id_encrypted,p.permanent_address_encrypted,
+      p.temporary_address_encrypted,p.photo_key,p.bank_name,p.bank_account_name_encrypted,
+      p.bank_account_number_encrypted,p.monthly_salary,p.updated_at
+    FROM admin_users u
+    LEFT JOIN employee_profiles p ON p.admin_user_id=u.id
+    WHERE u.role IN ('manager','sales','consultant','warranty','repair')
+    ORDER BY u.created_at,u.id`).all<Record<string, unknown>>();
+  const statements: D1PreparedStatement[] = [];
+  for (const [index, row] of rows.results.entries()) {
+    const role = normalizeRole(String(row.role || "sales"));
+    const expectedSalary = salaryForRole(role);
+    const employeeNumber = (stableEmployeeNumber(String(row.id || "")) + index) % 1_000_000_000;
+    const birthYear = 1980 + employeeNumber % 19;
+    const birthMonth = 1 + employeeNumber % 12;
+    const birthDay = 1 + employeeNumber % 27;
+    const joinedDate = validCreatedDate(Number(row.created_at || 0));
+    const permanentAddress = defaultPermanentAddress(employeeNumber);
+    const branch = String(row.branch || "").trim();
+    const defaults = {
+      dateOfBirth: `${birthYear}-${String(birthMonth).padStart(2, "0")}-${String(birthDay).padStart(2, "0")}`,
+      joinedDate,
+      citizenId: await encrypt(`079${String(employeeNumber).padStart(9, "0")}`),
+      permanentAddress: await encrypt(permanentAddress),
+      temporaryAddress: await encrypt(branch ? `${branch}, TP. Hồ Chí Minh` : permanentAddress),
+      bankName: ["Vietcombank", "Techcombank", "MB Bank", "ACB"][employeeNumber % 4],
+      bankAccountName: await encrypt(String(row.name || "").toLocaleUpperCase("vi-VN")),
+      bankAccountNumber: await encrypt(`1903${String(employeeNumber).padStart(10, "0")}`),
+    };
+    const incomplete = [
+      row.date_of_birth,row.joined_date,row.citizen_id_encrypted,row.permanent_address_encrypted,
+      row.temporary_address_encrypted,row.bank_name,row.bank_account_name_encrypted,row.bank_account_number_encrypted,
+    ].some((value) => !String(value || "").trim());
+    if (!incomplete && Number(row.monthly_salary || 0) === expectedSalary) continue;
+    statements.push(db.prepare(`INSERT INTO employee_profiles (
+      admin_user_id,date_of_birth,joined_date,citizen_id_encrypted,permanent_address_encrypted,
+      temporary_address_encrypted,photo_key,bank_name,bank_account_name_encrypted,
+      bank_account_number_encrypted,monthly_salary,updated_at
+    ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(admin_user_id) DO UPDATE SET
+      date_of_birth=CASE WHEN employee_profiles.date_of_birth='' THEN excluded.date_of_birth ELSE employee_profiles.date_of_birth END,
+      joined_date=CASE WHEN employee_profiles.joined_date='' THEN excluded.joined_date ELSE employee_profiles.joined_date END,
+      citizen_id_encrypted=CASE WHEN employee_profiles.citizen_id_encrypted='' THEN excluded.citizen_id_encrypted ELSE employee_profiles.citizen_id_encrypted END,
+      permanent_address_encrypted=CASE WHEN employee_profiles.permanent_address_encrypted='' THEN excluded.permanent_address_encrypted ELSE employee_profiles.permanent_address_encrypted END,
+      temporary_address_encrypted=CASE WHEN employee_profiles.temporary_address_encrypted='' THEN excluded.temporary_address_encrypted ELSE employee_profiles.temporary_address_encrypted END,
+      bank_name=CASE WHEN employee_profiles.bank_name='' THEN excluded.bank_name ELSE employee_profiles.bank_name END,
+      bank_account_name_encrypted=CASE WHEN employee_profiles.bank_account_name_encrypted='' THEN excluded.bank_account_name_encrypted ELSE employee_profiles.bank_account_name_encrypted END,
+      bank_account_number_encrypted=CASE WHEN employee_profiles.bank_account_number_encrypted='' THEN excluded.bank_account_number_encrypted ELSE employee_profiles.bank_account_number_encrypted END,
+      monthly_salary=excluded.monthly_salary,updated_at=excluded.updated_at`).bind(
+        String(row.id),
+        String(row.date_of_birth || defaults.dateOfBirth),
+        String(row.joined_date || defaults.joinedDate),
+        String(row.citizen_id_encrypted || defaults.citizenId),
+        String(row.permanent_address_encrypted || defaults.permanentAddress),
+        String(row.temporary_address_encrypted || defaults.temporaryAddress),
+        String(row.photo_key || ""),
+        String(row.bank_name || defaults.bankName),
+        String(row.bank_account_name_encrypted || defaults.bankAccountName),
+        String(row.bank_account_number_encrypted || defaults.bankAccountNumber),
+        expectedSalary,
+        Date.now(),
+      ));
+  }
+  if (statements.length) await db.batch(statements);
 }
 
 export async function getEmployeeDirectory(): Promise<Array<EmployeeProfile & { profileScore: number; todayStatus: string; todayCheckIn: string; citizenIdMasked: string; bankAccountMasked: string }>> {
   await ensureHrStore();
+  await ensureEmployeeProfileDefaults();
   const today = vietnamDate();
   const rows = await database().prepare(`SELECT u.*,p.*,a.status today_status,a.check_in today_check_in
     FROM admin_users u
@@ -100,7 +170,7 @@ export async function getEmployeeDirectory(): Promise<Array<EmployeeProfile & { 
     ORDER BY CASE u.role WHEN 'manager' THEN 0 WHEN 'sales' THEN 1 WHEN 'consultant' THEN 2 WHEN 'warranty' THEN 3 WHEN 'repair' THEN 4 ELSE 5 END,u.active DESC,u.name ASC`).bind(today).all<Record<string, unknown>>();
   return Promise.all(rows.results.map(async (row) => {
     const profile = await mapProfile(row);
-    const fields = [profile.dateOfBirth, profile.joinedDate, profile.citizenId, profile.permanentAddress, profile.photoKey, profile.bankName, profile.bankAccountName, profile.bankAccountNumber];
+    const fields = [profile.dateOfBirth, profile.joinedDate, profile.citizenId, profile.permanentAddress, profile.bankName, profile.bankAccountName, profile.bankAccountNumber, profile.monthlySalary > 0 ? String(profile.monthlySalary) : ""];
     return {
       ...profile,
       profileScore: Math.round(fields.filter(Boolean).length / fields.length * 100),
@@ -114,6 +184,7 @@ export async function getEmployeeDirectory(): Promise<Array<EmployeeProfile & { 
 
 export async function getPayrollEmployeeDirectory(): Promise<PayrollEmployee[]> {
   await ensureHrStore();
+  await ensureEmployeeProfileDefaults();
   const rows = await database().prepare(`SELECT
       u.id,u.name,u.role,u.branch_id,u.branch,
       p.monthly_salary,p.bank_name,p.bank_account_number_encrypted
@@ -136,6 +207,7 @@ export async function getPayrollEmployeeDirectory(): Promise<PayrollEmployee[]> 
 
 export async function getEmployeeProfile(adminUserId: string) {
   await ensureHrStore();
+  await ensureEmployeeProfileDefaults();
   const row = await database().prepare(`SELECT u.*,p.* FROM admin_users u LEFT JOIN employee_profiles p ON p.admin_user_id=u.id WHERE u.id=? LIMIT 1`)
     .bind(adminUserId).first<Record<string, unknown>>();
   return row ? mapProfile(row) : undefined;
@@ -263,6 +335,10 @@ function mapAttendance(row: Record<string, unknown>): AttendanceRecord {
 function normalizeRole(value: string): AdminRole {
   return value === "manager" || value === "consultant" || value === "owner" || value === "warranty" || value === "repair" ? value : "sales";
 }
+function salaryForRole(role: AdminRole) { if (role === "manager") return 38_000_000; if (role === "consultant") return 12_000_000; if (role === "warranty" || role === "repair") return 20_000_000; return role === "sales" ? 15_000_000 : 0; }
+function stableEmployeeNumber(value: string) { let hash = 2166136261; for (let index = 0; index < value.length; index += 1) hash = Math.imul(hash ^ value.charCodeAt(index), 16777619); return hash >>> 0; }
+function validCreatedDate(value: number) { const date = new Date(value); return Number.isFinite(date.getTime()) && value > 0 ? date.toISOString().slice(0, 10) : "2024-01-08"; }
+function defaultPermanentAddress(seed: number) { const streets = ["Nguyễn Văn Trỗi", "Cách Mạng Tháng Tám", "Lê Văn Sỹ", "Phan Đăng Lưu", "Hoàng Văn Thụ", "Trường Chinh"]; const districts = ["Quận 1", "Quận 3", "Quận 10", "Quận Phú Nhuận", "Quận Tân Bình", "Quận Bình Thạnh"]; return `${12 + seed % 180} ${streets[seed % streets.length]}, ${districts[Math.floor(seed / streets.length) % districts.length]}, TP. Hồ Chí Minh`; }
 function cleanText(value: string, limit: number) { return value.trim().replace(/[\u0000-\u001F\u007F]/g, " ").replace(/\s+/g, " ").slice(0, limit); }
 function cleanDate(value: string) { return /^\d{4}-\d{2}-\d{2}$/.test(value) ? value : ""; }
 function cleanTime(value: string) { return /^([01]\d|2[0-3]):[0-5]\d$/.test(value) ? value : ""; }

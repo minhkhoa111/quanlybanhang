@@ -15,7 +15,7 @@ export default async function BranchPeoplePage({ params, searchParams }: { param
   const isServiceBranch = branch.code.toUpperCase().startsWith("BH") || branch.name.toLocaleUpperCase("vi-VN").includes("BẢO HÀNH");
 
   return <>
-    <div className="admin-topline"><div><span>{branch.code} · {branch.active ? "Đang hoạt động" : "Tạm ngưng"}</span><h1>{branch.name}</h1><p className="admin-subtitle">{branch.address} · {branch.hours}</p></div><Link className="admin-button" href={actor.role === "owner" ? "/admin/branches" : "/manger"}>← Quay lại</Link></div>
+    <div className="admin-topline"><div><span>{branch.code} · {branch.active ? "Đang hoạt động" : "Tạm ngưng"}</span><h1>{branch.name}</h1><p className="admin-subtitle">{branch.address} · {branch.hours}</p></div><Link className="admin-button" href={actor.role === "owner" ? "/admin/branches" : "/manager"}>← Quay lại</Link></div>
     {query.status === "created" && <p className="admin-alert success">Đã thêm nhân sự vào {branch.name}.</p>}
     {query.error && <p className="admin-alert error">{query.error}</p>}
     {!branch.active && <p className="admin-alert error">Chi nhánh đang tạm ngưng. Chỉ có thể thêm nhân sự khi chi nhánh hoạt động.</p>}

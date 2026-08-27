@@ -340,7 +340,7 @@ export default function ConsultationForm({
     };
 
     const body = [
-      "ĐƠN ĐẶT HÀNG - HUY APPLE",
+      "ĐƠN ĐẶT HÀNG - INFINITY COMPANY",
       `Mã đơn: ${orderCode}`,
       `Họ tên: ${data.get("name")}`,
       `SĐT: ${data.get("phone")}`,
@@ -396,7 +396,7 @@ export default function ConsultationForm({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          _subject: "Đơn đặt hàng mới - Huy Apple",
+          _subject: "Đơn đặt hàng mới - Infinity Company",
           _template: "table",
           _cc: "nguyenmkhoa2010@icloud.com",
           "Họ và tên": data.get("name"),
@@ -456,14 +456,14 @@ export default function ConsultationForm({
           {submittedStoreVisit
             ? `Yêu cầu xem máy ${orderCode} đã được chuyển đến ${submittedBranchName}. Nhân viên sẽ liên hệ tư vấn và xác nhận máy trước khi bạn đến.`
             : isPaid
-            ? `Giao dịch cho đơn ${orderCode} đã được xác nhận. Huy Apple sẽ chuẩn bị sản phẩm để giao.`
+            ? `Giao dịch cho đơn ${orderCode} đã được xác nhận. Infinity Company sẽ chuẩn bị sản phẩm để giao.`
             : isBankTransfer
               ? `Hệ thống đang đối soát giao dịch cho đơn ${orderCode}. Trạng thái sẽ tự cập nhật khi ngân hàng xác nhận.`
               : isInstallment
                 ? `Hồ sơ cho đơn ${orderCode} đã được ghi nhận. Nhân viên tài chính sẽ liên hệ tư vấn; khoản vay chỉ có hiệu lực sau khi công ty tài chính phê duyệt.`
               : submittedOrderStatus === "confirmed"
-                ? "Huy Apple đã tiếp nhận đơn. Cửa hàng sẽ xác nhận tồn kho, chuẩn bị máy và giao theo thông tin đã cung cấp."
-                : "Huy Apple đã ghi nhận đơn và sẽ liên hệ xác nhận trong thời gian sớm nhất."}
+                ? "Infinity Company đã tiếp nhận đơn. Cửa hàng sẽ xác nhận tồn kho, chuẩn bị máy và giao theo thông tin đã cung cấp."
+                : "Infinity Company đã ghi nhận đơn và sẽ liên hệ xác nhận trong thời gian sớm nhất."}
         </p>
         {!submittedStoreVisit && <div className={`order-payment-result ${isPaid ? "is-paid" : "is-pending"}`}>
           <span>{isInstallment ? "Hồ sơ" : "Thanh toán"}</span>
@@ -690,7 +690,7 @@ export default function ConsultationForm({
           </section>
 
           <label aria-hidden="true" style={{ display: "none" }}>Không điền trường này<input name="website" tabIndex={-1} autoComplete="off" /></label>
-          <label className="consent"><input type="checkbox" required={paymentMethod !== INSTALLMENT_PAYMENT} /> Tôi đồng ý để Huy Apple liên hệ xác nhận đơn.</label>
+          <label className="consent"><input type="checkbox" required={paymentMethod !== INSTALLMENT_PAYMENT} /> Tôi đồng ý để Infinity Company liên hệ xác nhận đơn.</label>
 
           {status === "error" && <div className="order-form-error" role="alert">Chưa gửi được đơn. Thử lại hoặc liên hệ qua <a href={sms}>SMS</a> / <a href={ZALO_URL} target="_blank" rel="noreferrer">Zalo</a>.</div>}
 
@@ -775,7 +775,7 @@ export default function ConsultationForm({
 
             <label className="consent installment-consent">
               <input name="installmentConsent" type="checkbox" required />
-              Tôi đồng ý để Huy Apple lưu và chuyển thông tin hồ sơ cho công ty tài chính đã chọn nhằm tư vấn, thẩm định khoản trả góp.
+              Tôi đồng ý để Infinity Company lưu và chuyển thông tin hồ sơ cho công ty tài chính đã chọn nhằm tư vấn, thẩm định khoản trả góp.
             </label>
             <p className="installment-privacy">Thông tin CCCD được lưu trong hệ thống quản trị, không đưa vào email thông báo đơn hàng.</p>
 

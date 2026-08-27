@@ -2,8 +2,7 @@ import Link from "next/link";
 import { requireAdminPage } from "@/app/admin-auth";
 import { getAdminUsers } from "@/db/admin-users";
 import { getAttendanceForDate, getEmployeeAttendance, vietnamDate } from "@/db/hr";
-import { getAttendancePasskeys } from "@/db/attendance-passkeys";
-import BiometricAttendance from "./BiometricAttendance";
+import FaceAttendance from "./FaceAttendance";
 
 export const dynamic = "force-dynamic";
 
@@ -11,11 +10,10 @@ export default async function AttendancePage({ searchParams }: { searchParams: P
   const [user, query] = await Promise.all([requireAdminPage("/admin/attendance"), searchParams]);
   const selectedDate = /^\d{4}-\d{2}-\d{2}$/.test(query.date || "") ? query.date! : vietnamDate();
   const isSupervisor = user.role === "owner" || user.role === "manager";
-  const [allStaff, dateRecords, ownRecords, ownPasskeys] = await Promise.all([
+  const [allStaff, dateRecords, ownRecords] = await Promise.all([
     isSupervisor ? getAdminUsers().catch(() => []) : Promise.resolve([]),
     isSupervisor ? getAttendanceForDate(selectedDate).catch(() => []) : Promise.resolve([]),
     user.role !== "owner" ? getEmployeeAttendance(user.id, 31).catch(() => []) : Promise.resolve([]),
-    !isSupervisor ? getAttendancePasskeys(user.id).catch(() => []) : Promise.resolve([]),
   ]);
   const staff = user.role === "owner" ? allStaff : allStaff.filter((item) => item.branchId === user.branchId);
   const records = user.role === "owner" ? dateRecords : dateRecords.filter((item) => staff.some((employee) => employee.id === item.adminUserId));
@@ -24,23 +22,16 @@ export default async function AttendancePage({ searchParams }: { searchParams: P
   return (
     <>
       <div className="admin-topline">
-        <div><span>Timekeeping</span><h1>Chấm công nhân viên</h1><p className="admin-subtitle">{isSupervisor ? `Theo dõi tình hình làm việc ${user.role === "owner" ? "toàn hệ thống" : `tại ${user.branch}`}.` : "Chấm công vào, ra và xem lịch sử làm việc của bạn."}</p></div>
+        <div><span>Timekeeping</span><h1>Chấm công nhân viên</h1><p className="admin-subtitle">{isSupervisor ? `Theo dõi tình hình làm việc ${user.role === "owner" ? "toàn hệ thống" : `tại ${user.branch}`}.` : "Quét khuôn mặt bằng camera để chấm công vào hoặc ra về."}</p></div>
         {isSupervisor && <Link className="admin-button" href="/admin/hr">Quản lý hồ sơ nhân sự</Link>}
       </div>
       {query.status === "checked-in" && <p className="admin-alert success">Đã chấm công vào thành công.</p>}
       {query.status === "checked-out" && <p className="admin-alert success">Đã chấm công ra thành công.</p>}
       {query.error && <p className="admin-alert error">{query.error}</p>}
 
-      {!isSupervisor && <section className="admin-attendance-self">
-        <article className="admin-card"><span>Ngày làm việc</span><strong>{formatDate(vietnamDate())}</strong><small>{ownToday ? attendanceLabel(ownToday.status) : "Chưa chấm công"}</small></article>
-        <article className="admin-card"><span>Giờ vào</span><strong>{ownToday?.checkIn || "--:--"}</strong><small>{ownToday?.checkIn ? "Đã ghi nhận" : "Chưa ghi nhận"}</small></article>
-        <article className="admin-card"><span>Giờ ra</span><strong>{ownToday?.checkOut || "--:--"}</strong><small>{ownToday?.checkOut ? "Đã hoàn thành ngày công" : "Chưa ghi nhận"}</small></article>
-        <article className="admin-card admin-attendance-actions"><span>Bảo mật chấm công</span><strong>{ownPasskeys.length ? "Sinh trắc học đã sẵn sàng" : "Cần đăng ký thiết bị"}</strong><small>{ownPasskeys.length ? "Dùng nút quét bên dưới" : "Đăng ký Face ID/vân tay một lần"}</small></article>
-      </section>}
+      {!isSupervisor && <FaceAttendance checkedIn={Boolean(ownToday?.checkIn)} checkedOut={Boolean(ownToday?.checkOut)} />}
 
-      {!isSupervisor && <BiometricAttendance registeredDevices={ownPasskeys.length} checkedIn={Boolean(ownToday?.checkIn)} checkedOut={Boolean(ownToday?.checkOut)} />}
-
-      {isSupervisor ? <>
+      {isSupervisor && <>
         <form className="admin-report-filters admin-attendance-filter"><label><span>Ngày theo dõi</span><input type="date" name="date" defaultValue={selectedDate} /></label><button className="admin-button admin-button-primary">Xem chấm công</button></form>
         <section className="admin-report-kpis admin-attendance-kpis">
           <AttendanceMetric label="Tổng nhân viên" value={staff.length} note="Trong phạm vi quản lý" />
@@ -52,7 +43,7 @@ export default async function AttendancePage({ searchParams }: { searchParams: P
           <div className="admin-card-head"><div><span>{formatDate(selectedDate)}</span><h2>Bảng chấm công trong ngày</h2></div></div>
           <div className="admin-table-wrap"><table className="admin-table"><thead><tr><th>Nhân viên</th><th>Chi nhánh</th><th>Vai trò</th><th>Giờ vào</th><th>Giờ ra</th><th>Trạng thái</th><th>Ghi chú</th><th>Hồ sơ</th></tr></thead><tbody>{staff.map((employee) => { const record = records.find((item) => item.adminUserId === employee.id); return <tr key={employee.id}><td><strong>{employee.name}</strong><span>@{employee.username}</span></td><td>{employee.branch}</td><td>{roleLabel(employee.role)}</td><td>{record?.checkIn || "--:--"}</td><td>{record?.checkOut || "--:--"}</td><td><span className={`admin-badge hr-attendance-${record?.status || "none"}`}>{record ? attendanceLabel(record.status) : "Chưa ghi nhận"}</span></td><td>{record?.note || "—"}</td><td><Link className="admin-table-link" href={`/admin/hr/${employee.id}`}>Cập nhật</Link></td></tr>; })}</tbody></table></div>
         </section>
-      </> : <section className="admin-card admin-attendance-history admin-self-history"><div className="admin-card-head"><div><span>31 ngày gần nhất</span><h2>Lịch sử của tôi</h2></div></div><div>{ownRecords.map((record) => <article key={record.id}><time>{formatDate(record.workDate)}</time><span className={`admin-badge hr-attendance-${record.status}`}>{attendanceLabel(record.status)}</span><strong>{record.checkIn || "--:--"} → {record.checkOut || "--:--"}</strong><small>{record.note || "Không có ghi chú"}</small></article>)}</div></section>}
+      </>}
     </>
   );
 }

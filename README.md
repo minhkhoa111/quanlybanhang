@@ -92,6 +92,27 @@ actions tied to the current ChatGPT user. Leave public content anonymous.
 - `npm test`: build the starter and verify its rendered loading skeleton
 - `npm run db:generate`: generate Drizzle migrations after schema changes
 
+## DeepFace Admin
+
+Trang `/admin/face-test` dùng camera trình duyệt để đăng ký, cập nhật, xác minh và xóa mẫu khuôn mặt nhân viên. Trình duyệt chỉ gọi API cùng domain `/api/face/*`; địa chỉ Python và khóa bí mật không được gửi xuống client.
+
+Tạo file `.env` ở thư mục gốc từ `.env.example`:
+
+```text
+FACE_API_URL=http://127.0.0.1:8001
+FACE_API_KEY=thay-bang-chuoi-bi-mat-dai
+```
+
+Python tự đọc cùng `FACE_API_KEY` từ file `.env` ở thư mục gốc, nên không cần nhập khóa lần nữa:
+
+```bash
+cd python-ai
+source .venv/bin/activate
+uvicorn face_server:app --host 127.0.0.1 --port 8001
+```
+
+Sau đó chạy `npm run dev`, đăng nhập tài khoản Giám đốc và mở `http://localhost:3000/admin/face-test`. Nếu dev server in ra cổng khác, dùng đúng URL được hiển thị.
+
 ## Automatic Techcombank Payment Confirmation
 
 Bank-transfer orders are marked paid only after a matching transaction webhook

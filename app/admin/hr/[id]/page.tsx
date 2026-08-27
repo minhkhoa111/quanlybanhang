@@ -23,7 +23,7 @@ export default async function EmployeeProfilePage({ params, searchParams }: { pa
     <>
       <div className="admin-topline admin-hr-profile-heading">
         <div><span>Hồ sơ nhân sự</span><h1>{employee.name}</h1><p className="admin-subtitle">{roleLabel(employee.role)} · {employee.branch || "Chưa phân chi nhánh"}</p></div>
-        <Link className="admin-button" href="/admin/hr">← Danh sách nhân sự</Link>
+        <div className="admin-actions-row"><Link className="admin-button admin-button-primary" href={`/admin/hr/cards?employee=${employee.adminUserId}`}>▣ Tạo thẻ nhân sự</Link><Link className="admin-button" href="/admin/hr">← Danh sách nhân sự</Link></div>
       </div>
       {query.status === "profile-saved" && <p className="admin-alert success">Đã lưu hồ sơ nhân sự và thông tin nhận lương.</p>}
       {query.status === "attendance-saved" && <p className="admin-alert success">Đã cập nhật chấm công.</p>}
