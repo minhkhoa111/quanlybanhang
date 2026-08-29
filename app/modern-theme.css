@@ -6809,6 +6809,13 @@ body:has(.admin-console) { background: #f4f7fb; }
 .staff-personnel-grid dd.is-active { color: #087b49; }
 .staff-personnel-grid dd > i { width: 7px; height: 7px; border-radius: 50%; background: #20b76e; box-shadow: 0 0 0 4px rgba(32,183,110,.1); }
 .staff-personnel-grid dd > small { margin-left: auto; padding: 4px 6px; border-radius: 6px; background: #eef3f7; color: #8291a0; font-size: 6px; text-transform: uppercase; }
+.manager-operations-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-top: 28px; padding: 25px 28px; border: 1px solid #d5e5f1; border-radius: 23px; background: linear-gradient(135deg,#0b3153,#096fbe); color: #fff; box-shadow: 0 18px 42px rgba(12,72,119,.14); }
+.manager-operations-heading > div { display: grid; gap: 5px; }
+.manager-operations-heading span { color: #8fd0ff; font-size: 8px; font-weight: 950; letter-spacing: .12em; text-transform: uppercase; }
+.manager-operations-heading h2 { margin: 0; color: #fff; font-size: clamp(22px,2.6vw,31px); letter-spacing: -.035em; }
+.manager-operations-heading p { margin: 0; color: rgba(220,238,251,.7); font-size: 9px; }
+.manager-operations-heading > a { flex: 0 0 auto; min-height: 42px; padding: 0 15px; display: inline-flex; align-items: center; border-radius: 11px; background: #fff; color: #0869bb; font-size: 9px; font-weight: 900; }
+.manager-profile-portal .role-metrics { grid-template-columns: repeat(4,minmax(0,1fr)); }
 .staff-employment-card { position: relative; padding: 25px; overflow: hidden; border: 1px solid #d7e5ef; border-radius: 23px; background: linear-gradient(155deg,#fafdff,#edf6fd); box-shadow: 0 16px 42px rgba(31,74,110,.06); }
 .staff-employment-card::after { position: absolute; right: -80px; bottom: -95px; width: 210px; height: 210px; border-radius: 50%; background: rgba(53,150,222,.08); content: ""; }
 .staff-employment-card > div { position: relative; z-index: 1; }
@@ -6826,6 +6833,7 @@ body:has(.admin-console) { background: #f4f7fb; }
   .staff-profile-shift-times { grid-column: 2; grid-row: 1 / span 2; margin: 0; border-block: 0; border-left: 1px solid rgba(255,255,255,.1); padding: 0 0 0 24px; }
   .staff-profile-shift > a { grid-column: 1 / -1; margin-top: 18px; }
   .staff-personnel-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .manager-profile-portal .role-metrics { grid-template-columns: repeat(2,minmax(0,1fr)); }
 }
 @media (max-width: 720px) {
   .staff-profile-topline { align-items: flex-start; flex-direction: column; gap: 12px; }
@@ -6844,6 +6852,9 @@ body:has(.admin-console) { background: #f4f7fb; }
   .staff-personnel-card { padding: 18px; border-radius: 19px; }
   .staff-personnel-grid { grid-template-columns: 1fr; }
   .staff-personnel-grid > div.is-wide { grid-column: auto; }
+  .manager-operations-heading { align-items: flex-start; flex-direction: column; padding: 21px; }
+  .manager-operations-heading > a { width: 100%; justify-content: center; }
+  .manager-profile-portal .role-metrics { grid-template-columns: 1fr; }
 }
 
 /* DeepFace verification studio */

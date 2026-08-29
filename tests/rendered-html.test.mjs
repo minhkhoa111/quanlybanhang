@@ -771,6 +771,12 @@ test("separates owner, branch manager and staff workspaces with protected busine
   assert.match(managerPortal, /Thêm nhân sự cấp dưới/);
   assert.match(managerPortal, /requireAdminPage\("\/manager"\)/);
   assert.match(managerPortal, /user\.role !== "manager"/);
+  assert.match(managerPortal, /getEmployeeProfile\(user\.id\)/);
+  assert.match(managerPortal, /getEmployeeAttendance\(user\.id, 31\)/);
+  assert.match(managerPortal, /Hồ sơ quản lý chi nhánh/);
+  assert.match(managerPortal, /staff-profile-hero/);
+  assert.match(managerPortal, /Thông tin cá nhân và công việc/);
+  assert.match(managerPortal, /Lương cơ bản/);
   assert.match(legacyManagerPortal, /redirect\("\/manager"\)/);
   assert.match(staffPortal, /BusinessPortalShell/);
   assert.match(portalShell, /Cổng làm việc nhân viên/);
