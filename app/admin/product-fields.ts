@@ -1,6 +1,6 @@
 import type { ManagedProduct } from "@/db/products";
 
-export type EditableCategory = "iphone" | "samsung" | "android" | "ipad" | "macbook" | "mac-mini-studio" | "imac" | "laptop";
+export type EditableCategory = "iphone" | "android" | "ipad" | "macbook" | "mac-mini-studio" | "imac" | "laptop";
 
 export type TechnicalField = {
   key: string;
@@ -29,7 +29,6 @@ export type ProductFieldConfig = {
 
 export const CATEGORY_OPTIONS: Array<[EditableCategory, string]> = [
   ["iphone", "iPhone"],
-  ["samsung", "Samsung"],
   ["android", "Android khác"],
   ["ipad", "iPad"],
   ["macbook", "MacBook"],
@@ -37,6 +36,13 @@ export const CATEGORY_OPTIONS: Array<[EditableCategory, string]> = [
   ["imac", "iMac"],
   ["laptop", "Laptop Windows"],
 ];
+
+export const CURRENT_MACBOOK_CHIPS = [
+  { value: "Apple M5", family: "MacBook Air / MacBook Pro", note: "Tiêu chuẩn" },
+  { value: "Apple M5 Pro", family: "MacBook Pro", note: "Hiệu năng cao" },
+  { value: "Apple M5 Max", family: "MacBook Pro", note: "Đồ họa chuyên sâu" },
+  { value: "Apple A18 Pro", family: "MacBook Neo", note: "Gọn nhẹ" },
+] as const;
 
 const phoneStorage = ["64GB", "128GB", "256GB", "512GB", "1TB", "2TB"];
 const computerStorage = ["256GB", "512GB", "1TB", "2TB", "4TB", "8TB"];
@@ -63,29 +69,6 @@ export const PRODUCT_FIELD_CONFIG: Record<EditableCategory, ProductFieldConfig> 
       { key: "camera", label: "Camera", placeholder: "Camera chính 48MP, tele 5x" },
       { key: "battery", label: "Pin / sạc", placeholder: "MagSafe, USB-C, xem video đến 27 giờ" },
       { key: "os", label: "Hệ điều hành", placeholder: "iOS" },
-    ],
-  },
-  samsung: {
-    title: "Cấu hình Samsung Galaxy",
-    description: "Quản lý RAM, bộ nhớ, phiên bản SIM, màu và giá của từng cấu hình Galaxy.",
-    storageLabel: "Bộ nhớ trong",
-    storagePlaceholder: "256GB",
-    storageOptions: phoneStorage,
-    ramLabel: "RAM",
-    ramPlaceholder: "12GB",
-    ramOptions: ["4GB", "6GB", "8GB", "12GB", "16GB"],
-    versionLabel: "Phiên bản",
-    versionPlaceholder: "Chính hãng Việt Nam",
-    versionOptions: ["Chính hãng Việt Nam", "Quốc tế", "1 SIM + eSIM", "2 SIM"],
-    sizeLabel: "Kích thước màn hình",
-    sizePlaceholder: "6.8 inch",
-    sizeOptions: ["6.1 inch", "6.2 inch", "6.4 inch", "6.6 inch", "6.7 inch", "6.8 inch", "6.9 inch"],
-    technicalFields: [
-      { key: "screen", label: "Màn hình", placeholder: "Dynamic AMOLED 2X, 120Hz" },
-      { key: "chip", label: "Chip xử lý", placeholder: "Snapdragon / Exynos" },
-      { key: "camera", label: "Camera", placeholder: "Camera chính, tele, góc siêu rộng" },
-      { key: "battery", label: "Pin / sạc", placeholder: "5000mAh, sạc nhanh 45W" },
-      { key: "os", label: "Hệ điều hành", placeholder: "Android, One UI" },
     ],
   },
   android: {
@@ -145,7 +128,7 @@ export const PRODUCT_FIELD_CONFIG: Record<EditableCategory, ProductFieldConfig> 
     ramOptions: ["8GB", "16GB", "18GB", "24GB", "32GB", "36GB", "48GB", "64GB", "96GB", "128GB"],
     versionLabel: "Chip / phiên bản",
     versionPlaceholder: "Apple M5",
-    versionOptions: ["Apple M1", "Apple M2", "Apple M3", "Apple M4", "Apple M4 Pro", "Apple M4 Max", "Apple M5", "Apple M5 Pro", "Apple M5 Max"],
+    versionOptions: ["Apple A18 Pro", "Apple M1", "Apple M1 Pro", "Apple M1 Max", "Apple M2", "Apple M2 Pro", "Apple M2 Max", "Apple M3", "Apple M3 Pro", "Apple M3 Max", "Apple M4", "Apple M4 Pro", "Apple M4 Max", "Apple M5", "Apple M5 Pro", "Apple M5 Max"],
     sizeLabel: "Kích thước màn hình",
     sizePlaceholder: "14.2 inch",
     sizeOptions: ["13.3 inch", "13.6 inch", "14.2 inch", "15.3 inch", "16.2 inch"],
@@ -233,7 +216,7 @@ export function editableCategory(category?: ManagedProduct["category"]): Editabl
   if (category === "mac-mini-studio" || category === "imac") return category;
   if (category?.startsWith("macbook")) return "macbook";
   if (category === "laptop") return "laptop";
-  if (category === "samsung" || category === "android") return category;
+  if (category === "android") return category;
   return "iphone";
 }
 

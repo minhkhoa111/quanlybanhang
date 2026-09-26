@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
-import QRCode from "qrcode";
 import InfinityBrandMark from "@/app/components/InfinityBrandMark";
 
 type CardEmployee = {
@@ -24,10 +23,16 @@ export default function EmployeeCardPreview({ employee }: { employee: CardEmploy
   const [qr, setQr] = useState("");
 
   useEffect(() => {
+    let active = true;
     const payload = JSON.stringify({ type: "INFINITY_COMPANY_EMPLOYEE", code, name: employee.name, role: roleLabel(employee.role), branch: employee.branch });
-    QRCode.toDataURL(payload, { errorCorrectionLevel: "H", margin: 1, width: 320, color: { dark: "#0b315a", light: "#ffffff" } })
-      .then(setQr)
-      .catch(() => setQr(""));
+    import("qrcode")
+      .then((mod) => {
+        const QRCode = (mod && (mod.default || mod)) as { toDataURL: (data: string, opts: unknown) => Promise<string> };
+        return QRCode.toDataURL(payload, { errorCorrectionLevel: "H", margin: 1, width: 320, color: { dark: "#0b315a", light: "#ffffff" } });
+      })
+      .then((url) => { if (active) setQr(url); })
+      .catch(() => { if (active) setQr(""); });
+    return () => { active = false; };
   }, [code, employee.branch, employee.name, employee.role]);
 
   return <>
@@ -88,5 +93,5 @@ function employeeCode(id: string) {
   for (let index = 0; index < id.length; index += 1) hash = Math.imul(hash ^ id.charCodeAt(index), 16777619);
   return `89${String(hash >>> 0).padStart(10, "0")}`;
 }
-function roleLabel(role: string) { if (role === "manager") return "Quản lý chi nhánh"; if (role === "consultant") return "Nhân viên tư vấn"; if (role === "warranty") return "Nhân viên bảo hành"; if (role === "repair") return "Nhân viên sửa chữa"; return "Nhân viên bán hàng"; }
+function roleLabel(role: string) { if (role === "manager") return "Quản lý chi nhánh"; if (role === "consultant") return "Nhân viên tư vấn"; if (role === "warranty") return "Nhân viên bảo hành"; if (role === "repair") return "Nhân viên sửa chữa"; if (role === "inventory") return "Nhân viên kho"; return "Nhân viên bán hàng"; }
 function formatDate(value: string) { return value ? new Date(`${value}T00:00:00`).toLocaleDateString("vi-VN") : "Chưa cập nhật"; }

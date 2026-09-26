@@ -13,9 +13,11 @@ const appleLinks = [
 ] as const;
 
 const topLinks = [
-  ["/samsung", "Samsung"],
+  ["/dat-truoc", "Đặt trước Apple"],
   ["/android", "Android khác"],
   ["/laptop", "Laptop"],
+  ["/phu-kien", "Phụ kiện"],
+  ["/tra-gop", "Trả góp"],
 ] as const;
 
 export default function PrimaryNav() {

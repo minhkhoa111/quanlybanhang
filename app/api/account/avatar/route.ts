@@ -21,11 +21,15 @@ export async function POST(request: Request) {
     const extension = allowedTypes.get(file.type);
     if (!extension) throw new Error("Ảnh đại diện phải là tệp JPG, PNG hoặc WebP.");
     if (file.size > 3 * 1024 * 1024) throw new Error("Ảnh đại diện phải nhỏ hơn 3 MB.");
+    const bytes = new Uint8Array(await file.arrayBuffer());
+    if (!hasValidImageSignature(bytes, file.type)) {
+      throw new Error("Nội dung tệp không khớp với định dạng ảnh đã chọn.");
+    }
 
     const bucket = (env as unknown as Bindings).PRODUCT_IMAGES;
     if (!bucket) throw new Error("Kho ảnh chưa sẵn sàng.");
     const key = `avatar-${customer.id}-${crypto.randomUUID()}.${extension}`;
-    await bucket.put(key, await file.arrayBuffer(), { httpMetadata: { contentType: file.type } });
+    await bucket.put(key, bytes, { httpMetadata: { contentType: file.type } });
     const updated = await updateCustomerAvatar(customer.id, `/api/product-images/${key}`);
     const previousKey = imageKey(customer.avatarUrl);
     if (previousKey) await bucket.delete(previousKey).catch(() => undefined);
@@ -53,4 +57,17 @@ export async function DELETE() {
 function imageKey(avatarUrl: string) {
   const match = avatarUrl.match(/^\/api\/product-images\/([a-zA-Z0-9._-]+)$/);
   return match?.[1] ?? "";
+}
+
+function hasValidImageSignature(bytes: Uint8Array, contentType: string) {
+  if (bytes.length < 12) return false;
+  if (contentType === "image/jpeg") {
+    return bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff;
+  }
+  if (contentType === "image/png") {
+    return bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4e && bytes[3] === 0x47
+      && bytes[4] === 0x0d && bytes[5] === 0x0a && bytes[6] === 0x1a && bytes[7] === 0x0a;
+  }
+  const header = String.fromCharCode(...bytes.slice(0, 12));
+  return contentType === "image/webp" && header.startsWith("RIFF") && header.slice(8, 12) === "WEBP";
 }

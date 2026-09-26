@@ -55,7 +55,7 @@ export default function ColorPicker({
         ))}
       </div>
       <p className="admin-color-help">Chọn một hoặc nhiều màu để hiển thị cho sản phẩm.</p>
-      <style jsx>{`
+      <style>{`
         .color-palette{display:flex;gap:8px;flex-wrap:wrap}
         .color-swatch{position:relative;width:36px;height:36px;border-radius:6px;border:none;cursor:pointer;padding:0;background:transparent;display:flex;align-items:center;justify-content:center;}
         .color-swatch-bg{position:absolute;inset:0;width:100%;height:100%;border-radius:inherit;border:2px solid rgba(0,0,0,0.1);transition:transform 150ms}

@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { clearAdminSession, createAdminSession, portalPathForRole } from "@/app/admin-auth";
+import { adminRedirectUrl, clearAdminSession, createAdminSession, portalPathForRole } from "@/app/admin-auth";
 
 export async function loginAdminAction(formData: FormData) {
   const username = fieldValue(formData, "username");
@@ -13,12 +13,12 @@ export async function loginAdminAction(formData: FormData) {
     redirect(portalPathForRole(user.role));
   }
 
-  redirect(`/admin-login?error=invalid&returnTo=${encodeURIComponent(returnTo)}`);
+  redirect(adminRedirectUrl(`/admin-login?error=invalid&returnTo=${encodeURIComponent(returnTo)}`));
 }
 
 export async function logoutAdminAction() {
   await clearAdminSession();
-  redirect("/admin-login?status=signed-out");
+  redirect(adminRedirectUrl("/admin-login?status=signed-out"));
 }
 
 function fieldValue(formData: FormData, key: string) {

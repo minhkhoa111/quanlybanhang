@@ -7,7 +7,7 @@ function editableCategory(category?: string) {
   if (category === "mac-mini-studio" || category === "imac") return category;
   if (category?.startsWith("macbook")) return "macbook";
   if (category === "laptop") return "laptop";
-  return category === "samsung" || category === "android" ? category : "iphone";
+  return category === "android" ? category : "iphone";
 }
 
 export default function CategoryBrandSync({ initialBrand, initialCategory, initialVariants = [] }:
@@ -18,7 +18,6 @@ export default function CategoryBrandSync({ initialBrand, initialCategory, initi
 
   function suggestedBrand(nextCategory: string) {
     if(nextCategory.startsWith('macbook') || nextCategory === 'mac-mini-studio' || nextCategory === 'imac') return 'Apple';
-    if(nextCategory === 'samsung') return 'Samsung';
     if(nextCategory === 'iphone' || nextCategory === 'ipad') return 'Apple';
     return brand;
   }
@@ -32,7 +31,6 @@ export default function CategoryBrandSync({ initialBrand, initialCategory, initi
       <label>Nhóm sản phẩm
         <select name="category" required value={category} onChange={(e)=>{ const next = e.target.value; setCategory(next); if(!brandTouched) setBrand(suggestedBrand(next)); }}>
           <option value="iphone">iPhone</option>
-          <option value="samsung">Samsung</option>
           <option value="android">Android khác</option>
           <option value="ipad">iPad</option>
           <option value="macbook">MacBook</option>

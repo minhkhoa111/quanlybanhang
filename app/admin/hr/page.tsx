@@ -10,7 +10,7 @@ type HrQuery = { error?: string; keyword?: string; role?: string; branch?: strin
 export default async function HrPage({ searchParams }: { searchParams: Promise<HrQuery> }) {
   const [user, allEmployees, query] = await Promise.all([requireHrManagerPage("/admin/hr"), getEmployeeDirectory().catch(() => []), searchParams]);
   const scopeEmployees = user.role === "owner" ? allEmployees : allEmployees.filter((item) => item.branchId === user.branchId || (!item.branchId && item.branch === user.branch));
-  const allowedRoles = user.role === "owner" ? ["manager", "sales", "consultant", "warranty", "repair"] : ["sales", "consultant", "warranty", "repair"];
+  const allowedRoles = user.role === "owner" ? ["manager", "sales", "consultant", "inventory", "warranty", "repair"] : ["sales", "consultant", "inventory", "warranty", "repair"];
   const selectedRole = allowedRoles.includes(query.role || "") ? query.role! : "";
   const selectedStatus = ["active", "inactive", "incomplete"].includes(query.status || "") ? query.status! : "";
   const selectedBranch = user.role === "owner" && scopeEmployees.some((item) => item.branchId === query.branch) ? query.branch || "" : "";
@@ -38,7 +38,7 @@ export default async function HrPage({ searchParams }: { searchParams: Promise<H
 
       <form className="admin-report-filters admin-hr-filters">
         <label className="admin-hr-search"><span>Tìm nhân viên</span><input name="keyword" defaultValue={query.keyword || ""} placeholder="Tên hoặc tài khoản đăng nhập" /></label>
-        <label><span>Nhóm nhân viên</span><select name="role" defaultValue={selectedRole}><option value="">Tất cả nhóm</option>{user.role === "owner" && <option value="manager">Quản lý chi nhánh</option>}<option value="sales">Nhân viên bán hàng</option><option value="warranty">Nhân viên bảo hành</option><option value="repair">Nhân viên sửa chữa</option><option value="consultant">Nhân viên tư vấn</option></select></label>
+        <label><span>Nhóm nhân viên</span><select name="role" defaultValue={selectedRole}><option value="">Tất cả nhóm</option>{user.role === "owner" && <option value="manager">Quản lý chi nhánh</option>}<option value="sales">Nhân viên bán hàng</option><option value="inventory">Nhân viên kho</option><option value="warranty">Nhân viên bảo hành</option><option value="repair">Nhân viên sửa chữa</option><option value="consultant">Nhân viên tư vấn</option></select></label>
         {user.role === "owner" ? <label><span>Chi nhánh</span><select name="branch" defaultValue={selectedBranch}><option value="">Toàn hệ thống</option>{branches.map((branch) => <option key={branch.id} value={branch.id}>{branch.name}</option>)}</select></label> : <label><span>Phạm vi quản lý</span><input value={user.branch} disabled /></label>}
         <label><span>Trạng thái hồ sơ</span><select name="status" defaultValue={selectedStatus}><option value="">Tất cả trạng thái</option><option value="active">Đang làm việc</option><option value="inactive">Đã khóa</option><option value="incomplete">Cần bổ sung hồ sơ</option></select></label>
         <button className="admin-button admin-button-primary" type="submit">Lọc danh sách</button>
@@ -77,7 +77,7 @@ export default async function HrPage({ searchParams }: { searchParams: Promise<H
 }
 
 function HrMetric({ icon, label, value, note }: { icon: string; label: string; value: string; note: string }) { return <article><i>{icon}</i><div><span>{label}</span><strong>{value}</strong><small>{note}</small></div></article>; }
-function roleLabel(role: string) { if (role === "manager") return "Quản lý chi nhánh"; if (role === "consultant") return "Tư vấn viên"; if (role === "warranty") return "Nhân viên bảo hành"; if (role === "repair") return "Nhân viên sửa chữa"; return "Nhân viên bán hàng"; }
+function roleLabel(role: string) { if (role === "manager") return "Quản lý chi nhánh"; if (role === "consultant") return "Tư vấn viên"; if (role === "warranty") return "Nhân viên bảo hành"; if (role === "repair") return "Nhân viên sửa chữa"; if (role === "inventory") return "Nhân viên kho"; return "Nhân viên bán hàng"; }
 function formatDate(value: string) { return value ? new Date(`${value}T00:00:00`).toLocaleDateString("vi-VN") : "Chưa cập nhật"; }
 function attendanceLabel(value: string) { if (value === "present") return "Có mặt"; if (value === "late") return "Đi trễ"; if (value === "leave") return "Nghỉ phép"; if (value === "absent") return "Vắng"; return "Chưa chấm công"; }
 function uniqueBranches(employees: Array<{ branchId: string; branch: string }>) {
@@ -85,4 +85,4 @@ function uniqueBranches(employees: Array<{ branchId: string; branch: string }>) 
   employees.forEach((employee) => { if (employee.branchId && employee.branch) branches.set(employee.branchId, employee.branch); });
   return [...branches].map(([id, name]) => ({ id, name })).sort((left, right) => left.name.localeCompare(right.name, "vi"));
 }
-function roleOrder(role: string) { return role === "manager" ? 0 : role === "sales" ? 1 : role === "consultant" ? 2 : role === "warranty" ? 3 : role === "repair" ? 4 : 5; }
+function roleOrder(role: string) { return role === "manager" ? 0 : role === "sales" ? 1 : role === "consultant" ? 2 : role === "inventory" ? 3 : role === "warranty" ? 4 : role === "repair" ? 5 : 6; }

@@ -2,14 +2,20 @@
 
 Server Python độc lập dùng DeepFace để đăng ký và đối chiếu khuôn mặt nhân viên. Ảnh gửi lên chỉ được xử lý trong bộ nhớ; hệ thống lưu vector DeepFace trong `data/faces.sqlite3`, không lưu ảnh gốc.
 
-## Chạy trên macOS
+## Chạy cùng website trên macOS
+
+Lần đầu tiên, cài môi trường nhận diện bằng Python 3.11:
 
 ```bash
-cd python-ai
-python3.13 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-uvicorn face_server:app --host 127.0.0.1 --port 8001
+npm run face:setup
+```
+
+Sau đó chỉ cần chạy `npm run dev`. Script phát triển sẽ khởi động DeepFace trước, chờ endpoint `/health` sẵn sàng rồi mới khởi động website. Trang quản lý cũng tự thử kết nối lại nếu TensorFlow cần thêm thời gian khởi tạo.
+
+## Chạy riêng máy chủ khuôn mặt
+
+```bash
+npm run dev:face
 ```
 
 DeepFace/TensorFlow hiện cần Python 3.10–3.13. Không tạo môi trường bằng Python 3.14.

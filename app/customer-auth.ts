@@ -3,7 +3,9 @@ import { customerFromSession, deleteCustomerSession } from "@/db/customers";
 
 export const CUSTOMER_COOKIE = "huy_customer";
 export const CUSTOMER_VERIFICATION_COOKIE = "huy_customer_verification";
+export const CUSTOMER_PASSWORD_RESET_COOKIE = "huy_customer_password_reset";
 export const GOOGLE_STATE_COOKIE = "huy_google_state";
+export const GOOGLE_RETURN_TO_COOKIE = "huy_google_return_to";
 
 export async function currentCustomer() {
   const store = await cookies();
@@ -18,6 +20,8 @@ export async function clearCustomerSession() {
   }
   store.set(CUSTOMER_COOKIE, "", customerCookieOptions(0));
   store.set(CUSTOMER_VERIFICATION_COOKIE, "", shortLivedCookieOptions(0));
+  store.set(CUSTOMER_PASSWORD_RESET_COOKIE, "", shortLivedCookieOptions(0));
+  store.set(GOOGLE_RETURN_TO_COOKIE, "", shortLivedCookieOptions(0));
 }
 
 export function customerCookieOptions(maxAge = 30 * 24 * 60 * 60) {

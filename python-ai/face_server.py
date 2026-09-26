@@ -24,8 +24,9 @@ from threading import Lock
 import numpy as np
 import cv2
 from deepface import DeepFace
-from fastapi import Depends, FastAPI, Header, HTTPException, status
+from fastapi import Depends, FastAPI, Header, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 from PIL import Image, ImageOps, UnidentifiedImageError
 
@@ -59,6 +60,8 @@ DISTANCE_METRIC = os.getenv("FACE_DISTANCE_METRIC", "cosine")
 MATCH_THRESHOLD = float(os.environ["FACE_MATCH_THRESHOLD"]) if os.getenv("FACE_MATCH_THRESHOLD") else None
 API_KEY = os.getenv("FACE_API_KEY", "")
 DATABASE_LOCK = Lock()
+RATE_LIMIT_LOCK = Lock()
+RATE_LIMITS: dict[str, tuple[int, int]] = {}
 FACE_CASCADES = tuple(
     cascade
     for cascade in (
@@ -71,8 +74,9 @@ FACE_CASCADES = tuple(
 app = FastAPI(
     title="Infinity Company Face Verification",
     version="1.0.0",
-    docs_url="/docs" if os.getenv("FACE_ENABLE_DOCS", "true").lower() == "true" else None,
+    docs_url="/docs" if os.getenv("FACE_ENABLE_DOCS", "false").lower() == "true" else None,
     redoc_url=None,
+    openapi_url="/openapi.json" if os.getenv("FACE_ENABLE_DOCS", "false").lower() == "true" else None,
 )
 
 allowed_origins = [item.strip() for item in os.getenv("FACE_ALLOWED_ORIGINS", "http://localhost:3000").split(",") if item.strip()]
@@ -83,6 +87,57 @@ app.add_middleware(
     allow_methods=["GET", "POST", "DELETE"],
     allow_headers=["Content-Type", "X-API-Key"],
 )
+
+
+@app.middleware("http")
+async def enforce_http_security(request: Request, call_next):
+    """Bound request size and request frequency before expensive face processing."""
+    now = int(time.time())
+    client_host = request.client.host if request.client else "unknown"
+    supplied_key = request.headers.get("x-api-key", "")
+    has_valid_key = bool(API_KEY) and hmac.compare_digest(
+        supplied_key.encode("utf-8"), API_KEY.encode("utf-8")
+    )
+    if request.url.path == "/health":
+        limit, window_seconds, scope = 120, 60, "health"
+    elif has_valid_key:
+        limit, window_seconds, scope = 60, 60, "api"
+    else:
+        limit, window_seconds, scope = 5, 15 * 60, "auth"
+    window_start = now // window_seconds * window_seconds
+    rate_key = f"{scope}:{client_host}:{window_start}"
+    with RATE_LIMIT_LOCK:
+        count, expires_at = RATE_LIMITS.get(rate_key, (0, window_start + window_seconds))
+        count += 1
+        RATE_LIMITS[rate_key] = (count, expires_at)
+        if len(RATE_LIMITS) > 5_000:
+            for key, (_, expiry) in list(RATE_LIMITS.items()):
+                if expiry < now:
+                    RATE_LIMITS.pop(key, None)
+    if count > limit:
+        retry_after = max(1, window_start + window_seconds - now)
+        return JSONResponse(
+            {"detail": "Bạn gửi yêu cầu quá nhanh. Vui lòng thử lại sau."},
+            status_code=429,
+            headers={"Retry-After": str(retry_after)},
+        )
+
+    content_length = request.headers.get("content-length")
+    max_request_bytes = max(512 * 1024, int(MAX_IMAGE_BYTES * 1.5) + 16 * 1024)
+    if content_length:
+        try:
+            if int(content_length) < 0:
+                raise ValueError
+            if int(content_length) > max_request_bytes:
+                return JSONResponse({"detail": "Payload vượt quá dung lượng cho phép."}, status_code=413)
+        except ValueError:
+            return JSONResponse({"detail": "Content-Length không hợp lệ."}, status_code=400)
+
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Cache-Control"] = "no-store"
+    return response
 
 
 def require_api_key(x_api_key: str = Header(default="")) -> None:
@@ -97,7 +152,7 @@ def require_api_key(x_api_key: str = Header(default="")) -> None:
 
 class FacePayload(BaseModel):
     employee_id: str = Field(min_length=1, max_length=100)
-    image_base64: str = Field(min_length=100)
+    image_base64: str = Field(min_length=100, max_length=int(MAX_IMAGE_BYTES * 4 / 3) + 4096)
 
 
 class VerifyResponse(BaseModel):
@@ -233,9 +288,11 @@ def detect(payload: FacePayload) -> dict[str, object]:
     raw = decode_image(payload.image_base64)
     try:
         with Image.open(io.BytesIO(raw)) as source:
+            if source.format not in {"JPEG", "PNG", "WEBP"}:
+                raise UnidentifiedImageError("Unsupported image format")
+            if source.width * source.height > 16_000_000:
+                raise ValueError("Image dimensions exceed the allowed limit")
             image = ImageOps.exif_transpose(source).convert("RGB")
-            if image.width * image.height > 16_000_000:
-                image.thumbnail((4000, 4000))
             pixels = np.ascontiguousarray(np.asarray(image)[:, :, ::-1])
     except (UnidentifiedImageError, OSError, ValueError) as error:
         raise HTTPException(status_code=400, detail="Ảnh khuôn mặt không hợp lệ.") from error
@@ -259,9 +316,11 @@ def extract_single_face(image_base64: str) -> tuple[np.ndarray, dict[str, int]]:
     raw = decode_image(image_base64)
     try:
         with Image.open(io.BytesIO(raw)) as source:
+            if source.format not in {"JPEG", "PNG", "WEBP"}:
+                raise UnidentifiedImageError("Unsupported image format")
+            if source.width * source.height > 16_000_000:
+                raise ValueError("Image dimensions exceed the allowed limit")
             image = ImageOps.exif_transpose(source).convert("RGB")
-            if image.width * image.height > 16_000_000:
-                image.thumbnail((4000, 4000))
             pixels = np.ascontiguousarray(np.asarray(image)[:, :, ::-1])
     except (UnidentifiedImageError, OSError, ValueError) as error:
         raise HTTPException(status_code=400, detail="Ảnh khuôn mặt không hợp lệ.") from error

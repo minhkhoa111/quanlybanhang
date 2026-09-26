@@ -14,11 +14,22 @@ const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === "seatbelt";
 const localBindingConfig = {
   main: "./worker/index.ts",
   compatibility_flags: ["nodejs_compat"],
+  // `next/image` asks the Worker for /_vinext/image even during local Vite
+  // development. Expose public/ through the same ASSETS binding used in
+  // production so image optimization never dereferences an absent binding.
+  assets: {
+    directory: "./public",
+    binding: "ASSETS",
+  },
   vars: Object.fromEntries([
+    "ADMIN_PASSWORD",
     "CASSO_WEBHOOK_SECRET",
+    "FACE_API_KEY",
+    "FACE_API_URL",
     "GOOGLE_CLIENT_ID",
     "GOOGLE_CLIENT_SECRET",
     "GOOGLE_REDIRECT_URI",
+    "HR_DATA_KEY",
     "TWILIO_ACCOUNT_SID",
     "TWILIO_AUTH_TOKEN",
     "TWILIO_VERIFY_SERVICE_SID",
@@ -42,7 +53,7 @@ const localBindingConfig = {
     : [],
 };
 
-export default defineConfig(async () => {
+export default defineConfig(async ({ command }): Promise<import("vite").UserConfig> => {
   // Keep Wrangler and Miniflare state project-local. These are non-secret tool
   // settings; application environment belongs in ignored `.env*` files.
   process.env.WRANGLER_WRITE_LOGS ??= "false";
@@ -53,7 +64,28 @@ export default defineConfig(async () => {
   const { cloudflare } = await import("@cloudflare/vite-plugin");
 
   return {
+    // Build and preview must never rewrite the dependency cache used by the
+    // long-running storefront. A mixed React hash breaks hooks during hydration.
+    cacheDir: command === "serve" ? "node_modules/.vite-dev" : "node_modules/.vite-build",
+    resolve: {
+      dedupe: ["react", "react-dom", "react-server-dom-webpack"],
+    },
+    optimizeDeps: {
+      include: [
+        "qrcode",
+        "vietnam-qr-pay",
+        "@simplewebauthn/browser",
+      ],
+    },
     server: {
+      // The Cloudflare tunnel targets this port. Failing fast prevents a second
+      // dev server from silently moving to 3002/3003 and sharing React caches.
+      port: 3001,
+      strictPort: true,
+      allowedHosts: true,
+      headers: {
+        "Cache-Control": "no-store, no-cache, must-revalidate",
+      },
       watch: {
         // Miniflare writes SQLite WAL/SHM files on every D1 read/write. They are
         // runtime state, not source files, and must never trigger Vite HMR.
@@ -61,8 +93,12 @@ export default defineConfig(async () => {
           "**/.wrangler/**",
           "**/.vinext/**",
           "**/dist/**",
-          "**/*.sqlite-wal",
-          "**/*.sqlite-shm",
+          "**/node_modules/**",
+          "**/python-ai/**",
+          "**/*.sqlite*",
+          "**/*.db*",
+          "**/backups/**",
+          "**/*.log",
         ],
         ...(isCodexSeatbeltSandbox
           ? { useFsEvents: false, usePolling: true }

@@ -1,0 +1,53 @@
+{
+  "checkedAt": "2026-09-22",
+  "assets": [
+    {
+      "model": "pro",
+      "color": "do",
+      "url": "https://cdn2.fptshop.com.vn/unsafe/iphone_18_pro_do_4f85943d2c.png",
+      "path": "public/products/iphone-18/pro-do.png"
+    },
+    {
+      "model": "pro",
+      "color": "xanh",
+      "url": "https://cdn2.fptshop.com.vn/unsafe/iphone_18_pro_xanh_ebdda912fb.png",
+      "path": "public/products/iphone-18/pro-xanh.png"
+    },
+    {
+      "model": "pro",
+      "color": "bac",
+      "url": "https://cdn2.fptshop.com.vn/unsafe/iphone_18_pro_bac_b94a78bf76.png",
+      "path": "public/products/iphone-18/pro-bac.png"
+    },
+    {
+      "model": "pro",
+      "color": "den",
+      "url": "https://cdn2.fptshop.com.vn/unsafe/iphone_18_pro_den_75fe2a4d89.png",
+      "path": "public/products/iphone-18/pro-den.png"
+    },
+    {
+      "model": "pro-max",
+      "color": "do",
+      "url": "https://cdn2.fptshop.com.vn/unsafe/iphone_18_pro_max_do_44e704f6da.png",
+      "path": "public/products/iphone-18/pro-max-do.png"
+    },
+    {
+      "model": "pro-max",
+      "color": "xanh",
+      "url": "https://cdn2.fptshop.com.vn/unsafe/iphone_18_pro_max_xanh_279f9eb85c.png",
+      "path": "public/products/iphone-18/pro-max-xanh.png"
+    },
+    {
+      "model": "pro-max",
+      "color": "bac",
+      "url": "https://cdn2.fptshop.com.vn/unsafe/iphone_18_pro_max_bac_1c95f56cb8.png",
+      "path": "public/products/iphone-18/pro-max-bac.png"
+    },
+    {
+      "model": "pro-max",
+      "color": "den",
+      "url": "https://cdn2.fptshop.com.vn/unsafe/iphone_18_pro_max_den_c9395ca218.png",
+      "path": "public/products/iphone-18/pro-max-den.png"
+    }
+  ]
+}

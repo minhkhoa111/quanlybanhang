@@ -1,11 +1,10 @@
 import { env } from "cloudflare:workers";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { CUSTOMER_COOKIE, clearCustomerSession } from "@/app/customer-auth";
+import { clearCustomerSession } from "@/app/customer-auth";
 import { adminUserFromSession, authenticateAdminUser, createAdminUserSession, deleteAdminUserSession, type AdminUser } from "@/db/admin-users";
 
 const ADMIN_COOKIE = "admin";
-const DEFAULT_ADMIN_PASSWORD = "admin696969";
 
 type Bindings = {
   ADMIN_PASSWORD?: string;
@@ -17,13 +16,19 @@ export function portalPathForRole(role: AdminUser["role"]) {
   return "/staff";
 }
 
+export function adminRedirectUrl(path: string) {
+  if (process.env.NODE_ENV !== "production") return path;
+  return new URL(path, "https://infinityshop.click").toString();
+}
+
+export function canManageProducts(user?: Pick<AdminUser, "role">) {
+  return user?.role === "owner" || user?.role === "manager";
+}
+
 export async function requireAdminPage(returnTo = "/admin") {
-  if (await hasCustomerSession()) {
-    redirect("/tai-khoan?error=admin-only");
-  }
   const user = await adminUserFromCookie();
   if (user) return user;
-  redirect(`/admin-login?returnTo=${encodeURIComponent(returnTo)}`);
+  redirect(adminRedirectUrl(`/admin-login?returnTo=${encodeURIComponent(returnTo)}`));
 }
 
 export async function requireAdminAction() {
@@ -60,6 +65,22 @@ export async function requireHrManagerAction() {
   return user;
 }
 
+export async function requireInventoryPage(returnTo = "/admin/inventory") {
+  const user = await requireAdminPage(returnTo);
+  if (user.role !== "owner" && user.role !== "manager" && user.role !== "inventory") {
+    redirect(`${portalPathForRole(user.role)}?error=inventory-required`);
+  }
+  return user;
+}
+
+export async function requireInventoryAction() {
+  const user = await requireAdminAction();
+  if (user.role !== "owner" && user.role !== "manager" && user.role !== "inventory") {
+    throw new Error("Chỉ Giám đốc, quản lý chi nhánh hoặc nhân viên kho được điều chỉnh tồn kho.");
+  }
+  return user;
+}
+
 export function canManageEmployee(
   user: Pick<AdminUser, "role" | "branchId" | "branch">,
   employee: Pick<AdminUser, "branchId" | "branch">,
@@ -74,8 +95,9 @@ export async function createAdminSession(username: string, password: string) {
   const normalizedUsername = username.trim().toLowerCase();
   let token = "";
   let authenticatedUser: AdminUser | undefined;
-  if ((!normalizedUsername || normalizedUsername === "admin" || normalizedUsername === "owner") && password === getAdminPassword()) {
-    token = await ownerSessionToken();
+  const configuredOwnerPassword = getAdminPassword();
+  if ((!normalizedUsername || normalizedUsername === "admin" || normalizedUsername === "owner") && configuredOwnerPassword && password === configuredOwnerPassword) {
+    token = (await ownerSessionToken(configuredOwnerPassword))!;
     authenticatedUser = { id: "owner", username: "admin", name: "Giám đốc", role: "owner", branch: "Toàn hệ thống", branchId: "", active: true, createdAt: 0 };
   } else {
     try {
@@ -103,7 +125,8 @@ export async function createAdminSession(username: string, password: string) {
 export async function clearAdminSession() {
   const cookieStore = await cookies();
   const token = cookieStore.get(ADMIN_COOKIE)?.value;
-  if (token && token !== await ownerSessionToken()) {
+  const ownerToken = await ownerSessionToken();
+  if (token && token !== ownerToken) {
     try { await deleteAdminUserSession(token); } catch { /* database may be unavailable during logout */ }
   }
   cookieStore.set(ADMIN_COOKIE, "", {
@@ -116,27 +139,23 @@ export async function clearAdminSession() {
 }
 
 export async function currentAdminUser(): Promise<AdminUser | undefined> {
-  if (await hasCustomerSession()) return undefined;
   return adminUserFromCookie();
-}
-
-async function hasCustomerSession() {
-  const cookieStore = await cookies();
-  return Boolean(cookieStore.get(CUSTOMER_COOKIE)?.value);
 }
 
 async function adminUserFromCookie(): Promise<AdminUser | undefined> {
   const cookieStore = await cookies();
   const session = cookieStore.get(ADMIN_COOKIE)?.value;
   if (!session) return undefined;
-  if (session === await ownerSessionToken()) {
+  const ownerToken = await ownerSessionToken();
+  if (ownerToken && session === ownerToken) {
     return { id: "owner", username: "admin", name: "Giám đốc", role: "owner", branch: "Toàn hệ thống", branchId: "", active: true, createdAt: 0 };
   }
   try { return await adminUserFromSession(session); } catch { return undefined; }
 }
 
-async function ownerSessionToken() {
-  const bytes = new TextEncoder().encode(`huy-admin:${getAdminPassword()}`);
+async function ownerSessionToken(password = getAdminPassword()) {
+  if (!password) return undefined;
+  const bytes = new TextEncoder().encode(`infinity-admin:${password}`);
   const hash = await crypto.subtle.digest("SHA-256", bytes);
   return [...new Uint8Array(hash)]
     .map((byte) => byte.toString(16).padStart(2, "0"))
@@ -153,7 +172,7 @@ function getAdminPassword() {
     return process.env.ADMIN_PASSWORD.trim();
   }
 
-  return DEFAULT_ADMIN_PASSWORD;
+  return undefined;
 }
 
 function normalizeBranch(value: string) {

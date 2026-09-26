@@ -34,4 +34,4 @@ function money(value: number) { return `${Math.max(0, Math.round(value)).toLocal
 function monthLabel(value: string) { const [year, month] = value.split("-"); return `tháng ${Number(month)}/${year}`; }
 function formatDate(timestamp: number) { return new Date(timestamp).toLocaleDateString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }); }
 function mask(value: string) { return value ? `${"•".repeat(Math.max(4, value.length - 4))}${value.slice(-4)}` : "Chưa cập nhật số tài khoản"; }
-function roleLabel(role: string) { if (role === "manager") return "Quản lý chi nhánh"; if (role === "consultant") return "Nhân viên tư vấn"; if (role === "warranty") return "Nhân viên bảo hành"; if (role === "repair") return "Nhân viên sửa chữa"; return "Nhân viên bán hàng"; }
+function roleLabel(role: string) { if (role === "manager") return "Quản lý chi nhánh"; if (role === "consultant") return "Nhân viên tư vấn"; if (role === "warranty") return "Nhân viên bảo hành"; if (role === "repair") return "Nhân viên sửa chữa"; if (role === "inventory") return "Nhân viên kho"; return "Nhân viên bán hàng"; }

@@ -34,7 +34,7 @@ function compactPhoneSpecs(product: SpecProduct) {
     ram && `RAM ${ram}`,
     storage && `Bộ nhớ trong ${storage}`,
     camera && (/MP/i.test(camera) ? `Camera chính ${camera}` : `Hệ thống camera ${camera}`),
-    product.category === "samsung" ? "Hệ điều hành Android với giao diện One UI" : "Hệ điều hành Android",
+    "Hệ điều hành Android",
   ].filter((spec): spec is string => Boolean(spec));
 }
 
@@ -51,7 +51,6 @@ function iphoneSpecs(product: SpecProduct) {
       "Chip A15 Bionic, CPU 6 lõi và GPU 4 lõi",
       "Neural Engine 16 lõi",
       "Hệ thống camera kép 12MP: Chính và Ultra Wide",
-      "RAM 4GB theo thông tin nhà cung cấp",
       "Kháng nước và bụi IP68",
       "Kết nối 5G, Wi-Fi 6 và cổng Lightning",
       "Hệ điều hành iOS",
@@ -64,7 +63,6 @@ function iphoneSpecs(product: SpecProduct) {
       "Chip A15 Bionic, CPU 6 lõi và GPU 5 lõi",
       "Neural Engine 16 lõi",
       "Hệ thống camera kép 12MP: Chính và Ultra Wide",
-      "RAM 6GB theo thông tin nhà cung cấp",
       "Kháng nước và bụi IP68",
       "Kết nối 5G, Wi-Fi 6 và cổng Lightning",
       "Hệ điều hành iOS",
@@ -77,7 +75,6 @@ function iphoneSpecs(product: SpecProduct) {
       "Chip A16 Bionic, CPU 6 lõi và GPU 5 lõi",
       "Hệ thống camera kép với camera chính 48MP và Ultra Wide 12MP",
       "Telephoto 2x đạt chất lượng quang học",
-      "RAM 6GB theo thông tin nhà cung cấp",
       "Kháng nước và bụi IP68",
       "Kết nối 5G, Wi-Fi 6 và cổng USB-C",
       "Hệ điều hành iOS",
@@ -90,7 +87,6 @@ function iphoneSpecs(product: SpecProduct) {
       "Chip A16 Bionic, CPU 6 lõi và GPU 5 lõi",
       "Hệ thống camera kép với camera chính 48MP và Ultra Wide 12MP",
       "Telephoto 2x đạt chất lượng quang học",
-      "RAM 6GB theo thông tin nhà cung cấp",
       "Kháng nước và bụi IP68",
       "Kết nối 5G, Wi-Fi 6 và cổng USB-C",
       "Hệ điều hành iOS",
@@ -103,7 +99,6 @@ function iphoneSpecs(product: SpecProduct) {
       "Chip A18 Pro, CPU 6 lõi và GPU 6 lõi",
       "Neural Engine 16 lõi và hỗ trợ Apple Intelligence",
       "Camera Fusion 48MP, Ultra Wide 48MP và Telephoto 5x 12MP",
-      "RAM 8GB theo thông tin nhà cung cấp",
       "Kháng nước và bụi IP68",
       "Kết nối 5G, Wi-Fi 7 và cổng USB-C hỗ trợ USB 3",
       "Hệ điều hành iOS",
@@ -130,7 +125,6 @@ function iphoneSpecs(product: SpecProduct) {
       "Chip A18, CPU 6 lõi và GPU 5 lõi",
       "Neural Engine 16 lõi và hỗ trợ Apple Intelligence",
       "Camera Fusion 48MP, Telephoto 2x và Ultra Wide 12MP",
-      "RAM 8GB theo thông tin nhà cung cấp",
       "Kháng nước và bụi IP68",
       "Kết nối 5G, Wi-Fi 7 và cổng USB-C",
       "Hệ điều hành iOS",
@@ -207,7 +201,7 @@ export function buildDisplaySpecs(product: SpecProduct) {
   if (product.specs.length >= 8) return product.specs;
   const appleSpecs = iphoneSpecs(product);
   if (appleSpecs) return appleSpecs;
-  if (product.category === "android" || product.category === "samsung") {
+  if (product.category === "android") {
     return compactPhoneSpecs(product);
   }
   return product.specs;

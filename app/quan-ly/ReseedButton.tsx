@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 
-export default function ReseedButton({ token = "dev-reseed-key" }: { token?: string }) {
+export default function ReseedButton() {
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
 
@@ -10,7 +10,7 @@ export default function ReseedButton({ token = "dev-reseed-key" }: { token?: str
     setLoading(true);
     setMsg(null);
     try {
-      const resp = await fetch(`/api/admin/reseed?token=${encodeURIComponent(token)}`, {
+      const resp = await fetch("/api/admin/reseed", {
         method: "POST",
       });
       if (!resp.ok) throw new Error(await resp.text());

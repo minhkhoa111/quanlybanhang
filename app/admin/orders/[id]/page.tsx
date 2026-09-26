@@ -28,7 +28,7 @@ export default async function AdminOrderDetailPage({ params, searchParams }: { p
   const canViewOrder = currentUser.role === "owner" || (currentUser.role === "manager" && order.branchId === currentUser.branchId) || (isAssignedWorker && order.assignedAdminId === currentUser.id);
   if (!canViewOrder) notFound();
   const branches = currentUser.role === "manager" ? allBranches.filter((item) => item.id === currentUser.branchId) : allBranches;
-  const staff = allStaff.filter((item) => item.active && item.role !== "owner" && (currentUser.role !== "manager" || item.branchId === currentUser.branchId));
+  const staff = allStaff.filter((item) => item.active && item.role !== "owner" && item.role !== "inventory" && (currentUser.role !== "manager" || item.branchId === currentUser.branchId));
   const product = products.find((item) => item.slug === order.productSlug || item.name === order.productName);
   const unitPrice = product ? orderTotalNumber({ ...order, quantity: 1 }, products) : 0;
   const orderItems = order.items.length ? order.items : [{
@@ -140,7 +140,7 @@ export default async function AdminOrderDetailPage({ params, searchParams }: { p
             <fieldset className="admin-invoice-section">
               <legend>Thông tin bên bán</legend>
               <div className="admin-invoice-grid">
-                <label><span>Tên đơn vị bán</span><input name="invoiceSellerName" defaultValue={order.invoiceSellerName || "INFINITY COMPANY"} /></label>
+                <label><span>Tên đơn vị bán</span><input name="invoiceSellerName" defaultValue={order.invoiceSellerName || "INFINITY STORE"} /></label>
                 <label><span>Mã số thuế</span><input name="invoiceSellerTaxCode" inputMode="numeric" defaultValue={order.invoiceSellerTaxCode} placeholder="Nhập mã số thuế cửa hàng" /></label>
                 <label className="admin-span-2"><span>Địa chỉ</span><input name="invoiceSellerAddress" defaultValue={order.invoiceSellerAddress || "122/4 Cô Giang, P. Cầu Kiệu, TP.HCM"} /></label>
                 <label><span>Số điện thoại</span><input name="invoiceSellerPhone" defaultValue={order.invoiceSellerPhone || "02879797999"} /></label>
@@ -208,11 +208,11 @@ export default async function AdminOrderDetailPage({ params, searchParams }: { p
         </div>
         <article className="admin-invoice-print">
           <header>
-            <div><p>{order.invoiceSellerName || "INFINITY COMPANY"}</p><h1>HÓA ĐƠN BÁN HÀNG</h1></div>
+            <div><p>{order.invoiceSellerName || "INFINITY STORE"}</p><h1>HÓA ĐƠN BÁN HÀNG</h1></div>
             <dl><div><dt>Số hóa đơn</dt><dd>{order.invoiceNumber || "Chưa cấp"}</dd></div><div><dt>Ký hiệu</dt><dd>{order.invoiceSeries || "-"}</dd></div><div><dt>Ngày</dt><dd>{formatInvoiceDate(invoiceDate)}</dd></div></dl>
           </header>
           <section className="admin-invoice-parties">
-            <div><h2>Bên bán</h2><p><strong>{order.invoiceSellerName || "INFINITY COMPANY"}</strong></p><p>MST: {order.invoiceSellerTaxCode || "Chưa khai báo"}</p><p>{order.invoiceSellerAddress || "122/4 Cô Giang, P. Cầu Kiệu, TP.HCM"}</p><p>Điện thoại: {order.invoiceSellerPhone || "02879797999"}</p></div>
+            <div><h2>Bên bán</h2><p><strong>{order.invoiceSellerName || "INFINITY STORE"}</strong></p><p>MST: {order.invoiceSellerTaxCode || "Chưa khai báo"}</p><p>{order.invoiceSellerAddress || "122/4 Cô Giang, P. Cầu Kiệu, TP.HCM"}</p><p>Điện thoại: {order.invoiceSellerPhone || "02879797999"}</p></div>
             <div><h2>Người mua</h2><p><strong>{order.invoiceCompanyName || order.invoiceBuyerName || order.customerName}</strong></p>{order.invoiceCompanyName && <p>Người mua: {order.invoiceBuyerName || order.customerName}</p>}<p>MST: {order.invoiceTaxCode || "Không có"}</p><p>{order.invoiceAddress || order.address || "Nhận tại cửa hàng"}</p><p>Email: {order.invoiceEmail || order.email || "Không có"}</p></div>
           </section>
           <table>

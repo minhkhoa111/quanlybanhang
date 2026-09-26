@@ -43,7 +43,7 @@ export default async function AdminOrdersPage({
               <tr key={order.id}>
                 <td><strong>{order.orderCode}</strong><span>#{order.id.slice(0, 8)}</span></td>
                 <td><strong>{order.customerName}</strong><span>{order.phone}</span></td>
-                <td>{order.items.length > 1 ? `${order.items.length} dòng sản phẩm` : order.productName}<span>{order.deliveryMethod === "Đến cửa hàng xem máy" ? "Yêu cầu xem máy & tư vấn" : `${order.quantity} sản phẩm${order.voucherCode ? ` · Voucher ${order.voucherCode}` : ""}`}</span></td>
+                <td>{order.items.length > 1 ? `${order.items.length} dòng sản phẩm` : order.productName}<span>{order.note.includes("[ĐẶT TRƯỚC") ? "Đặt trước · Không thu cọc" : order.deliveryMethod === "Đến cửa hàng xem máy" ? "Yêu cầu xem máy & tư vấn" : `${order.quantity} sản phẩm${order.voucherCode ? ` · Voucher ${order.voucherCode}` : ""}`}</span></td>
                 <td><strong>{order.branchName || "Chưa phân bổ"}</strong><span>{order.assignedAdminName || "Chưa có nhân viên"}</span></td>
                 <td>{formatMoney(orderTotalNumber(order, products))}</td>
                 <td>{order.paymentMethod || "Chưa chọn"}{order.financeCompany && <span>{order.financeCompany} · {order.installmentTerm} tháng</span>}</td>

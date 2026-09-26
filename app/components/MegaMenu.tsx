@@ -45,7 +45,6 @@ export default function MegaMenu(){
         <div className="mega-col">
           <h4>Điện thoại</h4>
           <Link href="/iphone">iPhone</Link>
-          <Link href="/samsung">Samsung</Link>
           <Link href="/android">Android khác</Link>
         </div>
         <div className="mega-col">
@@ -56,6 +55,11 @@ export default function MegaMenu(){
           <h4>Máy tính Apple</h4>
           <Link href="/macbook">MacBook</Link>
           <Link href="/laptop">Laptop Windows</Link>
+        </div>
+        <div className="mega-col">
+          <h4>Dịch vụ</h4>
+          <Link href="/tra-gop">Mô phỏng trả góp</Link>
+          <Link href="/bao-hanh">Tra cứu bảo hành</Link>
         </div>
 
         {/* promo tiles removed to avoid missing assets */}

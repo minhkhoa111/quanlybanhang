@@ -44,6 +44,16 @@ type VerificationRow = {
   expires_at: number;
 };
 
+type PasswordResetRow = {
+  id: string;
+  customer_id: string;
+  channel: string;
+  destination: string;
+  expires_at: number;
+  verified_at: number;
+  attempts: number;
+};
+
 function db() {
   const binding = (env as unknown as Bindings).DB;
   if (!binding) throw new Error("Cơ sở dữ liệu khách hàng chưa sẵn sàng.");
@@ -96,6 +106,19 @@ async function initialize() {
       created_at INTEGER NOT NULL
     )`),
     database.prepare("CREATE INDEX IF NOT EXISTS customer_verification_token_idx ON customer_verification_sessions(token_hash)"),
+    database.prepare(`CREATE TABLE IF NOT EXISTS customer_password_reset_sessions (
+      id TEXT PRIMARY KEY,
+      customer_id TEXT NOT NULL,
+      token_hash TEXT NOT NULL UNIQUE,
+      channel TEXT NOT NULL,
+      destination TEXT NOT NULL,
+      expires_at INTEGER NOT NULL,
+      verified_at INTEGER NOT NULL DEFAULT 0,
+      attempts INTEGER NOT NULL DEFAULT 0,
+      created_at INTEGER NOT NULL
+    )`),
+    database.prepare("CREATE INDEX IF NOT EXISTS customer_password_reset_token_idx ON customer_password_reset_sessions(token_hash)"),
+    database.prepare("CREATE INDEX IF NOT EXISTS customer_password_reset_customer_idx ON customer_password_reset_sessions(customer_id, created_at DESC)"),
   ]);
   await ensureCustomerColumns(database);
 }
@@ -229,6 +252,78 @@ export async function verificationFromToken(token?: string) {
 export async function deleteVerificationSession(id: string) {
   await ensureCustomerStore();
   await db().prepare("DELETE FROM customer_verification_sessions WHERE id = ?").bind(id).run();
+}
+
+export async function customerForPasswordReset(identifierInput: string) {
+  await ensureCustomerStore();
+  const identifier = identifierInput.trim().toLowerCase();
+  if (identifier.length < 4 || identifier.length > 160) return undefined;
+  const phone = normalizePhone(identifier);
+  const row = await db().prepare(`SELECT * FROM customers
+    WHERE password_hash <> '' AND (LOWER(username) = ? OR email = ? OR phone = ?) LIMIT 1`)
+    .bind(identifier, normalizeEmail(identifier), phone).first<CustomerRow>();
+  return row ? mapCustomer(row) : undefined;
+}
+
+export async function createCustomerPasswordResetSession(customer: Customer, channel: "email" | "sms") {
+  await ensureCustomerStore();
+  const destination = channel === "sms" ? customer.phone : customer.email;
+  const token = randomToken(32);
+  const now = Date.now();
+  await db().batch([
+    db().prepare("DELETE FROM customer_password_reset_sessions WHERE customer_id = ?").bind(customer.id),
+    db().prepare(`INSERT INTO customer_password_reset_sessions
+      (id, customer_id, token_hash, channel, destination, expires_at, verified_at, attempts, created_at)
+      VALUES (?, ?, ?, ?, ?, ?, 0, 0, ?)`).bind(
+        crypto.randomUUID(), customer.id, await tokenHash(token), channel, destination, now + 15 * 60 * 1000, now,
+      ),
+  ]);
+  return { token, destination, channel };
+}
+
+export async function passwordResetFromToken(token?: string) {
+  if (!token) return undefined;
+  await ensureCustomerStore();
+  const row = await db().prepare(`SELECT * FROM customer_password_reset_sessions
+    WHERE token_hash = ? AND expires_at > ? AND attempts < 5 LIMIT 1`)
+    .bind(await tokenHash(token), Date.now()).first<PasswordResetRow>();
+  if (!row) return undefined;
+  const customer = await customerById(row.customer_id);
+  return customer ? {
+    id: row.id,
+    customer,
+    channel: row.channel === "sms" ? "sms" as const : "email" as const,
+    destination: row.destination,
+    verifiedAt: Number(row.verified_at || 0),
+    attempts: Number(row.attempts || 0),
+  } : undefined;
+}
+
+export async function recordPasswordResetAttempt(id: string) {
+  await ensureCustomerStore();
+  await db().prepare("UPDATE customer_password_reset_sessions SET attempts = attempts + 1 WHERE id = ?").bind(id).run();
+}
+
+export async function markPasswordResetVerified(id: string) {
+  await ensureCustomerStore();
+  await db().prepare("UPDATE customer_password_reset_sessions SET verified_at = ? WHERE id = ?").bind(Date.now(), id).run();
+}
+
+export async function resetCustomerPassword(resetId: string, customerId: string, password: string) {
+  await ensureCustomerStore();
+  if (password.length < 8 || password.length > 128) throw new Error("Mật khẩu mới phải có từ 8 đến 128 ký tự.");
+  const pending = await db().prepare(`SELECT id FROM customer_password_reset_sessions
+    WHERE id = ? AND customer_id = ? AND verified_at > 0 AND expires_at > ? LIMIT 1`)
+    .bind(resetId, customerId, Date.now()).first<{ id: string }>();
+  if (!pending) throw new Error("Phiên đổi mật khẩu không hợp lệ hoặc đã hết hạn.");
+  const salt = randomToken(16);
+  const hash = await passwordHash(password, salt);
+  await db().batch([
+    db().prepare("UPDATE customers SET password_hash = ?, password_salt = ? WHERE id = ?").bind(hash, salt, customerId),
+    db().prepare("DELETE FROM customer_sessions WHERE customer_id = ?").bind(customerId),
+    db().prepare("DELETE FROM customer_password_reset_sessions WHERE customer_id = ?").bind(customerId),
+  ]);
+  return customerById(customerId);
 }
 
 export async function createCustomerSession(customerId: string) {

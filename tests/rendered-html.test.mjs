@@ -4,8 +4,46 @@ import test from "node:test";
 
 const root = new URL("../", import.meta.url);
 
-test("keeps the storefront wired to Infinity Company order content", async () => {
-  const [page, layout, orderPage, products, categoryMenu, homeShowcases, studentOffer] = await Promise.all([
+test("keeps product fill images contained instead of inheriting the image shim crop", async () => {
+  for (const file of ["CategoryFamilyTiles", "HomeProductSearch", "ProductDetailExperience", "HomeProductShowcases"]) {
+    const source = await readFile(new URL(`app/components/${file}.tsx`, root), "utf8");
+    assert.match(source, /objectFit: "contain"/, file);
+  }
+});
+
+test("keeps the mobile admin shell single-column and monetary values untruncated", async () => {
+  const css = await readFile(new URL("app/admin-mobile-orbit.css", root), "utf8");
+  assert.match(css, /body \.admin-console \{ grid-template-columns: minmax\(0, 1fr\) !important/);
+  assert.match(css, /text-overflow: clip; white-space: normal; overflow-wrap: anywhere; font-variant-numeric: tabular-nums/);
+  const layout = await readFile(new URL("app/layout.tsx", root), "utf8");
+  assert.doesNotMatch(layout, /admin-premium\.css/);
+});
+
+test("isolates the live React cache and prevents duplicate dev servers", async () => {
+  const [viteConfig, devRunner] = await Promise.all([
+    readFile(new URL("vite.config.ts", root), "utf8"),
+    readFile(new URL("tools/dev-local.mjs", root), "utf8"),
+  ]);
+  assert.match(viteConfig, /cacheDir: command === "serve" \? "node_modules\/\.vite-dev" : "node_modules\/\.vite-build"/);
+  assert.match(viteConfig, /dedupe: \["react", "react-dom", "react-server-dom-webpack"\]/);
+  assert.match(viteConfig, /port: 3001/);
+  assert.match(viteConfig, /strictPort: true/);
+  assert.match(devRunner, /\["dev", "--port", "3001", "--strictPort"\]/);
+});
+
+test("serves production through Cloudflare and never caches Vite development modules", async () => {
+  const [packageJson, serviceWorker] = await Promise.all([
+    readFile(new URL("package.json", root), "utf8"),
+    readFile(new URL("public/sw.js", root), "utf8"),
+  ]);
+  assert.match(packageJson, /wrangler dev --cwd \. --config dist\/server\/wrangler\.json --local --persist-to \.wrangler\/state --port 3001 --env-file \.env/);
+  assert.match(serviceWorker, /infinity-store-shell-v2/);
+  assert.match(serviceWorker, /url\.pathname\.startsWith\("\/node_modules\/"\)/);
+  assert.match(serviceWorker, /url\.pathname\.startsWith\("\/@"\)/);
+});
+
+test("keeps the storefront wired to Infinity Store order content", async () => {
+  const [page, layout, orderPage, products, categoryMenu, homeShowcases, studentOffer, upcomingLaunch] = await Promise.all([
     readFile(new URL("app/page.tsx", root), "utf8"),
     readFile(new URL("app/layout.tsx", root), "utf8"),
     readFile(new URL("app/dat-hang/page.tsx", root), "utf8"),
@@ -13,28 +51,36 @@ test("keeps the storefront wired to Infinity Company order content", async () =>
     readFile(new URL("app/components/VisualCategoryMenu.tsx", root), "utf8"),
     readFile(new URL("app/components/HomeProductShowcases.tsx", root), "utf8"),
     readFile(new URL("app/components/StudentOfferBanner.tsx", root), "utf8"),
+    readFile(new URL("app/components/UpcomingAppleLaunchPoster.tsx", root), "utf8"),
   ]);
 
-  assert.match(layout, /Infinity Company \| Điện thoại & đặt hàng/);
+  assert.match(layout, /Infinity Store \| Điện thoại & đặt hàng/);
+  assert.match(layout, /https:\/\/infinityshop\.click/);
   assert.match(layout, /02879797999/);
   assert.match(page, /getPublicProducts/);
   assert.doesNotMatch(page, /Đặt đúng máy|để Huy giữ máy/);
   assert.match(page, /StudentOfferBanner/);
   assert.match(studentOffer, /Giảm đến 3% cho học sinh, sinh viên/);
+  assert.match(page, /UpcomingAppleLaunchPoster/);
+  assert.match(upcomingLaunch, /iPhone 18 Series/);
+  assert.match(upcomingLaunch, /MacBook &amp; iPad thế hệ mới/);
+  assert.match(upcomingLaunch, /Hình ảnh concept minh họa/);
   assert.match(orderPage, /Thông tin đặt hàng|Đặt hàng nhanh/);
   assert.match(products, /iphone-17-pro/);
-  assert.match(products, /galaxy-s25-ultra/);
+  assert.doesNotMatch(products, /galaxy-s25-ultra/);
   assert.match(products, /oppo-find-x8-pro/);
   assert.match(page, /VisualCategoryMenu/);
-  for (const label of ["iPhone", "iPad", "MacBook", "Laptop", "Samsung", "Android"]) {
+  for (const label of ["iPhone", "iPad", "MacBook", "Laptop", "Android", "Đồng hồ", "Âm thanh", "Phụ kiện"]) {
     assert.match(categoryMenu, new RegExp(label));
   }
-  for (const removedLabel of ["iMac - Mac Mini", "Apple Watch", "Âm thanh", "Phụ kiện"]) {
+  assert.doesNotMatch(categoryMenu, /Samsung/);
+  for (const removedLabel of ["iMac - Mac Mini", "Apple Watch"]) {
     assert.doesNotMatch(categoryMenu, new RegExp(removedLabel));
   }
   assert.match(page, /HomeProductShowcases/);
-  assert.match(homeShowcases, /title="Mobile"/);
-  assert.match(homeShowcases, /title="MacBook mới"/);
+  assert.match(homeShowcases, /title="Điện thoại nổi bật"/);
+  assert.match(homeShowcases, /title="Laptop & MacBook"/);
+  assert.match(homeShowcases, /title="Phụ kiện thiết yếu"/);
   assert.match(homeShowcases, /role="tablist"/);
   assert.match(homeShowcases, /scrollBy/);
   assert.match(homeShowcases, /object-fit: contain|home-showcase-media/);
@@ -42,6 +88,27 @@ test("keeps the storefront wired to Infinity Company order content", async () =>
   assert.match(homeShowcases, /macbook\[\\s-\]\+pro/);
   assert.match(homeShowcases, /macbook\[\\s-\]\+air/);
   assert.doesNotMatch(homeShowcases, /\.\.\.macbooks/);
+});
+
+test("separates the storefront and internal company brands", async () => {
+  const [storeLayout, member, memberInvoice, adminLayout, portalShell, staff, stamp] = await Promise.all([
+    readFile(new URL("app/layout.tsx", root), "utf8"),
+    readFile(new URL("app/tai-khoan/AccountPanel.tsx", root), "utf8"),
+    readFile(new URL("app/tai-khoan/hoa-don/[id]/page.tsx", root), "utf8"),
+    readFile(new URL("app/admin/layout.tsx", root), "utf8"),
+    readFile(new URL("app/components/BusinessPortalShell.tsx", root), "utf8"),
+    readFile(new URL("app/staff/page.tsx", root), "utf8"),
+    readFile(new URL("app/components/DocumentStamp.tsx", root), "utf8"),
+  ]);
+
+  for (const customerSurface of [storeLayout, member, memberInvoice]) {
+    assert.match(customerSurface, /INFINITY STORE|Infinity Store/);
+    assert.doesNotMatch(customerSurface, /INFINITY COMPANY|Infinity Company/);
+  }
+  for (const internalSurface of [adminLayout, portalShell, staff]) {
+    assert.match(internalSurface, /Infinity Company/);
+  }
+  assert.match(stamp, /kind === "collected" \? "INFINITY STORE" : "INFINITY COMPANY"/);
 });
 
 test("unifies /quan-ly with the modern product and order administration", async () => {
@@ -66,10 +133,12 @@ test("unifies /quan-ly with the modern product and order administration", async 
   assert.match(adminAuth, /if \(role === "owner"\) return "\/admin"/);
   assert.match(adminAuth, /if \(role === "manager"\) return "\/manager"/);
   assert.match(adminAuth, /return "\/staff"/);
-  assert.match(productsPage, /Quản lý sản phẩm/);
+  assert.match(productsPage, /Danh mục sản phẩm/);
   assert.match(productsPage, /Thêm sản phẩm/);
   assert.match(productsPage, /Tất cả danh mục/);
-  assert.match(productsPage, /Giá khuyến mãi/);
+  assert.match(productsPage, /productSummary\(product\)/);
+  assert.match(productsPage, /variants\.length \|\| 1\} cấu hình/);
+  assert.match(productsPage, /Thấp nhất trong các cấu hình/);
   assert.match(productForm, /Thư viện hình ảnh/);
   assert.match(productForm, /Cấu hình theo danh mục/);
   assert.match(productForm, /PRODUCT_FIELD_CONFIG/);
@@ -95,11 +164,16 @@ test("unifies /quan-ly with the modern product and order administration", async 
 });
 
 test("supports customer accounts, multi-product carts and managed vouchers", async () => {
-  const [layout, cart, checkout, account, orderRoute, voucherPage, voucherStore] = await Promise.all([
+  const [layout, cart, checkout, account, memberPage, legacyAccountPage, memberInvoicePage, accountHeader, mobileNav, orderRoute, voucherPage, voucherStore] = await Promise.all([
     readFile(new URL("app/layout.tsx", root), "utf8"),
     readFile(new URL("app/cart.tsx", root), "utf8"),
     readFile(new URL("app/gio-hang/CartCheckout.tsx", root), "utf8"),
     readFile(new URL("app/tai-khoan/AccountPanel.tsx", root), "utf8"),
+    readFile(new URL("app/member/page.tsx", root), "utf8"),
+    readFile(new URL("app/tai-khoan/page.tsx", root), "utf8"),
+    readFile(new URL("app/member/hoa-don/[id]/page.tsx", root), "utf8"),
+    readFile(new URL("app/components/AccountHeaderLink.tsx", root), "utf8"),
+    readFile(new URL("app/components/MobileAppNav.tsx", root), "utf8"),
     readFile(new URL("app/api/orders/route.ts", root), "utf8"),
     readFile(new URL("app/admin/vouchers/page.tsx", root), "utf8"),
     readFile(new URL("db/vouchers.ts", root), "utf8"),
@@ -111,10 +185,48 @@ test("supports customer accounts, multi-product carts and managed vouchers", asy
   assert.match(checkout, /items: items\.map/);
   assert.match(checkout, /Mã voucher/);
   assert.match(account, /Đăng ký/);
+  assert.match(memberPage, /AccountPanel/);
+  assert.match(legacyAccountPage, /redirect\("\/member"\)/);
+  assert.match(memberInvoicePage, /tai-khoan\/hoa-don\/\[id\]\/page/);
+  assert.match(accountHeader, /href="\/member"/);
+  assert.match(mobileNav, /label: "Member", href: "\/member"/);
   assert.match(orderRoute, /normalizeItems/);
   assert.match(orderRoute, /validateVoucher/);
   assert.match(voucherPage, /Quản lý voucher/);
   assert.match(voucherStore, /usage_limit/);
+});
+
+test("lets customers securely reset a forgotten password with a verified one-time code", async () => {
+  const [account, forgotRoute, verifyRoute, resetRoute, customerStore, customerAuth, providers, schema, migration, envExample] = await Promise.all([
+    readFile(new URL("app/tai-khoan/AccountPanel.tsx", root), "utf8"),
+    readFile(new URL("app/api/account/password/forgot/route.ts", root), "utf8"),
+    readFile(new URL("app/api/account/password/verify/route.ts", root), "utf8"),
+    readFile(new URL("app/api/account/password/reset/route.ts", root), "utf8"),
+    readFile(new URL("db/customers.ts", root), "utf8"),
+    readFile(new URL("app/customer-auth.ts", root), "utf8"),
+    readFile(new URL("app/account-providers.ts", root), "utf8"),
+    readFile(new URL("db/schema.ts", root), "utf8"),
+    readFile(new URL("drizzle/0015_customer_password_reset.sql", root), "utf8"),
+    readFile(new URL(".env.example", root), "utf8"),
+  ]);
+  assert.match(account, /Quên mật khẩu\?/);
+  assert.match(account, /\/api\/account\/password\/forgot/);
+  assert.match(account, /\/api\/account\/password\/verify/);
+  assert.match(account, /\/api\/account\/password\/reset/);
+  assert.match(account, /autoComplete="one-time-code"/);
+  assert.match(forgotRoute, /Nếu thông tin khớp với tài khoản/);
+  assert.match(forgotRoute, /startOtpVerification/);
+  assert.match(verifyRoute, /recordPasswordResetAttempt/);
+  assert.match(verifyRoute, /markPasswordResetVerified/);
+  assert.match(resetRoute, /pending\.verifiedAt/);
+  assert.match(resetRoute, /createCustomerSession/);
+  assert.match(customerStore, /DELETE FROM customer_sessions WHERE customer_id = \?/);
+  assert.match(customerStore, /PBKDF2/);
+  assert.match(customerAuth, /CUSTOMER_PASSWORD_RESET_COOKIE/);
+  assert.match(providers, /TWILIO_VERIFY_SERVICE_SID/);
+  assert.match(schema, /customerPasswordResetSessions/);
+  assert.match(migration, /CREATE TABLE IF NOT EXISTS customer_password_reset_sessions/);
+  assert.match(envExample, /TWILIO_VERIFY_SERVICE_SID/);
 });
 
 test("separates store consultation from online payment and removes COD", async () => {
@@ -247,19 +359,45 @@ test("publishes Mac mini, Mac Studio and iMac as complete managed categories", a
     assert.match(database, new RegExp(`'${category}'`));
     await access(new URL(`app/${category}/page.tsx`, root));
   }
+  assert.match(navigation, /\["\/phu-kien", "Phụ kiện"\]/);
   for (const price of ["14.490.000đ", "34.690.000đ", "57.890.000đ", "115.890.000đ", "34.890.000đ", "44.890.000đ"]) {
     assert.match(desktopProducts, new RegExp(price));
   }
 });
 
-test("uses manufacturer campaigns and complete current iPhone colors", async () => {
-  const [ui, campaign, merchandising, catalog, iphonePage, productBrowser] = await Promise.all([
+test("adds exactly 57 retail laptops plus Mac chip configurations and iPhone repair parts", async () => {
+  const [expansion, products, laptopPage, partsPage] = await Promise.all([
+    readFile(new URL("app/retail-expansion-products.ts", root), "utf8"),
+    readFile(new URL("app/products.ts", root), "utf8"),
+    readFile(new URL("app/laptop/page.tsx", root), "utf8"),
+    readFile(new URL("app/phu-kien/page.tsx", root), "utf8"),
+  ]);
+  const laptopSeedBlock = expansion.match(/expandedLaptopSeeds:[\s\S]*?= \[([\s\S]*?)\n\];\n\nexport const retailLaptopProducts/)?.[1] ?? "";
+  const laptopCount = [...laptopSeedBlock.matchAll(/\{ slug: "/g)].length;
+  const prices = [...laptopSeedBlock.matchAll(/price: (\d+)/g)].map((match) => Number(match[1]));
+
+  assert.equal(laptopCount, 57);
+  assert.equal(prices.length, 57);
+  assert.ok(Math.min(...prices) >= 12_000_000);
+  assert.ok(Math.max(...prices) <= 200_000_000);
+  assert.match(expansion, /Apple M5 Pro/);
+  assert.match(expansion, /Apple M5 Max/);
+  assert.match(expansion, /Màn hình OLED iPhone 16 Pro Max/);
+  assert.match(expansion, /Cụm camera sau iPhone 15 Pro Max/);
+  assert.match(products, /retailExpansionProducts/);
+  assert.match(laptopPage, /Laptop từ 12–200 triệu/);
+  assert.match(partsPage, /màn hình iPhone, pin, camera/);
+});
+
+test("uses manufacturer campaigns, family selectors and complete current iPhone colors", async () => {
+  const [ui, campaign, merchandising, catalog, iphonePage, productBrowser, familyTiles] = await Promise.all([
     readFile(new URL("app/ui.tsx", root), "utf8"),
     readFile(new URL("app/components/CatalogCampaign.tsx", root), "utf8"),
     readFile(new URL("app/category-merchandising.ts", root), "utf8"),
     readFile(new URL("app/current-catalog.ts", root), "utf8"),
     readFile(new URL("app/iphone/page.tsx", root), "utf8"),
     readFile(new URL("app/components/CatalogProductBrowser.tsx", root), "utf8"),
+    readFile(new URL("app/components/CategoryFamilyTiles.tsx", root), "utf8"),
   ]);
 
   assert.match(ui, /CatalogCampaign/);
@@ -270,10 +408,17 @@ test("uses manufacturer campaigns and complete current iPhone colors", async () 
   assert.match(productBrowser, /iPhone 13, 12 & SE/);
   assert.match(productBrowser, /MacBook Air/);
   assert.match(productBrowser, /MacBook Pro/);
+  assert.match(ui, /category === "iphone" \|\| category === "ipad" \|\| category === "macbook"/);
+  for (const family of ["iPhone 17", "iPhone 16", "iPhone 15", "MacBook Air", "MacBook Pro", "MacBook Neo"]) {
+    assert.match(familyTiles, new RegExp(family));
+  }
+  assert.match(familyTiles, /catalog-family-select/);
+  assert.match(productBrowser, /addEventListener\("catalog-family-select"/);
   assert.match(campaign, /catalog-campaign-image/);
-  for (const brand of ["Apple | iPhone 17 Pro", "Apple | MacBook", "Samsung Galaxy", "Android flagship"]) {
+  for (const brand of ["Apple | iPhone 17 Pro", "Apple | MacBook", "Android flagship"]) {
     assert.ok(merchandising.includes(brand));
   }
+  assert.doesNotMatch(merchandising, /Samsung Galaxy/);
   for (const model of ["iphone-17-pro-max", "iphone-17-pro", "iphone-17", "iphone-air", "iphone-17e"]) {
     assert.match(catalog, new RegExp(`\"${model}\"`));
   }
@@ -288,6 +433,8 @@ test("keeps consolidated catalog links resolvable", async () => {
   const databaseSource = await readFile(new URL("db/products.ts", root), "utf8");
   assert.match(databaseSource, /slug LIKE \?/);
   assert.match(databaseSource, /publicFamilyKey\(item\.slug\) === slug/);
+  assert.match(databaseSource, /DELETE FROM products WHERE category IN \('samsung', 'samsung-cu'\)/);
+  assert.match(databaseSource, /category NOT IN \('tablet', 'samsung', 'samsung-cu'\)/);
 });
 
 function hasSupportedImageSignature(bytes) {
@@ -301,15 +448,17 @@ function hasSupportedImageSignature(bytes) {
 }
 
 test("provides category-specific product fields and flexible RAM or SSD presets", async () => {
-  const [form, fields, actions] = await Promise.all([
+  const [form, fields, actions, adminStyles] = await Promise.all([
     readFile(new URL("app/admin/AdminProductForm.tsx", root), "utf8"),
     readFile(new URL("app/admin/product-fields.ts", root), "utf8"),
     readFile(new URL("app/admin/actions.ts", root), "utf8"),
+    readFile(new URL("app/admin-mobile-orbit.css", root), "utf8"),
   ]);
 
-  for (const category of ["iphone", "samsung", "android", "ipad", "macbook", "laptop"]) {
+  for (const category of ["iphone", "android", "ipad", "macbook", "laptop"]) {
     assert.match(fields, new RegExp(`${category}:`));
   }
+  assert.doesNotMatch(fields, /samsung:/);
   for (const option of ["8GB", "16GB", "32GB", "256GB", "512GB", "1TB", "2TB"]) {
     assert.match(fields, new RegExp(option));
   }
@@ -317,20 +466,76 @@ test("provides category-specific product fields and flexible RAM or SSD presets"
   assert.match(form, /datalist/);
   assert.match(form, /inputMode="numeric"/);
   assert.match(form, /Thông số bổ sung/);
+  assert.match(form, /Tạo nhanh RAM × SSD/);
+  assert.match(form, /MACBOOK_COLORS/);
+  assert.match(form, /Bạc \(Silver\)/);
+  assert.match(form, /Đen không gian \(Space Black\)/);
+  assert.match(form, /Xanh da trời \(Sky Blue\)/);
+  assert.match(form, /aria-pressed=\{selected\}/);
+  assert.match(form, /matrixRams\.length \* matrixStorages\.length/);
+  assert.match(form, /Math\.max\(1, matrixColors\.length\)/);
+  assert.match(form, /for \(const ram of matrixRams\)/);
+  assert.match(form, /for \(const storage of matrixStorages\)/);
+  assert.match(form, /for \(const color of colorsToCreate\)/);
+  assert.match(form, /setVariantMacbookColor/);
+  assert.match(form, /Các tổ hợp này đã có sẵn, hệ thống không tạo trùng/);
+  assert.match(form, /Thông tin thêm/);
+  assert.match(form, /admin-product-editor-hero/);
+  assert.match(form, /Thông tin nâng cao/);
+  assert.match(form, /admin-product-readiness/);
+  assert.match(form, /admin-product-seo/);
+  assert.match(form, /duplicateVariant/);
+  assert.match(form, /applyBulkVariantValues/);
+  assert.match(form, /Barcode/);
+  assert.match(form, /Serial \/ IMEI/);
+  assert.match(form, /variant\.status === "inactive"/);
+  assert.match(form, /CURRENT_MACBOOK_CHIPS/);
+  assert.match(form, /admin-macbook-chip-picker/);
+  assert.match(form, /selectModelChip/);
+  assert.match(fields, /Apple M5 Pro/);
+  assert.match(fields, /Apple M5 Max/);
+  assert.match(fields, /Apple A18 Pro/);
+  assert.match(actions, /serials: Array\.isArray/);
+  assert.match(actions, /variant\.status !== "inactive"/);
+  assert.match(adminStyles, /Compact premium product editor/);
+  assert.match(adminStyles, /\.admin-product-editor-hero/);
+  assert.match(adminStyles, /\.admin-product-optional/);
   assert.match(actions, /normalizeRam/);
   assert.match(actions, /normalizeStorage/);
   assert.match(actions, /detectImageType/);
   assert.doesNotMatch(actions, /allImages\[0\] \|\| previous\?\.image/);
 });
 
-test("offers a timed Techcombank QR with amount and order code", async () => {
-  const [orderForm, qrRoute, webhookRoute, statusRoute, orderStore, installment] = await Promise.all([
+test("keeps original-quality product uploads up to 20 MB", async () => {
+  const [policy, form, adminActions, legacyActions, nextConfig, imageRoute] = await Promise.all([
+    readFile(new URL("app/product-image-policy.ts", root), "utf8"),
+    readFile(new URL("app/admin/AdminProductForm.tsx", root), "utf8"),
+    readFile(new URL("app/admin/actions.ts", root), "utf8"),
+    readFile(new URL("app/quan-ly/actions.ts", root), "utf8"),
+    readFile(new URL("next.config.ts", root), "utf8"),
+    readFile(new URL("app/api/product-images/[key]/route.ts", root), "utf8"),
+  ]);
+  assert.match(policy, /MAX_PRODUCT_IMAGE_BYTES = 20 \* 1024 \* 1024/);
+  assert.match(policy, /RECOMMENDED_PRODUCT_IMAGE_EDGE = 1200/);
+  assert.match(form, /giữ nguyên chất lượng gốc/);
+  assert.match(adminActions, /bucket\.put\(key, bytes/);
+  assert.match(adminActions, /MAX_PRODUCT_IMAGE_BYTES/);
+  assert.match(legacyActions, /MAX_PRODUCT_IMAGE_BYTES/);
+  assert.match(nextConfig, /bodySizeLimit: "80mb"/);
+  assert.match(imageRoute, /object\.body/);
+  assert.doesNotMatch(adminActions, /canvas|resize|quality/);
+});
+
+test("offers a timed Techcombank QR while keeping installment simulation outside checkout", async () => {
+  const [orderForm, qrRoute, webhookRoute, statusRoute, orderStore, installment, simulator, simulatorPage] = await Promise.all([
     readFile(new URL("app/tu-van/ConsultationForm.tsx", root), "utf8"),
     readFile(new URL("app/api/payment-qr/route.ts", root), "utf8"),
     readFile(new URL("app/api/payments/casso/route.ts", root), "utf8"),
     readFile(new URL("app/api/orders/status/route.ts", root), "utf8"),
     readFile(new URL("db/orders.ts", root), "utf8"),
     readFile(new URL("app/installment.ts", root), "utf8"),
+    readFile(new URL("app/tra-gop/InstallmentSimulator.tsx", root), "utf8"),
+    readFile(new URL("app/tra-gop/page.tsx", root), "utf8"),
   ]);
 
   assert.match(orderForm, /MoMo - 0869275642/);
@@ -347,17 +552,23 @@ test("offers a timed Techcombank QR with amount and order code", async () => {
   assert.match(orderForm, /role="tablist"/);
   assert.match(orderForm, /Sản phẩm & nhận hàng/);
   assert.match(orderForm, /Phương thức thanh toán/);
-  assert.match(orderForm, /Trả góp qua công ty tài chính/);
-  assert.match(orderForm, /Hồ sơ trả góp/);
-  assert.match(orderForm, /name="financeCompany"/);
-  assert.match(orderForm, /name="citizenId"/);
+  assert.doesNotMatch(orderForm, /Trả góp qua công ty tài chính/);
+  assert.doesNotMatch(orderForm, /Hồ sơ trả góp/);
+  assert.doesNotMatch(orderForm, /name="financeCompany"/);
+  assert.doesNotMatch(orderForm, /name="citizenId"/);
   assert.match(installment, /\/finance\/fe-credit-official\.svg/);
   assert.match(installment, /\/finance\/shinhan-finance-official\.png/);
   assert.match(installment, /MIN_INSTALLMENT_TOTAL = 8_000_000/);
   assert.match(installment, /DOWN_PAYMENT_OPTIONS = \[10, 20, 30, 40, 50\]/);
   assert.match(installment, /INSTALLMENT_TERMS = \[6, 9, 12, 15\]/);
   assert.match(installment, /monthlyRate: 1\.86/);
-  assert.match(orderForm, /calculateInstallmentPlan/);
+  assert.doesNotMatch(orderForm, /calculateInstallmentPlan/);
+  assert.match(simulator, /calculateInstallmentPlan/);
+  assert.match(simulator, /Chỉ để tham khảo/);
+  assert.match(simulator, /Không phải báo giá|không phải báo giá/i);
+  assert.doesNotMatch(simulator, /citizenId|installmentName|onSubmit/);
+  assert.match(simulatorPage, /Mô phỏng tài chính/);
+  assert.match(simulatorPage, /Không thu CCCD/);
   assert.match(orderForm, /openPaymentTab/);
   assert.match(orderForm, /Đang kiểm tra thanh toán/);
   assert.match(orderForm, /Đã thanh toán/);
@@ -383,12 +594,13 @@ test("offers a timed Techcombank QR with amount and order code", async () => {
 });
 
 test("groups the Apple MacBook and iPad catalog by configurable model", async () => {
-  const [catalog, detail, orderForm, managerFields, managerActions, pricing] = await Promise.all([
+  const [catalog, detail, orderForm, managerFields, managerActions, adminActions, pricing] = await Promise.all([
     readFile(new URL("app/apple-products.ts", root), "utf8"),
     readFile(new URL("app/components/ProductDetailExperience.tsx", root), "utf8"),
     readFile(new URL("app/tu-van/ConsultationForm.tsx", root), "utf8"),
     readFile(new URL("app/quan-ly/CategoryBrandSync.tsx", root), "utf8"),
     readFile(new URL("app/quan-ly/actions.ts", root), "utf8"),
+    readFile(new URL("app/admin/actions.ts", root), "utf8"),
     readFile(new URL("app/order-pricing.ts", root), "utf8"),
   ]);
 
@@ -398,15 +610,26 @@ test("groups the Apple MacBook and iPad catalog by configurable model", async ()
     "ipad-pro-13-m5", "ipad-air-11-m4", "ipad-air-13-m4", "ipad-a16-11",
   ]) assert.match(catalog, new RegExp(slug));
 
+  const expansion = await readFile(new URL("app/retail-expansion-products.ts", root), "utf8");
+  for (const slug of ["macbook-pro-14-m5-pro", "macbook-pro-14-m5-max", "macbook-pro-16-m5-max"]) {
+    assert.match(expansion, new RegExp(slug));
+  }
+  assert.doesNotMatch(expansion, /macbook-pro-16-m5-config/);
+  assert.doesNotMatch(expansion, /ramOptions\.flatMap/);
   assert.match(detail, /Ổ cứng SSD/);
   assert.match(detail, /ramOptions/);
   assert.match(detail, /&ram=/);
+  assert.match(detail, /variant\.status !== "inactive"/);
+  assert.match(detail, /disabled=\{!available\}/);
+  assert.match(detail, /Cấu hình tạm hết hàng/);
   assert.match(orderForm, /params\.get\("ram"\)/);
   assert.match(pricing, /normalizedRam/);
   assert.match(managerFields, /name="macRamOptions"/);
   assert.match(managerFields, /name="macSsdOptions"/);
   assert.match(managerFields, /name="macConfigurations"/);
   assert.match(managerActions, /buildMacVariants/);
+  assert.doesNotMatch(managerActions, /assertManufacturerConfigurations/);
+  assert.doesNotMatch(adminActions, /assertManufacturerConfigurations/);
 
   const imagePaths = [...catalog.matchAll(/"(\/products\/apple\/[^"\n]+\.(?:jpg|png))"/g)].map(([, imagePath]) => imagePath);
   assert.ok(imagePaths.length >= 20);
@@ -464,7 +687,7 @@ test("provides protected employee profiles, payroll details and attendance", asy
     readFile(new URL("app/admin/attendance/page.tsx", root), "utf8"),
     readFile(new URL("db/hr.ts", root), "utf8"),
     readFile(new URL("app/api/admin/hr-photo/[id]/route.ts", root), "utf8"),
-    readFile(new URL("app/admin/AdminNavigation.tsx", root), "utf8"),
+    readFile(new URL("app/admin/navigation.ts", root), "utf8"),
     readFile(new URL("drizzle/0006_employee_hr.sql", root), "utf8"),
     readFile(new URL("drizzle/0013_complete_employee_profiles.sql", root), "utf8"),
     readFile(new URL("app/admin/staff/page.tsx", root), "utf8"),
@@ -509,7 +732,7 @@ test("allows owners and branch managers to update employee profiles within branc
     readFile(new URL("app/admin/hr/page.tsx", root), "utf8"),
     readFile(new URL("app/admin/hr/[id]/page.tsx", root), "utf8"),
     readFile(new URL("app/admin/hr/actions.ts", root), "utf8"),
-    readFile(new URL("app/admin/AdminNavigation.tsx", root), "utf8"),
+    readFile(new URL("app/admin/navigation.ts", root), "utf8"),
     readFile(new URL("app/admin/attendance/page.tsx", root), "utf8"),
   ]);
   assert.match(auth, /requireHrManagerPage/);
@@ -547,7 +770,7 @@ test("creates printable employee cards with scoped QR and barcode identity", asy
   const [page, preview, navigation, manager, styles] = await Promise.all([
     readFile(new URL("app/admin/hr/cards/page.tsx", root), "utf8"),
     readFile(new URL("app/admin/hr/cards/EmployeeCardPreview.tsx", root), "utf8"),
-    readFile(new URL("app/admin/AdminNavigation.tsx", root), "utf8"),
+    readFile(new URL("app/admin/navigation.ts", root), "utf8"),
     readFile(new URL("app/manager/page.tsx", root), "utf8"),
     readFile(new URL("app/modern-theme.css", root), "utf8"),
   ]);
@@ -576,7 +799,7 @@ test("assigns branch-scoped work with protected files, reports and read-only per
     readFile(new URL("drizzle/0014_work_tasks.sql", root), "utf8"),
     readFile(new URL("app/staff/card/page.tsx", root), "utf8"),
     readFile(new URL("app/api/admin/hr-photo/[id]/route.ts", root), "utf8"),
-    readFile(new URL("app/admin/AdminNavigation.tsx", root), "utf8"),
+    readFile(new URL("app/admin/navigation.ts", root), "utf8"),
     readFile(new URL("app/manager/page.tsx", root), "utf8"),
     readFile(new URL("app/staff/page.tsx", root), "utf8"),
   ]);
@@ -612,6 +835,8 @@ test("keeps face camera as the only employee self-attendance interface", async (
   ]);
 
   assert.match(page, /FaceAttendance/);
+  assert.match(page, /user\.role !== "owner" && <FaceAttendance/);
+  assert.match(page, /user\.role === "manager" \? `Quét khuôn mặt của bạn/);
   assert.doesNotMatch(page, /BiometricAttendance|getAttendancePasskeys|admin-attendance-self|admin-self-history/);
   assert.match(component, /navigator\.mediaDevices\.getUserMedia/);
   assert.match(component, /face-attendance-camera/);
@@ -625,10 +850,10 @@ test("keeps face camera as the only employee self-attendance interface", async (
 });
 
 test("provides a protected DeepFace camera testing console", async () => {
-  const [page, consolePage, navigation, managerPortal, styles, enrollRoute, verifyRoute, detectRoute, statusRoute, deleteRoute, attendanceRoute, attendanceComponent, attendancePage, backend, pythonServer, envExample] = await Promise.all([
+  const [page, consolePage, navigation, managerPortal, styles, enrollRoute, verifyRoute, detectRoute, statusRoute, deleteRoute, attendanceRoute, attendanceComponent, attendancePage, backend, pythonServer, envExample, requirements, devScript, packageJson] = await Promise.all([
     readFile(new URL("app/admin/face-test/page.tsx", root), "utf8"),
     readFile(new URL("app/admin/face-test/FaceTestConsole.tsx", root), "utf8"),
-    readFile(new URL("app/admin/AdminNavigation.tsx", root), "utf8"),
+    readFile(new URL("app/admin/navigation.ts", root), "utf8"),
     readFile(new URL("app/manager/page.tsx", root), "utf8"),
     readFile(new URL("app/modern-theme.css", root), "utf8"),
     readFile(new URL("app/api/face/enroll/route.ts", root), "utf8"),
@@ -642,6 +867,9 @@ test("provides a protected DeepFace camera testing console", async () => {
     readFile(new URL("app/api/face/_backend.ts", root), "utf8"),
     readFile(new URL("python-ai/face_server.py", root), "utf8"),
     readFile(new URL(".env.example", root), "utf8"),
+    readFile(new URL("python-ai/requirements.txt", root), "utf8"),
+    readFile(new URL("tools/dev-local.mjs", root), "utf8"),
+    readFile(new URL("package.json", root), "utf8"),
   ]);
   assert.match(page, /requireHrManagerPage\("\/admin\/face-test"\)/);
   assert.match(page, /canManageEmployee\(manager, employee\)/);
@@ -664,6 +892,8 @@ test("provides a protected DeepFace camera testing console", async () => {
   assert.match(consolePage, /Đã thêm khuôn mặt/);
   assert.match(consolePage, /Đăng ký không thành công/);
   assert.match(consolePage, /Điều chỉnh khuôn mặt để camera quét/);
+  assert.match(consolePage, /serverState !== "offline"/);
+  assert.match(consolePage, /setServerError/);
   assert.match(consolePage, /deleteRegistration/);
   assert.match(consolePage, /Danh sách nhân viên/);
   for (const route of [enrollRoute, verifyRoute, detectRoute, statusRoute, deleteRoute]) assert.match(route, /requireFaceManager/);
@@ -691,6 +921,10 @@ test("provides a protected DeepFace camera testing console", async () => {
   assert.match(pythonServer, /is_credible_face/);
   assert.match(pythonServer, /known_encodings/);
   assert.match(envExample, /FACE_API_URL=http:\/\/127\.0\.0\.1:8001/);
+  assert.match(requirements, /opencv-python==4\.12\.0\.88/);
+  assert.match(devScript, /waitForFaceServer\(60_000\)/);
+  assert.match(devScript, /face_server:app/);
+  assert.match(packageJson, /"dev": "node tools\/dev-local\.mjs"/);
   assert.match(attendancePage, /FaceAttendance/);
   assert.match(attendanceComponent, /navigator\.mediaDevices\.getUserMedia/);
   assert.match(attendanceComponent, /fetch\("\/api\/face\/attendance"/);
@@ -698,6 +932,8 @@ test("provides a protected DeepFace camera testing console", async () => {
   assert.match(attendanceComponent, /startCamera\("in"\)/);
   assert.match(attendanceComponent, /startCamera\("out"\)/);
   assert.match(attendanceComponent, /face-attendance-live-status/);
+  assert.match(consolePage, /face-test-viewport[\s\S]*face-test-camera-actions[\s\S]*<footer>/);
+  assert.match(styles, /\.face-test-camera-actions \{ grid-template-columns: repeat\(2,minmax\(0,1fr\)\)/);
   assert.match(attendanceRoute, /readFacePayload\(request, user\.id\)/);
   assert.match(attendanceRoute, /faceBackend\("\/verify"/);
   assert.match(attendanceRoute, /employeeCheck\(user\.id, mode/);
@@ -755,7 +991,7 @@ test("separates owner, branch manager and staff workspaces with protected busine
     readFile(new URL("app/admin/customers/page.tsx", root), "utf8"),
     readFile(new URL("app/admin/vouchers/page.tsx", root), "utf8"),
     readFile(new URL("app/admin/vouchers/actions.ts", root), "utf8"),
-    readFile(new URL("app/admin/AdminNavigation.tsx", root), "utf8"),
+    readFile(new URL("app/admin/navigation.ts", root), "utf8"),
     readFile(new URL("app/admin/branches/[id]/page.tsx", root), "utf8"),
     readFile(new URL("app/admin/staff/actions.ts", root), "utf8"),
     readFile(new URL("app/admin/payroll/page.tsx", root), "utf8"),
@@ -808,6 +1044,24 @@ test("separates owner, branch manager and staff workspaces with protected busine
   assert.match(tax, /requireOwnerPage\("\/admin\/tax"\)/);
   assert.match(tax, /VAT đã thu ước tính/);
   assert.match(tax, /không thay thế tờ khai thuế/i);
+});
+
+test("uses crown avatars to distinguish director, manager and employee tiers", async () => {
+  const [avatar, adminLayout, portalShell, styles] = await Promise.all([
+    readFile(new URL("app/components/RoleCrownAvatar.tsx", root), "utf8"),
+    readFile(new URL("app/admin/layout.tsx", root), "utf8"),
+    readFile(new URL("app/components/BusinessPortalShell.tsx", root), "utf8"),
+    readFile(new URL("app/modern-theme.css", root), "utf8"),
+  ]);
+
+  assert.match(avatar, /role === "owner" \? "gold"/);
+  assert.match(avatar, /role === "manager" \? "silver" : "bronze"/);
+  assert.match(avatar, /role-crown-avatar-crown/);
+  assert.match(adminLayout, /<RoleCrownAvatar role=\{user\.role\}/);
+  assert.match(portalShell, /<RoleCrownAvatar role=\{user\.role\}/);
+  assert.match(styles, /\.role-crown-avatar\.is-gold/);
+  assert.match(styles, /\.role-crown-avatar\.is-silver/);
+  assert.match(styles, /\.role-crown-avatar\.is-bronze/);
 });
 
 test("groups payroll by branch and generates salary receipts with statutory deductions", async () => {
@@ -877,6 +1131,21 @@ test("keeps operational portals out of storefront reveal motion", async () => {
   assert.match(motionStyles, /animation: none/);
 });
 
+test("keeps long product catalogs visible while revealing cards individually", async () => {
+  const [motionSystem, motionStyles] = await Promise.all([
+    readFile(new URL("app/components/MotionSystem.tsx", root), "utf8"),
+    readFile(new URL("app/motion.css", root), "utf8"),
+  ]);
+
+  assert.match(motionSystem, /:not\(\.catalog-products-section\):not\(\.product-detail\)/);
+  assert.match(motionSystem, /\.product-grid > \*/);
+  assert.match(motionSystem, /\.product-detail > \*/);
+  assert.match(motionSystem, /threshold: 0/);
+  assert.match(motionSystem, /delete element\.dataset\.motionReveal/);
+  assert.match(motionStyles, /\.catalog-products-section\[data-motion-reveal\]/);
+  assert.match(motionStyles, /to \{ opacity: 1; transform: none; \}/);
+});
+
 test("centralizes warranty and repair staff in the service branch", async () => {
   const [actions, staffPage, branchPage, migration] = await Promise.all([
     readFile(new URL("app/admin/staff/actions.ts", root), "utf8"),
@@ -928,4 +1197,131 @@ test("routes live consultation to the selected branch and gives the director a m
   assert.match(demoMigration, /printf\('079%09d'/);
   assert.match(demoMigration, /bank_account_number_encrypted/);
   assert.match(moneyInput, /toLocaleString\("vi-VN"\)/);
+});
+
+test("scopes inventory employees and stock adjustments to their assigned branch", async () => {
+  const [users, auth, inventoryStore, inventoryPage, inventoryActions, staffPage, staffActions, navigation, adminActions, orderPage] = await Promise.all([
+    readFile(new URL("db/admin-users.ts", root), "utf8"),
+    readFile(new URL("app/admin-auth.ts", root), "utf8"),
+    readFile(new URL("db/inventory.ts", root), "utf8"),
+    readFile(new URL("app/admin/inventory/page.tsx", root), "utf8"),
+    readFile(new URL("app/admin/inventory/actions.ts", root), "utf8"),
+    readFile(new URL("app/admin/staff/page.tsx", root), "utf8"),
+    readFile(new URL("app/admin/staff/actions.ts", root), "utf8"),
+    readFile(new URL("app/admin/navigation.ts", root), "utf8"),
+    readFile(new URL("app/admin/actions.ts", root), "utf8"),
+    readFile(new URL("app/admin/orders/[id]/page.tsx", root), "utf8"),
+  ]);
+  assert.match(users, /\| "inventory"/);
+  assert.match(auth, /requireInventoryAction/);
+  assert.match(auth, /user\.role !== "inventory"/);
+  assert.match(inventoryStore, /CREATE TABLE IF NOT EXISTS branch_inventory/);
+  assert.match(inventoryStore, /CREATE TABLE IF NOT EXISTS inventory_movements/);
+  assert.match(inventoryStore, /PRIMARY KEY \(branch_id, product_id\)/);
+  assert.match(inventoryStore, /InventoryOperation = "receive" \| "issue" \| "count"/);
+  assert.match(inventoryPage, /Kiểm tra &amp; xuất nhập hàng/);
+  assert.match(inventoryPage, /Tồn chi nhánh/);
+  assert.match(inventoryActions, /actor\.role === "owner" \? requestedBranchId : actor\.branchId/);
+  assert.match(staffPage, /value="inventory"/);
+  assert.match(staffActions, /role === "inventory"/);
+  assert.match(navigation, /href: "\/admin\/inventory"/);
+  assert.match(adminActions, /Nhân viên kho chỉ được điều chỉnh số lượng/);
+  assert.match(orderPage, /item\.role !== "inventory"/);
+});
+
+test("shows every permitted admin tool in the animated mobile orbit menu", async () => {
+  const [mobileNav, navigation, adminLayout, portalShell, styles, rootLayout] = await Promise.all([
+    readFile(new URL("app/components/AdminMobileOrbitNav.tsx", root), "utf8"),
+    readFile(new URL("app/admin/navigation.ts", root), "utf8"),
+    readFile(new URL("app/admin/layout.tsx", root), "utf8"),
+    readFile(new URL("app/components/BusinessPortalShell.tsx", root), "utf8"),
+    readFile(new URL("app/admin-mobile-orbit.css", root), "utf8"),
+    readFile(new URL("app/layout.tsx", root), "utf8"),
+  ]);
+  assert.match(mobileNav, /adminNavigationForRole\(role, homeHref\)/);
+  assert.match(mobileNav, /rail\.scrollTo/);
+  assert.match(mobileNav, /prefers-reduced-motion/);
+  assert.match(navigation, /flatMap\(\(group\) => group\.items\)/);
+  assert.match(navigation, /!item\.roles \|\| item\.roles\.includes\(role\)/);
+  assert.match(adminLayout, /AdminMobileOrbitNav role=\{user\.role\}/);
+  assert.match(portalShell, /AdminMobileOrbitNav role=\{user\.role\}/);
+  assert.match(styles, /scroll-snap-type: x mandatory/);
+  assert.match(styles, /grid-template-columns: 32px minmax\(0,1fr\)/);
+  assert.match(styles, /@keyframes admin-nav-enter/);
+  assert.match(styles, /linear-gradient\(180deg,#fbfdff 0%,#f4f9ff 56%,#eef6fd 100%\)/);
+  assert.match(styles, /\.admin-nav-groups a\.is-active\{border-color:#afd2f3/);
+  assert.match(rootLayout, /admin-mobile-orbit\.css/);
+});
+
+test("keeps the storefront search above the hero and ranks useful matches first", async () => {
+  const [search, styles] = await Promise.all([
+    readFile(new URL("app/components/HomeProductSearch.tsx", root), "utf8"),
+    readFile(new URL("app/home-retail.css", root), "utf8"),
+  ]);
+  assert.match(search, /name\.startsWith\(term\) \? 0/);
+  assert.match(search, /event\.key === "Escape"/);
+  assert.match(search, /slice\(0, 6\)/);
+  assert.match(styles, /\.home-discovery \{[\s\S]*z-index: 80/);
+  assert.match(styles, /\.home-search-results \{[\s\S]*overflow-y: auto/);
+  assert.match(styles, /\.storefront-home \.vibe-hero \{ position: relative; z-index: 1/);
+});
+
+test("uses verified model images and model-specific galleries for the phone and laptop catalog", async () => {
+  const [catalog, expanded, retailExpansion, laptopManifest] = await Promise.all([
+    readFile(new URL("app/current-catalog.ts", root), "utf8"),
+    readFile(new URL("app/expanded-products.ts", root), "utf8"),
+    readFile(new URL("app/retail-expansion-products.ts", root), "utf8"),
+    readFile(new URL("app/laptop-image-manifest.json", root), "utf8"),
+  ]);
+  assert.match(catalog, /iphone-models\/iphone-12\.png/);
+  assert.match(catalog, /verifiedLaptopImages\[product\.slug\]\?\.curated/);
+  assert.match(expanded, /ipad-mini-a17\/colors\.png/);
+  assert.match(expanded, /macbook-air-13-15-m4-official\.png/);
+  assert.match(retailExpansion, /images: laptopGallery\(seed\.slug, image\)/);
+  const manifest = JSON.parse(laptopManifest);
+  assert.equal(Object.keys(manifest).length, 57);
+  assert.equal(Object.values(manifest).filter((entry) => !entry.path).length, 0);
+  assert.ok(Object.values(manifest).filter((entry) => entry.curated).length >= 56);
+  for (const slug of ["hp-pavilion-plus-14-ew", "acer-predator-helios-neo-16", "microsoft-surface-laptop-7"]) {
+    assert.ok(manifest[slug].gallery.length >= 1, `${slug} must include a verified gallery`);
+  }
+  assert.match(manifest["msi-stealth-18-ai-studio"].sourcePage, /msi\.com/);
+  assert.doesNotMatch(JSON.stringify(manifest), /freepnglogo|common-hp-printer|inspiredpencil|MSI-Titan-MiniLED/);
+});
+
+test("uses complete transparent product cutouts in the featured carousel", async () => {
+  const carousel = await readFile(new URL("app/components/HeroCarousel.tsx", root), "utf8");
+  const assets = [
+    "iphone-17-pro-cutout.png",
+    "macbook-air-13-m5-cutout.png",
+    "ipad-pro-11-m5-cutout.png",
+  ];
+  for (const asset of assets) {
+    assert.match(carousel, new RegExp(asset.replaceAll(".", "\\.")));
+    const png = await readFile(new URL(`public/hero-products/${asset}`, root));
+    assert.equal(png.subarray(1, 4).toString("ascii"), "PNG");
+    assert.equal(png[25], 6, `${asset} must use RGBA transparency`);
+  }
+});
+
+test("lets only owners and managers jump from the storefront to the exact product editor", async () => {
+  const [adminAuth, catalogPage, browser, card, detail, editRedirect, editPage, styles] = await Promise.all([
+    readFile(new URL("app/admin-auth.ts", root), "utf8"),
+    readFile(new URL("app/ui.tsx", root), "utf8"),
+    readFile(new URL("app/components/CatalogProductBrowser.tsx", root), "utf8"),
+    readFile(new URL("app/components/ProductCard.tsx", root), "utf8"),
+    readFile(new URL("app/san-pham/[slug]/page.tsx", root), "utf8"),
+    readFile(new URL("app/admin/products/edit/page.tsx", root), "utf8"),
+    readFile(new URL("app/admin/products/[id]/page.tsx", root), "utf8"),
+    readFile(new URL("app/catalog-storefront.css", root), "utf8"),
+  ]);
+  assert.match(adminAuth, /user\?\.role === "owner" \|\| user\?\.role === "manager"/);
+  assert.match(catalogPage, /canManageProducts\(admin\)/);
+  assert.match(browser, /canManage=\{canManageProducts\}/);
+  assert.match(card, /storefront-product-edit/);
+  assert.match(detail, /storefront-edit-dock/);
+  assert.match(editRedirect, /getProductBySlug\(slug\)/);
+  assert.match(editRedirect, /!canManageProducts\(user\)/);
+  assert.match(editPage, /Xem ngoài cửa hàng/);
+  assert.match(styles, /\.storefront-edit-dock\{/);
 });

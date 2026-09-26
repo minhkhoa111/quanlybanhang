@@ -39,9 +39,9 @@ export default function AppleTechNews() {
         <p>Đánh giá và góc nhìn từ các diễn đàn, trang công nghệ độc lập.</p>
       </div>
       <div className="apple-news-grid">
-        {articles.map((article, index) => (
-          <a className={`apple-news-card ${index === 0 ? "is-featured" : ""}`} href={article.href} target="_blank" rel="noreferrer" key={article.href}>
-            <div className="apple-news-image"><Image src={article.image} alt="" fill sizes={index === 0 ? "(max-width: 700px) 100vw, 50vw" : "(max-width: 700px) 100vw, 25vw"} unoptimized /></div>
+        {articles.map((article) => (
+          <a className="apple-news-card" href={article.href} target="_blank" rel="noreferrer" key={article.href}>
+            <div className="apple-news-image"><Image src={article.image} alt="" fill sizes="(max-width: 650px) 112px, (max-width: 1000px) 50vw, 25vw" unoptimized /></div>
             <div className="apple-news-body">
               <div className="apple-news-meta"><strong>{article.source}</strong><span>{article.category}</span><span>{article.date}</span></div>
               <h3>{article.title}</h3><p>{article.description}</p>

@@ -11,6 +11,7 @@ export function productUnitPrice(product?: Product, storage?: string, color?: st
   const normalizedColor = normalizeOption(color);
   const normalizedRam = normalizeOption(ram);
   const matchingVariants = product.variants?.filter((item) =>
+    item.status !== "inactive" &&
     (!normalizedStorage ||
       normalizeOption(item.storage) === normalizedStorage ||
       normalizeOption(item.name).includes(normalizedStorage)) &&
@@ -23,7 +24,7 @@ export function productUnitPrice(product?: Product, storage?: string, color?: st
   ) ?? matchingVariants[0];
 
   return moneyToNumber(
-    variant?.price || product.salePrice || product.sellingPrice || product.price,
+    variant?.salePrice || variant?.price || product.salePrice || product.sellingPrice || product.price,
   );
 }
 

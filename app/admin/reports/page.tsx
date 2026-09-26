@@ -85,6 +85,7 @@ function roleLabel(role: string) {
   if (role === "consultant") return "Tư vấn viên";
   if (role === "warranty") return "Nhân viên bảo hành";
   if (role === "repair") return "Nhân viên sửa chữa";
+  if (role === "inventory") return "Nhân viên kho";
   return "Nhân viên bán hàng";
 }
 

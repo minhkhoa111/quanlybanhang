@@ -28,6 +28,7 @@ export async function GET() {
       warrantyMonths: order.warrantyMonths,
       warrantyStartDate: order.warrantyStartDate,
       warrantySerials: order.warrantySerials,
+      warrantyPolicy: order.warrantyPolicy,
       branchName: order.branchName,
       createdAt: order.createdAt,
     })),

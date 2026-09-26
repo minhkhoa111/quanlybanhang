@@ -6,23 +6,15 @@ import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import type { Product, ProductColor } from "../products";
 import { formatOrderMoney, productUnitPrice } from "../order-pricing";
-import {
-  calculateInstallmentPlan,
-  DOWN_PAYMENT_OPTIONS,
-  FINANCE_COMPANIES,
-  INSTALLMENT_TERMS,
-  MIN_INSTALLMENT_TOTAL,
-} from "../installment";
 
 type SubmitStatus = "idle" | "sending" | "sent" | "error";
-type OrderTab = "details" | "payment" | "installment";
+type OrderTab = "details" | "payment";
 
 const FORM_ENDPOINT = "https://formsubmit.co/ajax/aydomkhoa123@gmail.com";
 const ZALO_URL = "https://zalo.me/02879797999";
 const BANK_ACCOUNT = "6820102010";
 const BANK_PAYMENT = `Chuyển khoản Techcombank 24/7 - ${BANK_ACCOUNT}`;
 const MOMO_PAYMENT = "MoMo - 0869275642";
-const INSTALLMENT_PAYMENT = "Trả góp qua công ty tài chính";
 const STORE_VISIT = "Đến cửa hàng xem máy";
 type PublicBranch = { id: string; name: string; address: string; phone: string; hours: string };
 
@@ -100,9 +92,6 @@ export default function ConsultationForm({
   const [submittedOrderTotal, setSubmittedOrderTotal] = useState(0);
   const [submittedStoreVisit, setSubmittedStoreVisit] = useState(false);
   const [submittedBranchName, setSubmittedBranchName] = useState("");
-  const [financeCompany, setFinanceCompany] = useState("");
-  const [downPaymentPercent, setDownPaymentPercent] = useState(10);
-  const [installmentTerm, setInstallmentTerm] = useState(6);
   const [sms, setSms] = useState("");
   const [voucherInput, setVoucherInput] = useState("");
   const [voucherCode, setVoucherCode] = useState("");
@@ -118,18 +107,6 @@ export default function ConsultationForm({
   const appliedVoucherCode = voucherIsCurrent ? voucherCode : "";
   const appliedVoucherDiscount = voucherIsCurrent ? voucherDiscount : 0;
   const orderTotal = Math.max(0, orderSubtotal - appliedVoucherDiscount);
-  const installmentEligible = orderTotal >= MIN_INSTALLMENT_TOTAL;
-  const selectedFinanceCompany = FINANCE_COMPANIES.find((company) => company.name === financeCompany);
-  const installmentPlans = useMemo(
-    () => INSTALLMENT_TERMS.map((term) => calculateInstallmentPlan(
-      orderTotal,
-      downPaymentPercent,
-      term,
-      selectedFinanceCompany?.monthlyRate ?? 0,
-    )),
-    [downPaymentPercent, orderTotal, selectedFinanceCompany],
-  );
-  const selectedInstallmentPlan = installmentPlans.find((plan) => plan.term === installmentTerm) ?? installmentPlans[0];
   const bankQrUrl = `/api/payment-qr?orderCode=${encodeURIComponent(orderCode)}&expiresAt=${qrExpiresAt ?? ""}`;
   const momoQrUrl = `/api/momo-qr?orderCode=${encodeURIComponent(orderCode)}&expiresAt=${qrExpiresAt ?? ""}`;
   const qrExpired = qrExpiresAt !== null && remainingSeconds <= 0;
@@ -215,17 +192,8 @@ export default function ConsultationForm({
   }
 
   function selectPayment(method: string) {
-    if (method === INSTALLMENT_PAYMENT && !installmentEligible) {
-      setPaymentError("Trả góp qua công ty tài chính chỉ áp dụng cho đơn hàng từ 8.000.000đ.");
-      return;
-    }
     setPaymentMethod(method);
     setPaymentError("");
-    if (method === INSTALLMENT_PAYMENT) {
-      setQrExpiresAt(null);
-      setRemainingSeconds(0);
-      setActiveTab("installment");
-    }
   }
 
   function renewBankQr() {
@@ -251,9 +219,6 @@ export default function ConsultationForm({
     setSubmittedBranchName("");
     setPurchaseMode("online");
     setBranchId("");
-    setFinanceCompany("");
-    setDownPaymentPercent(10);
-    setInstallmentTerm(6);
   }
 
   function openPaymentTab() {
@@ -266,11 +231,6 @@ export default function ConsultationForm({
         control.reportValidity();
         return;
       }
-    }
-    if (paymentMethod === INSTALLMENT_PAYMENT && !installmentEligible) {
-      setPaymentMethod("");
-      setFinanceCompany("");
-      setPaymentError("Trả góp qua công ty tài chính chỉ áp dụng cho đơn hàng từ 8.000.000đ.");
     }
     setActiveTab("payment");
   }
@@ -289,11 +249,6 @@ export default function ConsultationForm({
     }
     if (!isStoreVisit && !paymentMethod) {
       setPaymentError("Vui lòng chọn phương thức thanh toán online.");
-      setActiveTab("payment");
-      return;
-    }
-    if (!isStoreVisit && paymentMethod === INSTALLMENT_PAYMENT && !installmentEligible) {
-      setPaymentError("Trả góp qua công ty tài chính chỉ áp dụng cho đơn hàng từ 8.000.000đ.");
       setActiveTab("payment");
       return;
     }
@@ -322,25 +277,25 @@ export default function ConsultationForm({
       total: String(orderTotal),
       contactTime: "",
       note: String(data.get("note") || ""),
-      financeCompany: paymentMethod === INSTALLMENT_PAYMENT ? financeCompany : "",
-      installmentName: paymentMethod === INSTALLMENT_PAYMENT ? String(data.get("installmentName") || "") : "",
-      installmentPhone: paymentMethod === INSTALLMENT_PAYMENT ? String(data.get("installmentPhone") || "") : "",
-      dateOfBirth: paymentMethod === INSTALLMENT_PAYMENT ? String(data.get("dateOfBirth") || "") : "",
-      citizenId: paymentMethod === INSTALLMENT_PAYMENT ? String(data.get("citizenId") || "") : "",
-      citizenIdIssueDate: paymentMethod === INSTALLMENT_PAYMENT ? String(data.get("citizenIdIssueDate") || "") : "",
-      citizenIdIssuePlace: paymentMethod === INSTALLMENT_PAYMENT ? String(data.get("citizenIdIssuePlace") || "") : "",
-      installmentConsent: paymentMethod === INSTALLMENT_PAYMENT ? data.get("installmentConsent") === "on" : false,
-      downPaymentPercent: paymentMethod === INSTALLMENT_PAYMENT ? downPaymentPercent : 0,
-      downPaymentAmount: paymentMethod === INSTALLMENT_PAYMENT ? String(selectedInstallmentPlan?.downPaymentAmount ?? 0) : "",
-      financedAmount: paymentMethod === INSTALLMENT_PAYMENT ? String(selectedInstallmentPlan?.financedAmount ?? 0) : "",
-      installmentTerm: paymentMethod === INSTALLMENT_PAYMENT ? installmentTerm : 0,
-      monthlyPayment: paymentMethod === INSTALLMENT_PAYMENT ? String(selectedInstallmentPlan?.monthlyPayment ?? 0) : "",
-      estimatedInterest: paymentMethod === INSTALLMENT_PAYMENT ? String(selectedInstallmentPlan?.interestAmount ?? 0) : "",
+      financeCompany: "",
+      installmentName: "",
+      installmentPhone: "",
+      dateOfBirth: "",
+      citizenId: "",
+      citizenIdIssueDate: "",
+      citizenIdIssuePlace: "",
+      installmentConsent: false,
+      downPaymentPercent: 0,
+      downPaymentAmount: "",
+      financedAmount: "",
+      installmentTerm: 0,
+      monthlyPayment: "",
+      estimatedInterest: "",
       voucherCode: appliedVoucherCode,
     };
 
     const body = [
-      "ĐƠN ĐẶT HÀNG - INFINITY COMPANY",
+      "ĐƠN ĐẶT HÀNG - INFINITY STORE",
       `Mã đơn: ${orderCode}`,
       `Họ tên: ${data.get("name")}`,
       `SĐT: ${data.get("phone")}`,
@@ -396,7 +351,7 @@ export default function ConsultationForm({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          _subject: "Đơn đặt hàng mới - Infinity Company",
+          _subject: "Đơn đặt hàng mới - Infinity Store",
           _template: "table",
           _cc: "nguyenmkhoa2010@icloud.com",
           "Họ và tên": data.get("name"),
@@ -410,11 +365,6 @@ export default function ConsultationForm({
           "Chi nhánh xem máy": selectedBranch?.name || "Không áp dụng",
           "Địa chỉ": isStoreVisit ? selectedBranch?.address : data.get("address"),
           "Thanh toán": isStoreVisit ? "Không áp dụng - chờ tư vấn" : data.get("payment"),
-          "Công ty tài chính": financeCompany || "Không áp dụng",
-          "Trả trước": paymentMethod === INSTALLMENT_PAYMENT ? `${downPaymentPercent}% (${formatOrderMoney(selectedInstallmentPlan?.downPaymentAmount ?? 0)})` : "Không áp dụng",
-          "Kỳ hạn dự kiến": paymentMethod === INSTALLMENT_PAYMENT ? `${installmentTerm} tháng` : "Không áp dụng",
-          "Góp dự kiến mỗi tháng": paymentMethod === INSTALLMENT_PAYMENT ? formatOrderMoney(selectedInstallmentPlan?.monthlyPayment ?? 0) : "Không áp dụng",
-          "Hồ sơ trả góp": paymentMethod === INSTALLMENT_PAYMENT ? "Đã lưu trong hệ thống quản trị" : "Không áp dụng",
           "Tổng tiền": formatOrderMoney(orderTotal),
           "Ghi chú đơn hàng": data.get("note") || "Không có",
         }),
@@ -446,28 +396,25 @@ export default function ConsultationForm({
   if (status === "sent") {
     const isBankTransfer = submittedPaymentMethod === BANK_PAYMENT;
     const isMomoPayment = submittedPaymentMethod === MOMO_PAYMENT;
-    const isInstallment = submittedPaymentMethod === INSTALLMENT_PAYMENT;
     const isPaid = submittedPaymentStatus === "paid";
     return (
       <div className={`consult-success${isBankTransfer || isMomoPayment ? " is-bank-payment" : ""}`}>
         <span>✓</span>
-        <h2>{submittedStoreVisit ? "Đã chuyển yêu cầu đến chi nhánh" : isPaid ? "Đã thanh toán" : isBankTransfer ? "Đang kiểm tra thanh toán" : isMomoPayment ? "Đã tạo QR MoMo" : isInstallment ? "Đã tiếp nhận hồ sơ trả góp" : "Đã tiếp nhận đơn hàng"}</h2>
+        <h2>{submittedStoreVisit ? "Đã chuyển yêu cầu đến chi nhánh" : isPaid ? "Đã thanh toán" : isBankTransfer ? "Đang kiểm tra thanh toán" : isMomoPayment ? "Đã tạo QR MoMo" : "Đã tiếp nhận đơn hàng"}</h2>
         <p>
           {submittedStoreVisit
             ? `Yêu cầu xem máy ${orderCode} đã được chuyển đến ${submittedBranchName}. Nhân viên sẽ liên hệ tư vấn và xác nhận máy trước khi bạn đến.`
             : isPaid
-            ? `Giao dịch cho đơn ${orderCode} đã được xác nhận. Infinity Company sẽ chuẩn bị sản phẩm để giao.`
+            ? `Giao dịch cho đơn ${orderCode} đã được xác nhận. Infinity Store sẽ chuẩn bị sản phẩm để giao.`
             : isBankTransfer
               ? `Hệ thống đang đối soát giao dịch cho đơn ${orderCode}. Trạng thái sẽ tự cập nhật khi ngân hàng xác nhận.`
-              : isInstallment
-                ? `Hồ sơ cho đơn ${orderCode} đã được ghi nhận. Nhân viên tài chính sẽ liên hệ tư vấn; khoản vay chỉ có hiệu lực sau khi công ty tài chính phê duyệt.`
               : submittedOrderStatus === "confirmed"
-                ? "Infinity Company đã tiếp nhận đơn. Cửa hàng sẽ xác nhận tồn kho, chuẩn bị máy và giao theo thông tin đã cung cấp."
-                : "Infinity Company đã ghi nhận đơn và sẽ liên hệ xác nhận trong thời gian sớm nhất."}
+                ? "Infinity Store đã tiếp nhận đơn. Cửa hàng sẽ xác nhận tồn kho, chuẩn bị máy và giao theo thông tin đã cung cấp."
+                : "Infinity Store đã ghi nhận đơn và sẽ liên hệ xác nhận trong thời gian sớm nhất."}
         </p>
         {!submittedStoreVisit && <div className={`order-payment-result ${isPaid ? "is-paid" : "is-pending"}`}>
-          <span>{isInstallment ? "Hồ sơ" : "Thanh toán"}</span>
-          <strong>{isPaid ? "Đã thanh toán" : isInstallment ? "Chờ tư vấn & xét duyệt" : "Chưa thanh toán"}</strong>
+          <span>Thanh toán</span>
+          <strong>{isPaid ? "Đã thanh toán" : "Chưa thanh toán"}</strong>
         </div>}
         {submittedStoreVisit && <div className="store-consultation-result"><strong>Không có bước thanh toán</strong><span>Chi nhánh đã tiếp nhận thông tin để nhân viên chủ động tư vấn cho bạn.</span></div>}
         {(isBankTransfer || isMomoPayment) && !isPaid && qrExpiresAt && (
@@ -523,18 +470,13 @@ export default function ConsultationForm({
         <h2>Chọn máy và cách mua phù hợp</h2>
       </div>
 
-      <div className={`order-tabs${paymentMethod === INSTALLMENT_PAYMENT ? " has-installment" : ""}${purchaseMode === "store" ? " is-store-visit" : ""}`} role="tablist" aria-label="Các bước đặt hàng">
+      <div className={`order-tabs${purchaseMode === "store" ? " is-store-visit" : ""}`} role="tablist" aria-label="Các bước đặt hàng">
         <button type="button" role="tab" aria-selected={activeTab === "details"} aria-controls="order-details-panel" onClick={() => setActiveTab("details")}>
           <span>01</span><strong>Sản phẩm & nhận hàng</strong>
         </button>
         {purchaseMode === "online" && <button type="button" role="tab" aria-selected={activeTab === "payment"} aria-controls="order-payment-panel" onClick={openPaymentTab}>
           <span>02</span><strong>Phương thức thanh toán</strong>
         </button>}
-        {purchaseMode === "online" && paymentMethod === INSTALLMENT_PAYMENT && (
-          <button type="button" role="tab" aria-selected={activeTab === "installment"} aria-controls="order-installment-panel" onClick={() => setActiveTab("installment")}>
-            <span>03</span><strong>Hồ sơ trả góp</strong>
-          </button>
-        )}
       </div>
 
       <div className="order-tab-content">
@@ -656,12 +598,7 @@ export default function ConsultationForm({
                   <input type="radio" name="payment" value="Apple Pay - xác nhận với cửa hàng" checked={paymentMethod === "Apple Pay - xác nhận với cửa hàng"} onChange={(event) => selectPayment(event.target.value)} />
                   <span className="payment-logo-apple" aria-hidden="true">Apple Pay</span><strong>Apple Pay</strong>
                 </label>
-                <label className="payment-method-option payment-method-installment">
-                  <input type="radio" name="payment" value={INSTALLMENT_PAYMENT} checked={paymentMethod === INSTALLMENT_PAYMENT} onChange={(event) => selectPayment(event.target.value)} disabled={!installmentEligible} />
-                  <span className="payment-method-mark payment-method-credit" aria-hidden="true">0%</span><strong>Trả góp tài chính</strong>
-                </label>
               </div>
-              {!installmentEligible && <p className="installment-eligibility-note">Áp dụng khi tổng giá trị đơn hàng từ 8.000.000đ.</p>}
             </fieldset>
 
             {paymentMethod === BANK_PAYMENT && (
@@ -690,7 +627,7 @@ export default function ConsultationForm({
           </section>
 
           <label aria-hidden="true" style={{ display: "none" }}>Không điền trường này<input name="website" tabIndex={-1} autoComplete="off" /></label>
-          <label className="consent"><input type="checkbox" required={paymentMethod !== INSTALLMENT_PAYMENT} /> Tôi đồng ý để Infinity Company liên hệ xác nhận đơn.</label>
+          <label className="consent"><input type="checkbox" required /> Tôi đồng ý để Infinity Store liên hệ xác nhận đơn.</label>
 
           {status === "error" && <div className="order-form-error" role="alert">Chưa gửi được đơn. Thử lại hoặc liên hệ qua <a href={sms}>SMS</a> / <a href={ZALO_URL} target="_blank" rel="noreferrer">Zalo</a>.</div>}
 
@@ -700,91 +637,6 @@ export default function ConsultationForm({
           <p className="privacy-note">Thông tin chỉ dùng để xác nhận và giao hàng.</p>
         </aside>}
 
-        {paymentMethod === INSTALLMENT_PAYMENT && (
-          <section id="order-installment-panel" role="tabpanel" className="order-installment" hidden={activeTab !== "installment"}>
-            <div className="order-tab-actions order-tab-actions-back">
-              <button className="button button-secondary" type="button" onClick={() => setActiveTab("payment")}><span>←</span> Quay lại phương thức thanh toán</button>
-            </div>
-
-            <div className="installment-intro">
-              <span>HỒ SƠ TƯ VẤN</span>
-              <h3>Đăng ký trả góp qua công ty tài chính</h3>
-              <p>Chọn đối tác và điền đúng thông tin trên CCCD. Nhân viên phụ trách sẽ liên hệ để tư vấn điều kiện, kỳ hạn và khoản trả trước.</p>
-            </div>
-
-            <fieldset className="installment-partners">
-              <legend>Chọn công ty tài chính</legend>
-              <div>
-                {FINANCE_COMPANIES.map((company) => (
-                  <label key={company.name}>
-                    <input type="radio" name="financeCompany" value={company.name} checked={financeCompany === company.name} onChange={() => setFinanceCompany(company.name)} required />
-                    <span><Image src={company.logo} alt={company.name} width={176} height={56} unoptimized /></span>
-                  </label>
-                ))}
-              </div>
-            </fieldset>
-
-            <section className="installment-calculator" aria-live="polite">
-              <div className="installment-calculator-head">
-                <div><span>PHƯƠNG ÁN TẠM TÍNH</span><h4>{formatOrderMoney(orderTotal)}</h4></div>
-                <p>{selectedFinanceCompany ? `Lãi suất ${selectedFinanceCompany.monthlyRate}%/tháng theo thông tin của cửa hàng.` : "Chọn công ty tài chính để xem số tiền hàng tháng."}</p>
-              </div>
-
-              <fieldset className="down-payment-options">
-                <legend>Trả trước</legend>
-                <div>
-                  {DOWN_PAYMENT_OPTIONS.map((percent) => (
-                    <label key={percent}>
-                      <input type="radio" name="downPaymentPercent" value={percent} checked={downPaymentPercent === percent} onChange={() => setDownPaymentPercent(percent)} />
-                      <span><strong>{percent}%</strong><small>{formatOrderMoney(Math.round(orderTotal * percent / 100))}</small></span>
-                    </label>
-                  ))}
-                </div>
-              </fieldset>
-
-              <div className="installment-financed-summary">
-                <span>Số tiền góp qua công ty tài chính</span>
-                <strong>{formatOrderMoney(selectedInstallmentPlan?.financedAmount ?? 0)}</strong>
-              </div>
-
-              <fieldset className="installment-term-options" disabled={!selectedFinanceCompany}>
-                <legend>Chọn kỳ hạn</legend>
-                <div>
-                  {installmentPlans.map((plan) => (
-                    <label key={plan.term}>
-                      <input type="radio" name="installmentTerm" value={plan.term} checked={installmentTerm === plan.term} onChange={() => setInstallmentTerm(plan.term)} required />
-                      <span className="installment-term-months"><strong>{plan.term} tháng</strong><small>{plan.interestMonths === 0 ? "0% lãi" : `${plan.interestMonths} tháng tính lãi`}</small></span>
-                      <span className="installment-term-price"><strong>{selectedFinanceCompany ? formatOrderMoney(plan.monthlyPayment) : "Chọn đối tác"}</strong><small>/ tháng</small></span>
-                      <span className="installment-term-interest">Tổng lãi: {selectedFinanceCompany ? formatOrderMoney(plan.interestAmount) : "-"}</span>
-                    </label>
-                  ))}
-                </div>
-              </fieldset>
-
-              <p className="installment-disclaimer">Số tiền trên là tạm tính theo lãi suất bạn cung cấp, chưa bao gồm bảo hiểm hoặc phí phát sinh nếu đối tác áp dụng. Kết quả xét duyệt và số tiền chính thức do công ty tài chính xác nhận.</p>
-            </section>
-
-            <div className="installment-form-grid">
-              <label>Họ và tên người đăng ký<input name="installmentName" required autoComplete="name" placeholder="Đúng theo CCCD" /></label>
-              <label>Số điện thoại<input name="installmentPhone" required type="tel" inputMode="tel" pattern="[0-9 +]{9,15}" autoComplete="tel" placeholder="09xx xxx xxx" /></label>
-              <label>Ngày tháng năm sinh<input name="dateOfBirth" required type="date" autoComplete="bday" /></label>
-              <label>Số CCCD<input name="citizenId" required inputMode="numeric" pattern="[0-9]{12}" minLength={12} maxLength={12} autoComplete="off" placeholder="12 chữ số" /></label>
-              <label>Ngày cấp<input name="citizenIdIssueDate" required type="date" /></label>
-              <label>Nơi cấp<input name="citizenIdIssuePlace" required autoComplete="off" placeholder="Cục Cảnh sát QLHC về TTXH" /></label>
-            </div>
-
-            <label className="consent installment-consent">
-              <input name="installmentConsent" type="checkbox" required />
-              Tôi đồng ý để Infinity Company lưu và chuyển thông tin hồ sơ cho công ty tài chính đã chọn nhằm tư vấn, thẩm định khoản trả góp.
-            </label>
-            <p className="installment-privacy">Thông tin CCCD được lưu trong hệ thống quản trị, không đưa vào email thông báo đơn hàng.</p>
-
-            {status === "error" && <div className="order-form-error" role="alert">Chưa gửi được hồ sơ. Vui lòng kiểm tra thông tin và thử lại.</div>}
-            <button className="button button-primary form-submit installment-submit" type="submit" disabled={status === "sending"}>
-              {status === "sending" ? "Đang gửi hồ sơ..." : "Gửi hồ sơ trả góp"} <span>↗</span>
-            </button>
-          </section>
-        )}
       </div>
     </form>
   );

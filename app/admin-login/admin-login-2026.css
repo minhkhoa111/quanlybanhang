@@ -1,0 +1,778 @@
+/* ==========================================================================
+   INFINITY STORE - ENTERPRISE ADMIN LOGIN PORTAL 2026
+   Modern High-Security Executive Aesthetic (Stripe / Linear / Vercel style)
+   ========================================================================== */
+
+/* Full Viewport Container */
+.admin-login-page {
+  position: relative;
+  min-height: 100dvh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+  background-color: #f3f7fb;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(0, 125, 255, 0.09) 0%, transparent 35%),
+    radial-gradient(circle at 90% 80%, rgba(0, 100, 220, 0.07) 0%, transparent 35%);
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Atmospheric Ambient Glows (Very subtle for depth) */
+.admin-ambient-glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(80px);
+}
+
+.admin-glow-1 {
+  width: 450px;
+  height: 450px;
+  top: -100px;
+  left: -80px;
+  background: radial-gradient(circle, rgba(0, 125, 255, 0.08) 0%, transparent 70%);
+}
+
+.admin-glow-2 {
+  width: 400px;
+  height: 400px;
+  bottom: -80px;
+  right: -60px;
+  background: radial-gradient(circle, rgba(0, 100, 220, 0.06) 0%, transparent 70%);
+}
+
+/* The Enterprise Portal Shell Card */
+.admin-login-shell {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 48fr 52fr;
+  max-width: 1120px;
+  width: min(1120px, calc(100vw - 64px));
+  border-radius: 28px;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  box-shadow: 
+    0 24px 80px rgba(15, 23, 42, 0.10),
+    0 2px 6px rgba(15, 23, 42, 0.03);
+  box-sizing: border-box;
+  animation: adminCardEntrance 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes adminCardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   LEFT PANEL: Deep Navy Brand Showcase
+   -------------------------------------------------------------------------- */
+.admin-login-intro {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 44px 40px;
+  background: 
+    radial-gradient(circle at 85% 15%, rgba(0, 143, 234, 0.16) 0%, transparent 45%),
+    linear-gradient(145deg, #061225 0%, #0a1d38 55%, #0b3260 100%);
+  color: #ffffff;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Top Brand Identity */
+.admin-login-brand {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: #ffffff;
+  transition: opacity 0.2s ease;
+  width: fit-content;
+}
+
+.admin-login-brand:hover {
+  opacity: 0.9;
+}
+
+.admin-brand-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: none;
+  filter: drop-shadow(0 4px 12px rgba(0, 143, 234, 0.4));
+  flex-shrink: 0;
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.admin-login-brand:hover .admin-brand-icon {
+  transform: scale(1.06);
+  filter: drop-shadow(0 6px 16px rgba(0, 180, 255, 0.6));
+}
+
+.admin-brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.admin-brand-text strong {
+  font-size: 16.5px;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.admin-brand-text small {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #7dd3fc;
+}
+
+/* Main Content Text */
+.admin-intro-content {
+  position: relative;
+  z-index: 2;
+  margin: 28px 0;
+}
+
+.admin-intro-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(0, 143, 234, 0.15);
+  border: 1px solid rgba(0, 143, 234, 0.3);
+  color: #38bdf8;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.admin-intro-title {
+  font-size: clamp(28px, 2.6vw, 38px);
+  font-weight: 750;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin: 0 0 10px;
+  color: #ffffff;
+}
+
+.admin-intro-desc {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: #94a3b8;
+  max-width: 380px;
+  margin: 0;
+}
+
+/* 3 Compact Indicators */
+.admin-indicator-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 22px;
+}
+
+.admin-indicator-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.admin-indicator-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
+  flex-shrink: 0;
+}
+
+/* Left Panel Footer */
+.admin-intro-footer {
+  position: relative;
+  z-index: 2;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.admin-intro-footer-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #94a3b8;
+}
+
+.admin-status-indicator-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+  flex-shrink: 0;
+}
+
+.admin-intro-footer-sub {
+  font-size: 11px;
+  color: #64748b;
+  margin: 2px 0 0 14px;
+}
+
+/* --------------------------------------------------------------------------
+   RIGHT PANEL: Modern Authentication Form
+   -------------------------------------------------------------------------- */
+.admin-login-panel {
+  padding: 44px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+/* Mobile Brand Header (hidden on desktop/tablet) */
+.admin-mobile-brand {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.admin-mobile-brand-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #0f172a;
+}
+
+.admin-mobile-brand-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: none;
+  filter: drop-shadow(0 2px 8px rgba(0, 143, 234, 0.35));
+}
+
+.admin-mobile-brand-name {
+  font-size: 17px;
+  font-weight: 750;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+}
+
+/* Panel Header */
+.admin-panel-header {
+  margin-bottom: 20px;
+  max-width: 380px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.admin-panel-eyebrow {
+  display: block;
+  color: #008fea;
+  font-size: 10.5px;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.admin-panel-title {
+  color: #0f172a;
+  font-size: 28px;
+  font-weight: 750;
+  letter-spacing: -0.025em;
+  margin: 0 0 6px;
+  line-height: 1.15;
+}
+
+.admin-panel-subtitle {
+  color: #667085;
+  font-size: 13.5px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Status Notices (Error & Success) */
+.admin-modern-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  max-width: 380px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  animation: adminNoticeFade 0.25s ease-out;
+}
+
+@keyframes adminNoticeFade {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.admin-notice-error {
+  background: #fff5f5;
+  border: 1px solid #ffd7d7;
+  color: #b42318;
+}
+
+.admin-notice-success {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+}
+
+.admin-notice-svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.admin-notice-body strong {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 750;
+  margin-bottom: 1px;
+}
+
+.admin-notice-body p {
+  margin: 0;
+  font-size: 11.5px;
+  line-height: 1.4;
+  opacity: 0.92;
+}
+
+/* Form Styles */
+.admin-login-modern-form {
+  display: grid;
+  gap: 15px;
+  max-width: 380px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.admin-field-group {
+  display: grid;
+  gap: 6px;
+}
+
+.admin-field-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-field-label {
+  color: #1e293b;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.admin-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.admin-input-icon {
+  position: absolute;
+  left: 14px;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transition: color 0.15s ease;
+}
+
+.admin-input-wrapper:focus-within .admin-input-icon {
+  color: #008fea;
+}
+
+.admin-modern-input {
+  width: 100%;
+  height: 48px;
+  padding: 0 40px 0 42px;
+  border: 1px solid #dde3ea;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 500;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  box-sizing: border-box;
+}
+
+.admin-modern-input::placeholder {
+  color: #94a3b8;
+}
+
+.admin-modern-input:focus {
+  border-color: #0084ff;
+  box-shadow: 0 0 0 4px rgba(0, 132, 255, 0.10);
+  background: #ffffff;
+}
+
+.admin-modern-input:disabled {
+  opacity: 0.65;
+  background: #f8fafc;
+  cursor: not-allowed;
+}
+
+.admin-password-toggle {
+  position: absolute;
+  right: 10px;
+  background: transparent;
+  border: 0;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.admin-password-toggle:hover {
+  color: #008fea;
+  background: #f1f5f9;
+}
+
+/* Submit Button */
+.admin-modern-submit-btn {
+  width: 100%;
+  height: 50px;
+  margin-top: 4px;
+  border: 0;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #008fea 0%, #087dc8 100%);
+  color: #ffffff;
+  font-size: 14.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(0, 130, 220, 0.18);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.admin-modern-submit-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.04);
+  box-shadow: 0 12px 28px rgba(0, 130, 220, 0.24);
+}
+
+.admin-modern-submit-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.admin-modern-submit-btn.is-loading,
+.admin-modern-submit-btn:disabled {
+  opacity: 0.8;
+  cursor: wait;
+}
+
+.admin-btn-arrow-svg {
+  transition: transform 0.18s ease;
+}
+
+.admin-modern-submit-btn:hover:not(:disabled) .admin-btn-arrow-svg {
+  transform: translateX(3px);
+}
+
+.admin-btn-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: adminSpin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes adminSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Security Caption */
+.admin-security-caption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: #98a2b3;
+  text-align: center;
+  margin-top: 12px;
+}
+
+.admin-security-caption svg {
+  color: #98a2b3;
+  flex-shrink: 0;
+}
+
+/* Return to Store Link */
+.admin-back-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 14px;
+}
+
+.admin-login-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #667085;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.admin-login-back-link:hover {
+  color: #008fea;
+}
+
+/* ==========================================================================
+   RESPONSIVE: LOW-HEIGHT DESKTOPS (1366x768, 1280x720, 1440x800)
+   ========================================================================== */
+@media (max-height: 800px) {
+  .admin-login-page {
+    padding: 16px 20px;
+  }
+
+  .admin-login-intro {
+    padding: 28px 32px;
+  }
+
+  .admin-intro-content {
+    margin: 16px 0;
+  }
+
+  .admin-intro-title {
+    font-size: 28px;
+    margin-bottom: 6px;
+  }
+
+  .admin-intro-desc {
+    font-size: 12.5px;
+  }
+
+  .admin-indicator-list {
+    margin-top: 14px;
+    gap: 7px;
+  }
+
+  .admin-indicator-item {
+    font-size: 12px;
+  }
+
+  .admin-login-panel {
+    padding: 28px 32px;
+  }
+
+  .admin-panel-header {
+    margin-bottom: 14px;
+  }
+
+  .admin-panel-title {
+    font-size: 24px;
+    margin-bottom: 4px;
+  }
+
+  .admin-panel-subtitle {
+    font-size: 12.5px;
+  }
+
+  .admin-login-modern-form {
+    gap: 12px;
+  }
+
+  .admin-modern-input {
+    height: 44px;
+    font-size: 13.5px;
+  }
+
+  .admin-modern-submit-btn {
+    height: 46px;
+    font-size: 14px;
+  }
+
+  .admin-security-caption {
+    margin-top: 10px;
+  }
+
+  .admin-back-wrapper {
+    margin-top: 10px;
+  }
+}
+
+@media (max-height: 720px) {
+  .admin-login-page {
+    padding: 12px 16px;
+  }
+
+  .admin-login-intro {
+    padding: 22px 28px;
+  }
+
+  .admin-intro-badge {
+    margin-bottom: 8px;
+  }
+
+  .admin-intro-title {
+    font-size: 24px;
+  }
+
+  .admin-intro-content {
+    margin: 10px 0;
+  }
+
+  .admin-indicator-list {
+    margin-top: 10px;
+    gap: 5px;
+  }
+
+  /* Hide left panel footer on very low viewport heights to guarantee no overflow */
+  .admin-intro-footer {
+    display: none;
+  }
+
+  .admin-login-panel {
+    padding: 22px 28px;
+  }
+
+  .admin-panel-header {
+    margin-bottom: 12px;
+  }
+
+  .admin-panel-title {
+    font-size: 22px;
+  }
+
+  .admin-login-modern-form {
+    gap: 10px;
+  }
+
+  .admin-modern-input {
+    height: 42px;
+  }
+
+  .admin-modern-submit-btn {
+    height: 44px;
+  }
+
+  .admin-security-caption {
+    margin-top: 8px;
+    font-size: 11px;
+  }
+
+  .admin-back-wrapper {
+    margin-top: 8px;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE: TABLET & MOBILE VIEWPORTS
+   ========================================================================== */
+@media (max-width: 960px) {
+  .admin-login-shell {
+    grid-template-columns: 44fr 56fr;
+    width: min(900px, calc(100vw - 32px));
+  }
+
+  .admin-login-intro {
+    padding: 32px 28px;
+  }
+
+  .admin-login-panel {
+    padding: 32px 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-login-page {
+    padding: 20px 16px;
+  }
+
+  /* Mobile Single Column: Hide promotional left panel completely */
+  .admin-login-shell {
+    grid-template-columns: 1fr;
+    max-width: 420px;
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+  }
+
+  .admin-login-intro {
+    display: none !important;
+  }
+
+  .admin-mobile-brand {
+    display: flex;
+  }
+
+  .admin-login-panel {
+    padding: 28px 22px;
+  }
+
+  .admin-panel-title {
+    font-size: 24px;
+  }
+
+  .admin-panel-subtitle {
+    font-size: 13px;
+  }
+}

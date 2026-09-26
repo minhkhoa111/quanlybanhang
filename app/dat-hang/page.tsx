@@ -5,7 +5,7 @@ import ConsultationForm from "../tu-van/ConsultationForm";
 
 export const metadata: Metadata = {
   title: "Đặt hàng",
-  description: "Gửi thông tin đặt mua điện thoại cho Infinity Company.",
+  description: "Gửi thông tin đặt mua điện thoại cho Infinity Store.",
 };
 
 export const dynamic = "force-dynamic";

@@ -1,7 +1,31 @@
 import type { Product, ProductColor, ProductVariant } from "./products";
+import laptopImageManifest from "./laptop-image-manifest.json";
 
 type ColorAsset = ProductColor & { image: string };
 type StoragePrice = { storage: string; price: string };
+
+const verifiedLaptopImages = laptopImageManifest as Record<string, { path?: string; curated?: boolean }>;
+
+const correctedProductImages: Record<string, string> = {
+  "iphone-12": "/products/apple/iphone-models/iphone-12.png",
+  "iphone-12-mini": "/products/apple/iphone-models/iphone-12-mini.png",
+  "iphone-12-pro": "/products/apple/iphone-models/iphone-12-pro.png",
+  "iphone-12-pro-max": "/products/apple/iphone-models/iphone-12-pro-max.png",
+  "iphone-13-mini": "/products/apple/iphone-models/iphone-13-mini.png",
+  "iphone-13-pro": "/products/apple/iphone-models/iphone-13-pro.png",
+  "iphone-13-pro-max": "/products/apple/iphone-models/iphone-13-pro-max.png",
+  "iphone-14-plus": "/products/apple/iphone-models/iphone-14-plus.png",
+  "iphone-14-pro-max": "/products/apple/iphone-models/iphone-14-pro-max.png",
+  "iphone-15-pro": "/products/apple/iphone-models/iphone-15-pro.png",
+  "iphone-16-pro": "/products/apple/iphone-models/iphone-16-pro.png",
+  "iphone-se-3": "/products/apple/iphone-models/iphone-se-3.png",
+  "rog-zephyrus-g14-rtx5070ti": "/products/expanded/rog-zephyrus-g14-2025.png",
+  "rog-zephyrus-g14-rtx5080": "/products/expanded/rog-zephyrus-g14-2025.png",
+  "rog-zephyrus-g16-rtx5070ti": "/products/expanded/rog-zephyrus-g16-2025.png",
+  "rog-zephyrus-g16-rtx5080": "/products/expanded/rog-zephyrus-g16-2025.png",
+  "rog-strix-scar16-rtx5080": "/products/expanded/rog-scar16-2025.png",
+  "rog-strix-scar18-2026-rtx5090": "/products/expanded/rog-scar18-2025.png",
+};
 
 function phoneVariants(
   slug: string,
@@ -173,15 +197,26 @@ export const currentCatalogOverrides: Record<string, Partial<Product>> = {
 };
 
 export const catalogProductOrder: Partial<Record<Product["category"], string[]>> = {
-  iphone: ["iphone-17-pro-max", "iphone-17-pro", "iphone-17", "iphone-air", "iphone-17e"],
-  macbook: ["macbook-pro-16-m5-pro", "macbook-pro-14-m5", "macbook-air-15-m5", "macbook-air-13-m5", "macbook-neo-a18-pro"],
+  iphone: ["iphone-18-pro-max", "iphone-18-pro", "iphone-17-pro-max", "iphone-17-pro", "iphone-17", "iphone-air", "iphone-17e"],
+  macbook: ["macbook-pro-16-m5-max", "macbook-pro-16-m5-pro", "macbook-pro-14-m5-max", "macbook-pro-14-m5-pro", "macbook-pro-14-m5", "macbook-air-15-m5", "macbook-air-13-m5", "macbook-neo-a18-pro"],
   "mac-mini-studio": ["mac-mini-m4", "mac-mini-m4-pro", "mac-studio-m4-max", "mac-studio-m3-ultra"],
   imac: ["imac-24-m4-10cpu-10gpu", "imac-24-m4-8cpu-8gpu", "imac-24-m3-8cpu-10gpu", "imac-24-m3-8cpu-8gpu"],
 };
 
 export function applyCurrentCatalogOverride<T extends Product>(product: T): T {
   const override = currentCatalogOverrides[product.slug];
-  return override ? { ...product, ...override } : product;
+  const overridden = override ? { ...product, ...override } : product;
+  const laptopImage = product.category === "laptop" && verifiedLaptopImages[product.slug]?.curated
+    ? verifiedLaptopImages[product.slug]?.path
+    : undefined;
+  const correctedImage = correctedProductImages[product.slug] ?? laptopImage;
+  if (!correctedImage) return overridden;
+  return {
+    ...overridden,
+    image: correctedImage,
+    images: [correctedImage, ...(overridden.images ?? []).filter((image) => image !== correctedImage)],
+    variants: overridden.variants?.map((variant) => ({ ...variant, image: correctedImage })),
+  };
 }
 
 export function orderCatalogProducts<T extends Product>(products: T[], category: Product["category"]): T[] {

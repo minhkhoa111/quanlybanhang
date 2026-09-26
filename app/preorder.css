@@ -1,0 +1,123 @@
+.preorder-page { background: #f4f7fb; color: #10213a; }
+.preorder-hero { overflow: hidden; background: radial-gradient(circle at 78% 15%, #354765 0, #17243a 29%, #07111f 67%); color: #fff; }
+.preorder-hero-inner { min-height: 430px; display: grid; grid-template-columns: minmax(0, .95fr) minmax(380px, 1.05fr); align-items: center; gap: 44px; padding-block: 56px; }
+.preorder-hero-copy { position: relative; z-index: 2; }
+.preorder-kicker, .preorder-section-head span, .preorder-success > span { color: #64b5ff; font-size: 11px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+.preorder-hero h1 { max-width: 720px; margin: 14px 0 18px; font-size: clamp(34px, 4.5vw, 62px); line-height: 1.04; letter-spacing: -.045em; }
+.preorder-hero-copy > p { max-width: 640px; margin: 0; color: #c0cede; font-size: 15px; line-height: 1.7; }
+.preorder-promises { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 26px; }
+.preorder-promises span { padding: 8px 11px; border: 1px solid rgba(255,255,255,.18); border-radius: 999px; background: rgba(255,255,255,.08); color: #e9f4ff; font-size: 11px; font-weight: 750; }
+.preorder-hero-art { position: relative; min-height: 330px; perspective: 1000px; }
+.preorder-device { position: absolute; border: 2px solid rgba(255,255,255,.3); box-shadow: 0 30px 65px rgba(0,0,0,.42), inset 0 0 30px rgba(255,255,255,.07); }
+.preorder-device-phone { z-index: 3; width: 142px; height: 286px; left: 8%; top: 20px; border-radius: 30px; transform: rotate(-9deg); background: radial-gradient(circle at 56% 36%, #7c3348, #2e1421 42%, #08090d 72%); }
+.preorder-device-phone::before { content: ""; position: absolute; width: 64px; height: 19px; left: 50%; top: 8px; border-radius: 999px; background: #05070a; transform: translateX(-50%); }
+.preorder-device-laptop { z-index: 1; width: 340px; height: 210px; right: 3%; top: 35px; border-radius: 15px; transform: rotate(3deg); background: radial-gradient(circle at 50% 30%, #86c8ec, #41628d 50%, #111c2e 82%); }
+.preorder-device-laptop::after { content: ""; position: absolute; height: 11px; left: -28px; right: -28px; bottom: -16px; border-radius: 2px 2px 18px 18px; background: #aeb7c4; box-shadow: 0 8px 15px rgba(0,0,0,.35); }
+.preorder-device-tablet { z-index: 2; width: 176px; height: 240px; right: 18%; bottom: -4px; border-radius: 20px; transform: rotate(8deg); background: linear-gradient(145deg, #cfd5db, #717d8d 50%, #1b2638); }
+.preorder-form { display: grid; gap: 22px; padding-block: 34px 20px; }
+.preorder-products, .preorder-customer-card, .preorder-branch-card, .preorder-submit-bar, .preorder-process, .preorder-success { border: 1px solid #dce5ee; border-radius: 20px; background: #fff; box-shadow: 0 12px 35px rgba(25,55,85,.06); }
+.preorder-products, .preorder-customer-card, .preorder-branch-card { padding: 24px; }
+.preorder-section-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 19px; }
+.preorder-section-head h2 { margin: 5px 0 0; color: #172a43; font-size: 22px; letter-spacing: -.02em; }
+.preorder-section-head > small { color: #718096; font-size: 11px; }
+.preorder-family-tabs { display: flex; gap: 8px; margin-bottom: 18px; overflow-x: auto; }
+.preorder-family-tabs button { min-height: 40px; padding: 8px 16px; border: 1px solid #d4dfeb; border-radius: 999px; background: #f8fafc; color: #42536a; font: inherit; font-size: 12px; font-weight: 800; white-space: nowrap; cursor: pointer; }
+.preorder-family-tabs button.is-active { border-color: #0878dc; background: #0878dc; color: #fff; }
+.preorder-product-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.preorder-product-card { position: relative; display: grid; min-width: 0; padding: 15px; border: 2px solid #e3eaf1; border-radius: 15px; background: #fff; color: inherit; text-align: left; cursor: pointer; transition: .2s ease; }
+.preorder-product-card:hover { transform: translateY(-2px); border-color: #9dcaf1; }
+.preorder-product-card.is-selected { border-color: #0878dc; box-shadow: 0 9px 24px rgba(8,120,220,.12); }
+.preorder-product-check { position: absolute; z-index: 2; display: grid; width: 24px; height: 24px; right: 10px; top: 10px; place-items: center; border-radius: 50%; background: #0878dc; color: #fff; font-size: 12px; font-weight: 900; }
+.preorder-product-card:not(.is-selected) .preorder-product-check { border: 1px solid #cbd5e1; background: #fff; }
+.preorder-product-image { position: relative; height: 160px; margin-bottom: 12px; border-radius: 10px; overflow: hidden; background: #f3f6f9; }
+.preorder-product-image img { padding: 9px; object-fit: contain; }
+.preorder-product-card strong { color: #172a43; font-size: 15px; }
+.preorder-product-card small { margin-top: 6px; color: #718096; font-size: 11px; line-height: 1.5; }
+.preorder-options { display: grid; grid-template-columns: 1.3fr 1fr .7fr; gap: 12px; margin-top: 18px; padding: 17px; border-radius: 13px; background: #f5f9fd; }
+.preorder-options label, .preorder-fields label { display: grid; gap: 7px; min-width: 0; }
+.preorder-options label > span, .preorder-fields label > span { color: #34475f; font-size: 11px; font-weight: 850; }
+.preorder-options select, .preorder-fields input, .preorder-fields select, .preorder-fields textarea, .preorder-branch-tools input { width: 100%; min-width: 0; min-height: 44px; box-sizing: border-box; padding: 9px 12px; border: 1px solid #c9d6e3; border-radius: 9px; outline: 0; background: #fff; color: #152940; font: inherit; font-size: 13px; }
+.preorder-options select:focus, .preorder-fields input:focus, .preorder-fields select:focus, .preorder-fields textarea:focus, .preorder-branch-tools input:focus { border-color: #0878dc; box-shadow: 0 0 0 3px rgba(8,120,220,.1); }
+.preorder-detail-grid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 22px; }
+.preorder-login-note { margin: -5px 0 17px; padding: 10px 12px; border-radius: 9px; background: #eff7ff; color: #52677f; font-size: 11px; }
+.preorder-login-note a { color: #0878dc; font-weight: 850; }
+.preorder-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.preorder-fields textarea { min-height: 78px; resize: vertical; }
+.preorder-span-2 { grid-column: 1 / -1; }
+.preorder-branch-tools { display: grid; grid-template-columns: 1fr auto; gap: 9px; margin-bottom: 12px; }
+.preorder-branch-tools a { display: flex; min-height: 44px; align-items: center; padding: 0 13px; border-radius: 9px; background: #e9f5ff; color: #0878dc; font-size: 11px; font-weight: 850; text-decoration: none; white-space: nowrap; }
+.preorder-branch-list { display: grid; gap: 9px; max-height: 310px; overflow-y: auto; padding-right: 3px; }
+.preorder-branch-list > label { display: grid; grid-template-columns: auto 34px minmax(0, 1fr); align-items: start; gap: 10px; padding: 12px; border: 1px solid #dce5ee; border-radius: 11px; cursor: pointer; }
+.preorder-branch-list > label.is-selected { border-color: #0878dc; background: #f0f8ff; }
+.preorder-branch-list input { margin-top: 10px; accent-color: #0878dc; }
+.preorder-branch-pin { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 10px; background: #e6f3ff; color: #0878dc; font-size: 18px; }
+.preorder-branch-list label > span:last-child { display: grid; gap: 3px; min-width: 0; }
+.preorder-branch-list strong { color: #20354e; font-size: 12.5px; }
+.preorder-branch-list small { color: #62748a; font-size: 10.5px; line-height: 1.45; }
+.preorder-branch-list em { color: #8a98a9; font-size: 9.5px; font-style: normal; }
+.preorder-no-branch { margin: 0; padding: 18px; border-radius: 10px; background: #fff7ed; color: #9a4a10; font-size: 11px; text-align: center; }
+.preorder-submit-bar { position: sticky; z-index: 20; bottom: 14px; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px 20px; padding: 16px 18px; box-shadow: 0 15px 45px rgba(12,35,60,.16); }
+.preorder-submit-bar > div { display: grid; gap: 2px; min-width: 0; }
+.preorder-submit-bar > div span { color: #087442; font-size: 10px; font-weight: 900; text-transform: uppercase; }
+.preorder-submit-bar > div strong { overflow: hidden; color: #172a43; font-size: 15px; text-overflow: ellipsis; white-space: nowrap; }
+.preorder-submit-bar > div small { color: #718096; font-size: 10.5px; }
+.preorder-submit-bar button { min-height: 48px; padding: 0 25px; border: 0; border-radius: 10px; background: #0878dc; color: #fff; font: inherit; font-size: 13px; font-weight: 900; cursor: pointer; }
+.preorder-submit-bar button:disabled { opacity: .55; cursor: not-allowed; }
+.preorder-submit-bar > p { grid-column: 1 / -1; margin: 0; color: #b42318; font-size: 11px; text-align: right; }
+.preorder-process { margin-top: 14px; margin-bottom: 72px; padding: 27px; }
+.preorder-process h2 { margin: 5px 0 0; font-size: 26px; }
+.preorder-process ol { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 22px 0 0; padding: 0; list-style: none; }
+.preorder-process li { display: grid; grid-template-columns: 39px 1fr; gap: 4px 12px; padding: 17px; border-radius: 13px; background: #f5f9fd; }
+.preorder-process li b { grid-row: 1 / span 2; display: grid; width: 39px; height: 39px; place-items: center; border-radius: 11px; background: #0878dc; color: #fff; font-size: 10px; }
+.preorder-process li strong { color: #263b55; font-size: 12.5px; }
+.preorder-process li span { color: #718096; font-size: 10.5px; line-height: 1.5; }
+.preorder-success { max-width: 720px; margin-block: 45px 70px; padding: 42px; text-align: center; }
+.preorder-success-icon { display: grid; width: 64px; height: 64px; margin: 0 auto 18px; place-items: center; border-radius: 50%; background: #dcfce7; color: #16834c; font-size: 28px; font-weight: 900; }
+.preorder-success h2 { margin: 8px 0 15px; font-size: 31px; }
+.preorder-success > p { color: #64748b; font-size: 12px; line-height: 1.6; }
+.preorder-success > strong { display: block; margin: 7px 0 20px; color: #0878dc; font-size: 26px; letter-spacing: .04em; }
+.preorder-success > div:not(.preorder-success-icon):not(.preorder-success-actions) { display: grid; gap: 5px; margin: 0 auto 17px; padding: 15px; border-radius: 12px; background: #f1f7fd; }
+.preorder-success > div span, .preorder-success > div small { color: #718096; font-size: 10.5px; }
+.preorder-success > div b { color: #20354e; font-size: 14px; }
+.preorder-success-actions { display: flex; justify-content: center; gap: 10px; margin-top: 22px; }
+.preorder-success-actions a, .preorder-success-actions button { min-height: 44px; padding: 0 17px; border: 1px solid #0878dc; border-radius: 9px; background: #fff; color: #0878dc; font: inherit; font-size: 12px; font-weight: 850; text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; }
+.preorder-success-actions a { background: #0878dc; color: #fff; }
+
+@media (max-width: 800px) {
+  .preorder-hero-inner { grid-template-columns: 1fr; min-height: auto; padding-block: 40px 28px; }
+  .preorder-hero-art { min-height: 275px; }
+  .preorder-detail-grid { grid-template-columns: 1fr; }
+  .preorder-product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .preorder-process ol { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 560px) {
+  .preorder-hero-inner { gap: 12px; padding-inline: 16px; }
+  .preorder-hero h1 { font-size: 36px; }
+  .preorder-hero-copy > p { font-size: 13px; }
+  .preorder-hero-art { min-height: 225px; transform: scale(.82); transform-origin: center top; }
+  .preorder-device-phone { left: 0; }
+  .preorder-device-laptop { right: -80px; }
+  .preorder-device-tablet { right: 6%; }
+  .preorder-form { padding: 18px 12px 12px; }
+  .preorder-products, .preorder-customer-card, .preorder-branch-card { padding: 16px; border-radius: 15px; }
+  .preorder-section-head { display: grid; }
+  .preorder-section-head h2 { font-size: 19px; }
+  .preorder-product-grid { gap: 8px; }
+  .preorder-product-card { padding: 10px; }
+  .preorder-product-image { height: 125px; }
+  .preorder-product-card strong { font-size: 13px; }
+  .preorder-product-card small { font-size: 10px; }
+  .preorder-options, .preorder-fields { grid-template-columns: 1fr; }
+  .preorder-span-2 { grid-column: auto; }
+  .preorder-options select, .preorder-fields input, .preorder-fields select, .preorder-fields textarea, .preorder-branch-tools input { font-size: 16px; }
+  .preorder-branch-tools { grid-template-columns: 1fr; }
+  .preorder-branch-tools a { justify-content: center; }
+  .preorder-submit-bar { bottom: calc(72px + env(safe-area-inset-bottom)); grid-template-columns: 1fr; border-radius: 15px; }
+  .preorder-submit-bar button { width: 100%; }
+  .preorder-submit-bar > p { text-align: left; }
+  .preorder-process { margin: 8px 12px 105px; padding: 20px 16px; }
+  .preorder-success { margin: 22px 12px 100px; padding: 28px 17px; }
+  .preorder-success-actions { flex-direction: column; }
+  .preorder-success-actions a, .preorder-success-actions button { justify-content: center; }
+}

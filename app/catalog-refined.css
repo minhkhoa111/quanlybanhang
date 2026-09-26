@@ -1,0 +1,81 @@
+/* Shared catalog presentation, scoped to the product browser. */
+.catalog-refined { color: #1c2d44; padding: 16px 0 36px; }
+.catalog-discover { display: flex; align-items: center; justify-content: space-between; gap: 28px; margin-bottom: 24px; padding: 30px; border: 1px solid #dfe7f1; border-radius: 22px; background: linear-gradient(110deg, #edf3fc, #f8fafc 75%); }
+.catalog-eyebrow { font-size: 10px; font-weight: 750; letter-spacing: .16em; color: #4e6c96; }
+.catalog-discover h2 { margin: 9px 0; font-size: clamp(22px, 2.4vw, 29px); line-height: 1.3; letter-spacing: -.8px; color: #1c2d44; }
+.catalog-discover p { margin: 0; font-size: 13px; line-height: 1.6; color: #6b7b90; }
+.catalog-local-search { display: grid; flex: 0 1 320px; min-width: 220px; gap: 9px; }
+.catalog-local-search > span { font-size: 11px; color: #526782; font-weight: 600; }
+.catalog-local-search input { width: 100%; min-height: 46px; padding: 12px 15px; border: 1px solid #d8e2ee; border-radius: 12px; background: white; color: #1c2d44; font: inherit; font-size: 13px; box-shadow: 0 3px 9px #2a456905; }
+.catalog-filter-panel { background: white; border: 1px solid #e2e7ef; border-radius: 18px; padding: 20px; }
+.catalog-family-pills { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 19px; border-bottom: 1px solid #edf0f5; }
+.catalog-family-pills button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 40px; padding: 8px 13px; background: #f5f7fa; color: #51637c; border: 1px solid transparent; border-radius: 10px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background .2s, color .2s; }
+.catalog-family-pills button span { min-width: 20px; padding: 2px 5px; border-radius: 5px; background: #00000008; font-size: 10px; }
+.catalog-family-pills button[aria-pressed="true"] { background: #203a5c; color: white; }
+.catalog-family-pills button[aria-pressed="true"] span { background: #ffffff20; }
+.catalog-filter-controls { display: flex; gap: 16px; padding-top: 18px; }
+.catalog-filter-controls label { display: grid; gap: 7px; min-width: 160px; }
+.catalog-filter-controls label > span { font-size: 11px; font-weight: 600; color: #728198; }
+.catalog-filter-controls select { width: 100%; min-height: 42px; padding: 10px 28px 10px 12px; border: 1px solid #dfe5ee; border-radius: 9px; background: #fff; color: #344964; font: inherit; font-size: 12px; cursor: pointer; }
+.catalog-filter-controls .catalog-sort-control { margin-left: auto; }
+.catalog-results-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 22px 0 16px; }
+.catalog-results-bar p { margin: 0; font-size: 13px; color: #425973; }
+.catalog-results-bar p strong { color: #1b5fbc; font-size: 17px; }
+.catalog-results-bar p > span { color: #7c899b; font-size: 11px; }
+.catalog-results-bar button { background: none; color: #2369c9; border: 0; font-size: 12px; padding: 10px 0 10px 10px; cursor: pointer; }
+.catalog-active-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.catalog-active-filters button { max-width: 100%; overflow-wrap: anywhere; padding: 8px 12px; background: #edf4fe; border: 1px solid #d5e5fa; color: #33649f; border-radius: 30px; font-size: 11px; cursor: pointer; }
+.catalog-refined .catalog-refined-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+/* Existing shared cards use inline legacy styling. Override only presentation
+   within this catalog while retaining their quick view and admin controls. */
+.catalog-refined .product-card.cps-product-card { min-width: 0; padding: 16px !important; border: 1px solid #e1e6ee !important; border-radius: 18px !important; box-shadow: none !important; }
+.catalog-refined .product-card .cps-card-badges { position: relative !important; top: auto !important; left: auto !important; flex-direction: row !important; flex-wrap: wrap; gap: 5px !important; min-height: 20px; margin-bottom: 10px; }
+.catalog-refined .product-card .cps-card-media { min-height: 0 !important; background: #f6f8fb !important; border-radius: 12px !important; margin-bottom: 16px !important; aspect-ratio: 1; }
+.catalog-refined .product-card .product-image { min-height: 0; background: transparent; }
+.catalog-refined .product-card .product-quick-view-btn { min-height: 32px; border-radius: 8px !important; box-shadow: none !important; }
+.catalog-refined .product-card .cps-card-name { font-size: 14px !important; min-height: 43px !important; line-height: 1.55 !important; }
+.catalog-refined .product-card .product-brand { color: #6c7f98 !important; font-size: 10px !important; margin-bottom: 8px !important; }
+.catalog-card-specs { list-style: none; margin: 5px 0 12px; padding: 0; display: grid; gap: 5px; min-height: 40px; }
+.catalog-card-specs li { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #6d7c90; font-size: 11px; line-height: 1.5; }
+.catalog-card-specs li::before { content: "·"; color: #387aca; margin-right: 6px; }
+.catalog-refined .product-card .cps-price-current { font-size: 19px !important; letter-spacing: -.5px; color: #1c60be !important; }
+.catalog-refined .product-card .cps-member-box { background: #f3f6fa !important; border: 0 !important; color: #63758c !important; font-size: 10px !important; padding: 8px !important; }
+.catalog-refined .product-card .color-dots { flex-wrap: wrap; gap: 10px !important; padding-block: 6px; }
+.catalog-refined .product-card .color-dots button { width: 22px !important; height: 22px !important; }
+.catalog-card-availability { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 5px; margin-top: auto; padding-block: 10px; font-size: 10px; color: #677b92; }
+.catalog-card-availability button { border: 0; background: none; color: #2169c5; font-size: 11px; padding: 6px 0; cursor: pointer; }
+.catalog-refined .product-card .product-actions { gap: 8px; }
+.catalog-refined .product-card .product-actions .mini-cta { min-height: 36px; display: inline-flex !important; align-items: center; justify-content: center; padding: 8px 14px !important; background: #233f65 !important; border-radius: 9px !important; }
+.catalog-empty-state { text-align: center; padding: 60px 24px; background: #f8fafd; border: 1px dashed #cad9eb; border-radius: 20px; }
+.catalog-empty-state > span { display: block; font-size: 44px; color: #7395bf; }
+.catalog-empty-state h3 { font-size: 21px; margin: 12px 0; }
+.catalog-empty-state p { font-size: 13px; color: #6b7d94; line-height: 1.7; }
+.catalog-empty-state button { background: #2369ce; color: white; border: 0; border-radius: 10px; padding: 13px 20px; margin-top: 12px; cursor: pointer; }
+.catalog-refined :is(button, input, select, a):focus-visible { outline: 3px solid #4a91ef; outline-offset: 3px; }
+@media (hover: hover) and (pointer: fine) {
+  .catalog-refined .product-card.cps-product-card:hover { border-color: #a6c2e9 !important; box-shadow: 0 12px 25px #223b5c0b !important; transform: translateY(-4px); }
+  .catalog-family-pills button:hover { border-color: #b5c9e3; }
+}
+@media (max-width: 1050px) {
+  .catalog-refined .catalog-refined-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .catalog-discover { padding: 24px; }
+}
+@media (max-width: 760px) {
+  .catalog-discover { align-items: stretch; flex-direction: column; padding: 22px 18px; gap: 20px; }
+  .catalog-local-search { flex: auto; min-width: 0; }
+  .catalog-local-search input { font-size: 16px; }
+  .catalog-filter-panel { padding: 14px; }
+  .catalog-family-pills { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 14px; }
+  .catalog-family-pills button { flex-shrink: 0; }
+  .catalog-filter-controls { flex-wrap: wrap; gap: 12px; }
+  .catalog-filter-controls label { min-width: 0; flex: 1 1 140px; }
+  .catalog-filter-controls select { font-size: 16px; }
+  .catalog-refined .catalog-refined-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .catalog-refined .product-card.cps-product-card { padding: 10px !important; border-radius: 14px !important; }
+  .catalog-refined .product-card .cps-price-current { font-size: 16px !important; }
+  .catalog-refined .product-card .cps-card-name { font-size: 12px !important; min-height: 38px !important; }
+  .catalog-refined .product-card .product-brand { flex-wrap: wrap; }
+  .catalog-refined .product-card .product-actions > a { font-size: 11px !important; }
+  .catalog-refined .product-card .product-actions .mini-cta { padding: 8px !important; }
+}
+@media (prefers-reduced-motion: reduce) { .catalog-refined .product-card.cps-product-card:hover { transform: none; } }

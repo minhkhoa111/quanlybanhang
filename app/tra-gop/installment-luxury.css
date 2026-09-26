@@ -1,0 +1,1364 @@
+/* ==========================================================================
+   INFINITY STORE - LUXURY INSTALLMENT & FINANCIAL SIMULATOR DESIGN SYSTEM
+   Theme: Obsidian Luxe · Glassmorphic Bento · Precision Titanium Accent
+   ========================================================================== */
+
+.installment-luxe-page {
+  --lux-bg-root: #070a12;
+  --lux-bg-surface: #0e1424;
+  --lux-bg-card: rgba(18, 26, 44, 0.75);
+  --lux-bg-card-hover: rgba(26, 38, 64, 0.85);
+  --lux-border: rgba(255, 255, 255, 0.08);
+  --lux-border-active: rgba(41, 151, 255, 0.55);
+  --lux-text-primary: #f8fafc;
+  --lux-text-secondary: #94a3b8;
+  --lux-text-muted: #64748b;
+  --lux-blue: #2997ff;
+  --lux-blue-glow: rgba(41, 151, 255, 0.25);
+  --lux-green: #30d158;
+  --lux-green-glow: rgba(48, 209, 88, 0.2);
+  --lux-amber: #f59e0b;
+  --lux-amber-glow: rgba(245, 158, 11, 0.2);
+  --lux-ruby: #e11d48;
+
+  background-color: var(--lux-bg-root);
+  color: var(--lux-text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  padding-bottom: 90px;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   1. HERO SECTION
+   -------------------------------------------------------------------------- */
+.installment-hero {
+  position: relative;
+  padding: 64px 20px 48px;
+  text-align: center;
+  background: radial-gradient(circle at 50% 10%, rgba(41, 151, 255, 0.15) 0%, rgba(7, 10, 18, 0.85) 60%, var(--lux-bg-root) 100%);
+  border-bottom: 1px solid var(--lux-border);
+  overflow: hidden;
+}
+
+.installment-hero-glow {
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(850px, 90vw);
+  height: 400px;
+  background: radial-gradient(circle, rgba(41, 151, 255, 0.22) 0%, rgba(14, 20, 36, 0.05) 55%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+.installment-hero-container {
+  max-width: 1080px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.installment-badge-strip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(41, 151, 255, 0.12);
+  border: 1px solid rgba(41, 151, 255, 0.3);
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--lux-blue);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.installment-hero-title {
+  font-size: clamp(34px, 5.5vw, 58px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  margin: 0 0 16px;
+  background: linear-gradient(180deg, #ffffff 40%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.installment-hero-subtitle {
+  font-size: clamp(15px, 2.2vw, 18px);
+  color: var(--lux-text-secondary);
+  max-width: 680px;
+  margin: 0 auto 36px;
+  line-height: 1.6;
+}
+
+/* 4 Trust Commitments */
+.installment-trust-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.installment-trust-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--lux-border);
+  border-radius: 14px;
+  backdrop-filter: blur(12px);
+  text-align: left;
+}
+
+.installment-trust-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.installment-trust-text strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--lux-text-primary);
+}
+
+.installment-trust-text span {
+  display: block;
+  font-size: 11.5px;
+  color: var(--lux-text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   2. MAIN WORKSPACE CONTAINER (BENTO GRID)
+   -------------------------------------------------------------------------- */
+.installment-workspace {
+  max-width: 1280px;
+  margin: 40px auto 0;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(380px, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+
+/* --------------------------------------------------------------------------
+   3. LEFT COLUMN: PRODUCT DISCOVERY & CONTROLS
+   -------------------------------------------------------------------------- */
+.installment-left-column {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* Panel Containers */
+.installment-panel {
+  background: var(--lux-bg-card);
+  border: 1px solid var(--lux-border);
+  border-radius: 20px;
+  padding: 24px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  transition: border-color 0.2s ease;
+}
+
+.installment-panel:hover {
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.installment-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.installment-panel-head h2 {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.installment-step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: var(--lux-blue);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.installment-panel-subtitle {
+  font-size: 13px;
+  color: var(--lux-text-secondary);
+  margin-top: 4px;
+}
+
+/* Cascading Brand & Model Quick Selector */
+.installment-quick-picker-row {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 14px;
+  margin-bottom: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--lux-border);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.installment-select-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.installment-select-group label {
+  font-size: 11.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--lux-blue);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.installment-select-dropdown {
+  width: 100%;
+  height: 46px;
+  padding: 0 14px;
+  background: rgba(10, 15, 28, 0.95);
+  border: 1px solid var(--lux-border);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 13.5px;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.installment-select-dropdown:focus {
+  border-color: var(--lux-blue);
+  box-shadow: 0 0 0 3px rgba(41, 151, 255, 0.18);
+}
+
+.installment-select-dropdown option {
+  background: #0e1526;
+  color: #fff;
+  padding: 8px 12px;
+}
+
+/* Category Filter Tabs */
+.installment-category-tabs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  margin-bottom: 18px;
+  scrollbar-width: none;
+}
+
+.installment-category-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.installment-cat-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--lux-border);
+  color: var(--lux-text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.installment-cat-btn:hover {
+  background: rgba(255, 255, 255, 0.09);
+  color: var(--lux-text-primary);
+}
+
+.installment-cat-btn.active {
+  background: rgba(41, 151, 255, 0.15);
+  border-color: var(--lux-blue);
+  color: #ffffff;
+  box-shadow: 0 0 16px var(--lux-blue-glow);
+}
+
+/* Live Search Bar */
+.installment-search-box {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.installment-search-input {
+  width: 100%;
+  box-sizing: border-box;
+  height: 48px;
+  padding: 0 44px 0 42px;
+  background: rgba(10, 15, 28, 0.8);
+  border: 1px solid var(--lux-border);
+  border-radius: 12px;
+  color: var(--lux-text-primary);
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.installment-search-input:focus {
+  border-color: var(--lux-blue);
+  box-shadow: 0 0 0 3px rgba(41, 151, 255, 0.15);
+}
+
+.installment-search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--lux-text-muted);
+  font-size: 16px;
+  pointer-events: none;
+}
+
+.installment-search-clear {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: var(--lux-text-secondary);
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* Product Cards Mini Grid / Picker */
+.installment-product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 14px;
+  max-height: 420px;
+  overflow-y: auto;
+  padding-right: 6px;
+  margin-bottom: 18px;
+}
+
+/* Custom scrollbar for product picker */
+.installment-product-grid::-webkit-scrollbar {
+  width: 6px;
+}
+.installment-product-grid::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+.installment-product-item {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--lux-border);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: relative;
+  text-align: left;
+}
+
+.installment-product-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.installment-product-item.is-selected {
+  background: rgba(41, 151, 255, 0.12);
+  border-color: var(--lux-blue);
+  box-shadow: 0 4px 20px var(--lux-blue-glow);
+}
+
+.installment-item-thumb {
+  position: relative;
+  width: 100%;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.installment-item-img {
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.installment-product-item:hover .installment-item-img {
+  transform: scale(1.05);
+}
+
+.installment-item-badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background: rgba(225, 29, 72, 0.85);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.02em;
+}
+
+.installment-item-info {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.installment-item-cat {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--lux-blue);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.installment-item-name {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--lux-text-primary);
+  margin-bottom: 6px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 35px;
+}
+
+.installment-item-price {
+  font-size: 14px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-top: auto;
+}
+
+.installment-item-monthly-estimate {
+  font-size: 11px;
+  color: var(--lux-green);
+  font-weight: 600;
+  margin-top: 3px;
+}
+
+/* Active Selected Product Showcase Card */
+.installment-selected-hero-box {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: linear-gradient(135deg, rgba(41, 151, 255, 0.12) 0%, rgba(20, 30, 52, 0.6) 100%);
+  border: 1px solid rgba(41, 151, 255, 0.35);
+  border-radius: 16px;
+  padding: 16px 20px;
+  margin-top: 14px;
+}
+
+.installment-selected-thumb {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 10px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.installment-selected-meta {
+  flex-grow: 1;
+}
+
+.installment-selected-meta h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  color: #fff;
+}
+
+.installment-selected-meta p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--lux-text-secondary);
+}
+
+.installment-selected-price {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--lux-blue);
+  margin-top: 4px;
+}
+
+/* Custom Amount Mode */
+.installment-custom-amount-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--lux-border);
+  border-radius: 12px;
+  padding: 14px 18px;
+}
+
+.installment-custom-money-input-wrap {
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--lux-border);
+  border-radius: 10px;
+  padding: 0 14px;
+  height: 46px;
+}
+
+.installment-custom-money-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 800;
+  width: 170px;
+  font-variant-numeric: tabular-nums;
+}
+
+.installment-custom-money-input-wrap strong {
+  color: var(--lux-text-muted);
+  font-size: 13px;
+  margin-left: 6px;
+}
+
+/* --------------------------------------------------------------------------
+   4. STEP 2: FINANCING METHOD SELECTOR (Mode Switcher)
+   -------------------------------------------------------------------------- */
+.installment-mode-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.installment-mode-btn {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--lux-border);
+  border-radius: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.installment-mode-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.installment-mode-btn.active {
+  background: rgba(41, 151, 255, 0.12);
+  border-color: var(--lux-blue);
+  box-shadow: 0 4px 20px var(--lux-blue-glow);
+}
+
+.installment-mode-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.installment-mode-title {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.installment-mode-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(48, 209, 88, 0.15);
+  color: var(--lux-green);
+  border: 1px solid rgba(48, 209, 88, 0.3);
+}
+
+.installment-mode-desc {
+  font-size: 12px;
+  color: var(--lux-text-secondary);
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Down Payment Controls */
+.installment-param-group {
+  margin-bottom: 24px;
+}
+
+.installment-param-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.installment-param-label {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--lux-text-primary);
+}
+
+.installment-param-value-tag {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--lux-blue);
+  background: rgba(41, 151, 255, 0.12);
+  padding: 4px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(41, 151, 255, 0.25);
+}
+
+/* Range Slider */
+.installment-range-slider {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  outline: none;
+  -webkit-appearance: none;
+  margin-bottom: 14px;
+  cursor: pointer;
+}
+
+.installment-range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--lux-blue);
+  cursor: pointer;
+  box-shadow: 0 0 12px var(--lux-blue-glow);
+  border: 2px solid #ffffff;
+  transition: transform 0.1s ease;
+}
+
+.installment-range-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+/* Quick Percent Buttons */
+.installment-quick-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.installment-chip-btn {
+  flex: 1;
+  min-width: 58px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--lux-border);
+  border-radius: 10px;
+  color: var(--lux-text-secondary);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.18s ease;
+}
+
+.installment-chip-btn:hover {
+  background: rgba(255, 255, 255, 0.09);
+  color: #fff;
+}
+
+.installment-chip-btn.active {
+  background: rgba(41, 151, 255, 0.2);
+  border-color: var(--lux-blue);
+  color: #fff;
+}
+
+/* Term Selector Cards */
+.installment-term-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 10px;
+}
+
+.installment-term-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--lux-border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.installment-term-card:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.installment-term-card.active {
+  background: rgba(41, 151, 255, 0.14);
+  border-color: var(--lux-blue);
+  box-shadow: 0 4px 16px var(--lux-blue-glow);
+}
+
+.installment-term-months {
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.installment-term-price {
+  font-size: 11px;
+  color: var(--lux-green);
+  font-weight: 700;
+  margin-top: 3px;
+}
+
+.installment-term-badge {
+  font-size: 9.5px;
+  color: var(--lux-text-muted);
+  margin-top: 2px;
+}
+
+/* Partner Logos Grid */
+.installment-partner-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.installment-partner-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--lux-border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.installment-partner-card:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.installment-partner-card.active {
+  background: rgba(41, 151, 255, 0.12);
+  border-color: var(--lux-blue);
+}
+
+.installment-partner-logo-box {
+  width: 44px;
+  height: 28px;
+  background: #ffffff;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 4px;
+}
+
+.installment-partner-logo-box img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.installment-partner-name {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.installment-partner-rate {
+  font-size: 10.5px;
+  color: var(--lux-text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   5. RIGHT COLUMN: STICKY LUXURY RESULT & CONSULTATION
+   -------------------------------------------------------------------------- */
+.installment-right-column {
+  position: sticky;
+  top: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.installment-result-card {
+  background: linear-gradient(160deg, #101c34 0%, #09101d 100%);
+  border: 1px solid rgba(41, 151, 255, 0.35);
+  border-radius: 22px;
+  padding: 28px 24px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(41, 151, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.installment-result-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #2997ff 0%, #30d158 50%, #2997ff 100%);
+}
+
+.installment-result-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.installment-result-tag {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--lux-blue);
+}
+
+.installment-result-pill {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(48, 209, 88, 0.15);
+  color: var(--lux-green);
+  border: 1px solid rgba(48, 209, 88, 0.3);
+}
+
+.installment-main-payment {
+  margin: 12px 0 6px;
+}
+
+.installment-monthly-number {
+  font-size: clamp(32px, 3.8vw, 44px);
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.installment-monthly-unit {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--lux-text-secondary);
+  margin-left: 6px;
+}
+
+.installment-daily-quote {
+  font-size: 13px;
+  color: var(--lux-text-secondary);
+  margin-bottom: 22px;
+}
+
+.installment-daily-quote strong {
+  color: var(--lux-green);
+}
+
+/* Financial Breakdown Table */
+.installment-breakdown-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 22px;
+}
+
+.installment-breakdown-table tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.installment-breakdown-table td {
+  padding: 10px 0;
+  font-size: 13px;
+}
+
+.installment-breakdown-table td:first-child {
+  color: var(--lux-text-secondary);
+}
+
+.installment-breakdown-table td:last-child {
+  text-align: right;
+  font-weight: 700;
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+}
+
+.installment-breakdown-table tr.highlight td:last-child {
+  color: var(--lux-blue);
+  font-size: 14px;
+}
+
+.installment-breakdown-table tr.total-row {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-bottom: none;
+}
+
+.installment-breakdown-table tr.total-row td {
+  padding-top: 14px;
+  font-weight: 800;
+}
+
+.installment-breakdown-table tr.total-row td:last-child {
+  color: #ffffff;
+  font-size: 15px;
+}
+
+/* Action CTA Buttons */
+.installment-action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.installment-btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 50px;
+  background: linear-gradient(135deg, #2997ff 0%, #0077ed 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  font-size: 14.5px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 4px 18px var(--lux-blue-glow);
+  transition: all 0.2s ease;
+}
+
+.installment-btn-primary:hover {
+  background: linear-gradient(135deg, #389eff 0%, #0066cc 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 22px rgba(41, 151, 255, 0.4);
+}
+
+.installment-btn-secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--lux-border);
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.installment-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Consultation Form Modal / Drawer */
+.installment-consult-card {
+  background: var(--lux-bg-card);
+  border: 1px solid var(--lux-border);
+  border-radius: 20px;
+  padding: 24px;
+}
+
+.installment-consult-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 6px;
+  color: #ffffff;
+}
+
+.installment-consult-card p {
+  font-size: 12px;
+  color: var(--lux-text-secondary);
+  margin: 0 0 16px;
+}
+
+.installment-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.installment-form-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--lux-text-secondary);
+}
+
+.installment-form-input,
+.installment-form-select {
+  height: 44px;
+  padding: 0 14px;
+  background: rgba(10, 15, 28, 0.8);
+  border: 1px solid var(--lux-border);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 13.5px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.installment-form-input:focus,
+.installment-form-select:focus {
+  border-color: var(--lux-blue);
+}
+
+.installment-consult-success {
+  padding: 20px;
+  background: rgba(48, 209, 88, 0.1);
+  border: 1px solid rgba(48, 209, 88, 0.3);
+  border-radius: 14px;
+  text-align: center;
+}
+
+.installment-consult-success strong {
+  display: block;
+  font-size: 15px;
+  color: var(--lux-green);
+  margin-bottom: 6px;
+}
+
+.installment-consult-success p {
+  font-size: 12.5px;
+  color: var(--lux-text-secondary);
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   6. AMORTIZATION SCHEDULE TABLE (Interactive Schedule Modal)
+   -------------------------------------------------------------------------- */
+.installment-schedule-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(10px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.installment-schedule-content {
+  background: #0e1628;
+  border: 1px solid var(--lux-border);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 680px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+}
+
+.installment-schedule-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--lux-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.installment-schedule-header h3 {
+  margin: 0;
+  font-size: 17px;
+  color: #fff;
+}
+
+.installment-schedule-close {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.installment-schedule-body {
+  padding: 20px 24px;
+  overflow-y: auto;
+}
+
+.installment-schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.installment-schedule-table th {
+  text-align: left;
+  padding: 10px 8px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  color: var(--lux-text-secondary);
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.installment-schedule-table td {
+  padding: 10px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-variant-numeric: tabular-nums;
+}
+
+.installment-schedule-table tr:hover td {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* --------------------------------------------------------------------------
+   7. HOW IT WORKS & FAQ
+   -------------------------------------------------------------------------- */
+.installment-info-section {
+  max-width: 1280px;
+  margin: 60px auto 0;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+.installment-steps-card,
+.installment-faq-card {
+  background: var(--lux-bg-card);
+  border: 1px solid var(--lux-border);
+  border-radius: 20px;
+  padding: 28px;
+}
+
+.installment-steps-card h2,
+.installment-faq-card h2 {
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0 0 20px;
+  color: #ffffff;
+}
+
+.installment-steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.installment-step-item {
+  display: flex;
+  gap: 16px;
+}
+
+.installment-step-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: rgba(41, 151, 255, 0.15);
+  border: 1px solid rgba(41, 151, 255, 0.3);
+  color: var(--lux-blue);
+  font-size: 14px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.installment-step-content strong {
+  display: block;
+  font-size: 14.5px;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.installment-step-content p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--lux-text-secondary);
+  line-height: 1.5;
+}
+
+/* FAQ Accordions */
+.installment-faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.installment-faq-item {
+  border: 1px solid var(--lux-border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.installment-faq-question {
+  width: 100%;
+  padding: 14px 16px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 13.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  text-align: left;
+}
+
+.installment-faq-answer {
+  padding: 0 16px 14px;
+  font-size: 12.5px;
+  color: var(--lux-text-secondary);
+  line-height: 1.55;
+}
+
+/* --------------------------------------------------------------------------
+   8. RESPONSIVE OPTIMIZATIONS (iPhone 390px, Tablets & Desktop)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .installment-workspace {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .installment-right-column {
+    position: static;
+  }
+  .installment-trust-strip {
+    grid-template-columns: 1fr 1fr;
+  }
+  .installment-info-section {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .installment-hero {
+    padding: 44px 16px 36px;
+  }
+  .installment-trust-strip {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .installment-workspace {
+    padding: 0 14px;
+    margin-top: 24px;
+  }
+  .installment-panel {
+    padding: 18px 14px;
+    border-radius: 16px;
+  }
+  .installment-quick-picker-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 12px;
+  }
+  .installment-mode-tabs {
+    grid-template-columns: 1fr;
+  }
+  .installment-product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .installment-product-item {
+    padding: 10px;
+  }
+  .installment-item-thumb {
+    height: 90px;
+  }
+  .installment-selected-hero-box {
+    flex-direction: column;
+    text-align: center;
+  }
+  .installment-term-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .installment-custom-amount-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .installment-custom-money-input-wrap {
+    width: 100%;
+  }
+  .installment-custom-money-input {
+    width: 100%;
+  }
+  .installment-result-card {
+    padding: 22px 18px;
+    border-radius: 18px;
+  }
+  .installment-info-section {
+    margin-top: 40px;
+    padding: 0 14px;
+  }
+  .installment-steps-card,
+  .installment-faq-card {
+    padding: 20px 16px;
+    border-radius: 16px;
+  }
+}

@@ -57,7 +57,7 @@ export default async function TasksPage({ searchParams }: { searchParams: Promis
 }
 
 function TaskMetric({ label, value, note }: { label: string; value: number; note: string }) { return <article><span>{label}</span><strong>{value}</strong><small>{note}</small></article>; }
-function roleLabel(role: string) { if (role === "manager") return "Quản lý"; if (role === "consultant") return "Tư vấn"; if (role === "warranty") return "Bảo hành"; if (role === "repair") return "Sửa chữa"; return "Bán hàng"; }
+function roleLabel(role: string) { if (role === "manager") return "Quản lý"; if (role === "consultant") return "Tư vấn"; if (role === "warranty") return "Bảo hành"; if (role === "repair") return "Sửa chữa"; if (role === "inventory") return "Kho"; return "Bán hàng"; }
 function priorityLabel(value: string) { if (value === "urgent") return "Khẩn cấp"; if (value === "high") return "Ưu tiên cao"; if (value === "low") return "Ưu tiên thấp"; return "Bình thường"; }
 function statusLabel(value: string) { if (value === "in_progress") return "Đang thực hiện"; if (value === "review") return "Chờ duyệt"; if (value === "completed") return "Hoàn thành"; return "Đã giao"; }
 function formatDate(value: string) { return new Date(`${value}T00:00:00`).toLocaleDateString("vi-VN"); }

@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import { Nunito_Sans } from "next/font/google";
-import Link from "next/link";
-import Image from "next/image";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import "./red-theme.css";
 import "./modern-theme.css";
@@ -11,32 +9,55 @@ import "./category-menu.css";
 import "./home-showcase.css";
 import "./hero-vibe.css";
 import "./catalog-storefront.css";
-import MegaMenu from "./components/MegaMenu";
-import MobileMenuToggle from "./components/MobileMenuToggle";
-import PrimaryNav from "./components/PrimaryNav";
+import "./home-retail.css";
+import "./mobile-storefront.css";
+import "./admin-mobile-orbit.css";
+import "./apple-3d-luxury.css";
+import "./apple-tuandigi.css";
+import "./product-detail-2026.css";
+import "./footer-luxury-2026.css";
+import "./preorder.css";
+import "./admin-login/admin-login-2026.css";
+import "./infinity-theme.css";
+import "./smember-theme.css";
+import "./tra-gop/installment-luxury.css";
+import "./admin/products/products-premium.css";
+import "./storefront-refresh.css";
+import StorefrontHeader from "./components/StorefrontHeader";
+import StorefrontFooter from "./components/StorefrontFooter";
+import { CartProvider } from "@/app/cart";
 import CartHeaderLink from "./components/CartHeaderLink";
-import AccountHeaderLink from "./components/AccountHeaderLink";
-import { CartProvider } from "./cart";
 import MotionSystem from "./components/MotionSystem";
 import LocalChatbot from "./components/LocalChatbot";
 import MobileAppNav from "./components/MobileAppNav";
 import PwaInstaller from "./components/PwaInstaller";
-import InfinityBrandMark from "./components/InfinityBrandMark";
 import { getPublicProducts } from "@/db/products";
 
-const siteFont = Nunito_Sans({
+const siteFont = Inter({
   variable: "--font-site",
-  subsets: ["latin", "latin-ext", "vietnamese"],
+  subsets: ["latin", "vietnamese"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: { default: "Infinity Company | Điện thoại & đặt hàng", template: "%s | Infinity Company" },
-  description: "iPhone, Samsung và Android chính hãng. Tư vấn chọn máy theo nhu cầu tại TP.HCM.",
-  openGraph: { title: "Infinity Company", description: "Chọn đúng máy. Không mua theo cảm tính.", type: "website", images: ["/og.png"] },
-  twitter: { card: "summary_large_image", images: ["/og.png"] },
+  metadataBase: new URL("https://infinityshop.click"),
+  title: { default: "Infinity Store | Điện thoại & đặt hàng", template: "%s | Infinity Store" },
+  description: "iPhone, iPad, MacBook và Laptop chính hãng tại Infinity Store..",
+  openGraph: { title: "Infinity Store", description: "Chọn đúng máy. Không mua theo cảm tính.", type: "website", url: "https://infinityshop.click", siteName: "Infinity Store", images: ["/og-storefront.png"] },
+  twitter: { card: "summary_large_image", images: ["/og-storefront.png"] },
   manifest: "/manifest.webmanifest",
-  appleWebApp: { capable: true, title: "Infinity Company", statusBarStyle: "default" },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "64x64" },
+      { url: "/brand/if-emblem-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/brand/if-emblem-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
+  appleWebApp: { capable: true, title: "Infinity Store", statusBarStyle: "default" },
+  other: { "store:phone": "02879797999" },
 };
 
 export const viewport = {
@@ -46,76 +67,22 @@ export const viewport = {
   themeColor: "#ffffff",
 };
 
-function Header() {
-  return <header className="site-header">
-      <div className="shell nav-wrap">
-        <Link className="logo infinity-company-logo" href="/" aria-label="Infinity Company - Trang chủ"><InfinityBrandMark /><span>Infinity Company</span></Link>
-        <PrimaryNav />
-        <MobileMenuToggle />
-        <MegaMenu />
-        <AccountHeaderLink />
-        <CartHeaderLink />
-        <Link className="nav-cta" href="/tu-van">Đặt Hàng Ngay <span>↗</span></Link>
-      </div>
-    </header>;
-}
-
-function Footer() {
-  return <footer className="site-footer">
-    <div className="shell footer-grid">
-        <div className="footer-brand"><Link className="logo logo-footer infinity-company-logo" href="/"><InfinityBrandMark /><span>Infinity Company</span></Link><p>Điện thoại phù hợp là chiếc máy giải quyết tốt nhu cầu của bạn — không nhất thiết là chiếc đắt nhất.</p></div>
-      <div><h3>Sản phẩm</h3><Link href="/iphone">iPhone</Link><Link href="/ipad">iPad</Link><Link href="/macbook">MacBook</Link><Link href="/mac-mini-studio">Mac mini &amp; Mac Studio</Link><Link href="/imac">iMac</Link><Link href="/samsung">Samsung Galaxy</Link><Link href="/android">Android khác</Link><Link href="/laptop">Laptop</Link><Link href="/laptop-cu">Laptop cũ</Link><Link href="/phu-kien">Phụ kiện</Link></div>
-      <div><h3>Hỗ trợ</h3><Link href="/bao-hanh">Tra cứu bảo hành</Link><Link href="/tai-khoan">Hóa đơn member</Link><Link href="/tu-van">Đăng ký tư vấn</Link><a href="tel:02879797999">Gọi cửa hàng</a><a href="https://zalo.me/02879797999" target="_blank" rel="noreferrer">Nhắn Zalo</a><Link href="/admin-login">Cổng quản trị cửa hàng</Link></div>
-      <div className="footer-contact">
-        <h3>Ghé Infinity Company</h3>
-        <p>122/4 Cô Giang<br />P.Cầu Kiệu, TP.HCM</p>
-        <p><strong>SMS/ZALO</strong><br /><a href="tel:02879797999">02879797999</a></p>
-        <div className="footer-map">
-          <iframe
-            title="Infinity Company - Cửa hàng"
-            src="https://www.google.com/maps?q=122/4%20C%C3%B4%20Giang%2C%20P.%20C%E1%BA%A7u%20Ki%E1%BA%BFu%2C%20TP.HCM&output=embed"
-            width="260"
-            height="160"
-            style={{ border: 0 }}
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
-        </div>
-      </div>
-      <section className="footer-finance footer-finance-compact" aria-labelledby="footer-finance-title">
-        <div className="finance-copy">
-          <span>Thanh toán linh hoạt</span>
-          <h2 id="footer-finance-title">Hỗ trợ trả góp qua công ty tài chính</h2>
-          <p>Chọn đơn vị phù hợp, nhân viên Infinity Company sẽ tư vấn hồ sơ và phương án thanh toán theo nhu cầu.</p>
-          <Link className="finance-contact" href="/tu-van">Nhận tư vấn trả góp <span aria-hidden="true">→</span></Link>
-        </div>
-        <div className="finance-list" aria-label="Các công ty tài chính hỗ trợ trả góp">
-          <Link className="finance-partner" href="/tu-van" aria-label="Tư vấn trả góp qua FE Credit">
-            <Image src="/finance/fe-credit-official.svg" alt="FE Credit" width={292} height={31} unoptimized />
-            <span aria-hidden="true">→</span>
-          </Link>
-          <Link className="finance-partner" href="/tu-van" aria-label="Tư vấn trả góp qua HD Saison">
-            <Image src="/finance/hd-saison-official.png" alt="HD Saison" width={365} height={134} unoptimized />
-            <span aria-hidden="true">→</span>
-          </Link>
-          <Link className="finance-partner" href="/tu-van" aria-label="Tư vấn trả góp qua Kredivo">
-            <Image src="/finance/kredivo-official.png" alt="Kredivo - Buy now, pay later" width={1000} height={340} unoptimized />
-            <span aria-hidden="true">→</span>
-          </Link>
-          <Link className="finance-partner" href="/tu-van" aria-label="Tư vấn trả góp qua Shinhan Finance">
-            <Image src="/finance/shinhan-finance-official.png" alt="Shinhan Finance" width={500} height={64} unoptimized />
-            <span aria-hidden="true">→</span>
-          </Link>
-          <p className="finance-note">Khoản vay và hạn mức phụ thuộc vào điều kiện xét duyệt của từng công ty tài chính.</p>
-        </div>
-      </section>
-    </div>
-    <div className="shell footer-bottom"><span>© 2026 Infinity Company</span><span>Ảnh sản phẩm minh họa từ website chính thức của Apple, Samsung, Xiaomi và OPPO.</span></div>
-  </footer>;
-}
-
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const catalog = await getPublicProducts();
   const chatbotProducts = catalog.map(({ slug, name, brand, price, tagline, stock, active }) => ({ slug, name, brand, price, tagline, stock, active }));
-  return <html lang="vi"><body className={siteFont.variable}><CartProvider><Header /><MotionSystem>{children}<Footer /></MotionSystem><LocalChatbot products={chatbotProducts} /><PwaInstaller /><MobileAppNav /></CartProvider></body></html>;
+  return (
+    <html lang="vi">
+      <body className={siteFont.variable}>
+        <CartProvider>
+          <div className="sr-only" aria-hidden="true" style={{ display: "none" }}><CartHeaderLink /></div>
+          <StorefrontHeader />
+          <MotionSystem>{children}</MotionSystem>
+          <StorefrontFooter />
+          <LocalChatbot products={chatbotProducts} />
+          <PwaInstaller />
+          <MobileAppNav />
+        </CartProvider>
+      </body>
+    </html>
+  );
 }

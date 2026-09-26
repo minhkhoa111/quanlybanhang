@@ -9,13 +9,13 @@ const items = [
   { label: "Sản phẩm", href: "/iphone", icon: "shop" },
   { label: "Giỏ hàng", href: "/gio-hang", icon: "cart" },
   { label: "Bảo hành", href: "/bao-hanh", icon: "shield" },
-  { label: "Tài khoản", href: "/tai-khoan", icon: "user" },
+  { label: "Member", href: "/member", icon: "user" },
 ] as const;
 
 export default function MobileAppNav() {
   const pathname = usePathname();
   const { count } = useCart();
-  if (pathname.startsWith("/admin") || pathname.startsWith("/quan-ly")) return null;
+  if (pathname.startsWith("/admin") || pathname.startsWith("/quan-ly") || pathname.startsWith("/dat-truoc")) return null;
 
   return (
     <nav className="mobile-app-nav" aria-label="Điều hướng ứng dụng">

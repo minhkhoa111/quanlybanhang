@@ -37,6 +37,10 @@ const catalogSeedProducts = seedProducts.map((product) => ({
   ...((catalogEnrichment as Record<string, Partial<Product>>)[product.slug] ?? {}),
 }));
 
+function isRemovedCategory(category: string) {
+  return category === "samsung" || category === "samsung-cu";
+}
+
 function db(): D1Database {
   const binding = (env as unknown as Bindings).DB;
   if (!binding) throw new Error("Cơ sở dữ liệu sản phẩm chưa sẵn sàng.");
@@ -77,6 +81,7 @@ async function initializeProductStore() {
       stock INTEGER NOT NULL DEFAULT 0,
       status TEXT NOT NULL DEFAULT 'active',
       tags_json TEXT NOT NULL DEFAULT '[]',
+      condition TEXT NOT NULL DEFAULT 'new',
       seo_title TEXT NOT NULL DEFAULT '',
       seo_description TEXT NOT NULL DEFAULT '',
       variants_json TEXT NOT NULL DEFAULT '[]',
@@ -93,6 +98,7 @@ async function initializeProductStore() {
     ),
   ]);
   await ensureProductColumns(database);
+  await database.prepare("DELETE FROM products WHERE category IN ('samsung', 'samsung-cu')").run();
 
   const now = Date.now();
   await database.batch(
@@ -100,8 +106,8 @@ async function initializeProductStore() {
       database
         .prepare(`INSERT OR IGNORE INTO products
           (id, slug, name, brand, category, image, images_json, badge, tagline, price, selling_price,
-           variants_json, colors_json, specs_json, featured, active, source, created_at, updated_at)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?)`)
+           stock, status, tags_json, condition, variants_json, colors_json, specs_json, featured, active, source, created_at, updated_at)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?)`)
         .bind(
           `seed-${product.slug}`,
           product.slug,
@@ -114,6 +120,10 @@ async function initializeProductStore() {
           product.tagline,
           product.price,
           product.sellingPrice ?? product.price,
+          Number(product.stock ?? 0),
+          product.status ?? "active",
+          JSON.stringify(product.tags ?? []),
+          product.condition ?? (product.name.toLowerCase().includes("like new") || product.name.toLowerCase().includes("cũ") ? "like-new" : "new"),
           JSON.stringify(product.variants ?? []),
           JSON.stringify(product.colors),
           JSON.stringify(product.specs),
@@ -124,6 +134,34 @@ async function initializeProductStore() {
         ),
     ),
   );
+
+  // Upgrade the earlier reference labels once, without changing store prices or inventory.
+  const officialIphones = catalogSeedProducts.filter((product) => product.tags?.includes("iphone-18-official"));
+  if (officialIphones.length) {
+    await database.batch(officialIphones.map((product) => database.prepare(`UPDATE products SET
+      badge = CASE WHEN badge = 'Giá tham khảo' THEN ? ELSE badge END,
+      tagline = CASE WHEN tagline LIKE '%Giá tham khảo shop Việt Nam%' THEN ? ELSE tagline END,
+      description = CASE WHEN description LIKE 'Giá tham khảo niêm yết%' OR description = '' THEN ? ELSE description END,
+      tags_json = REPLACE(tags_json, 'retail-reference-2026-09-22', 'iphone-18-official')
+      WHERE slug = ? AND tags_json LIKE '%retail-reference-2026-09-22%'`)
+      .bind(product.badge, product.tagline, product.description ?? "", product.slug)));
+  }
+
+  const expansionSeeds = catalogSeedProducts.filter((product) => product.tags?.includes("catalog expansion"));
+  if (expansionSeeds.length) {
+    await database.batch(expansionSeeds.map((product) =>
+      database.prepare(`UPDATE products
+        SET stock = ?, status = ?, tags_json = ?, updated_at = ?
+        WHERE id = ? AND stock = 0 AND tags_json = '[]'`)
+        .bind(
+          Number(product.stock ?? 0),
+          product.status ?? "active",
+          JSON.stringify(product.tags ?? []),
+          now,
+          `seed-${product.slug}`,
+        ),
+    ));
+  }
 }
 
 export async function getPublicProducts(
@@ -135,20 +173,25 @@ export async function getPublicProducts(
       ? db().prepare(
           "SELECT * FROM products WHERE active = 1 AND category IN ('macbook', 'macbook-air', 'macbook-pro') ORDER BY featured DESC, created_at ASC",
         )
+      : category === "laptop"
+        ? db().prepare(
+            "SELECT * FROM products WHERE active = 1 AND category IN ('laptop', 'laptop-cu') ORDER BY featured DESC, created_at ASC",
+          )
       : category
         ? db().prepare(
             "SELECT * FROM products WHERE active = 1 AND category = ? ORDER BY featured DESC, created_at ASC",
           ).bind(category)
         : db().prepare(
-            "SELECT * FROM products WHERE active = 1 AND category NOT IN ('tablet') ORDER BY featured DESC, created_at ASC",
+            "SELECT * FROM products WHERE active = 1 AND category NOT IN ('tablet', 'samsung', 'samsung-cu') ORDER BY featured DESC, created_at ASC",
           );
     const result = await statement.all<Record<string, unknown>>();
     return consolidatePublicProducts(result.results.map(mapRow).map(enrichProduct));
   } catch {
     return consolidatePublicProducts(catalogSeedProducts
       .filter((product) => {
-        if (!category) return product.category !== "tablet";
+        if (!category) return !["tablet", "samsung", "samsung-cu"].includes(product.category);
         if (category === "macbook") return product.category.startsWith("macbook");
+        if (category === "laptop") return product.category === "laptop" || product.category === "laptop-cu";
         return product.category === category;
       })
       .map((product, index) => ({
@@ -177,8 +220,8 @@ export async function reseedProductStore() {
       database
         .prepare(`INSERT OR REPLACE INTO products
           (id, slug, name, brand, category, image, images_json, badge, tagline, price, selling_price,
-           variants_json, colors_json, specs_json, featured, active, source, created_at, updated_at)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+           stock, status, tags_json, condition, variants_json, colors_json, specs_json, featured, active, source, created_at, updated_at)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
         .bind(
           `seed-${product.slug}`,
           product.slug,
@@ -191,6 +234,10 @@ export async function reseedProductStore() {
           product.tagline,
           product.price,
           product.sellingPrice ?? product.price,
+          Number(product.stock ?? 0),
+          product.status ?? "active",
+          JSON.stringify(product.tags ?? []),
+          product.condition ?? (product.name.toLowerCase().includes("like new") || product.name.toLowerCase().includes("cũ") ? "like-new" : "new"),
           JSON.stringify(product.variants ?? []),
           JSON.stringify(product.colors),
           JSON.stringify(product.specs),
@@ -224,7 +271,7 @@ export async function getProductBySlug(
         .map(enrichProduct)
         .find((item) => publicFamilyKey(item.slug) === slug);
     }
-    if (!target) return undefined;
+    if (!target || isRemovedCategory(target.category)) return undefined;
     const family = publicFamilyKey(target.slug);
     const related = await db()
       .prepare("SELECT * FROM products WHERE active = 1 AND category = ? ORDER BY created_at ASC")
@@ -234,7 +281,7 @@ export async function getProductBySlug(
       .find((product) => publicFamilyKey(product.slug) === family);
   } catch {
     const target = catalogSeedProducts.find((item) => item.slug === slug || publicFamilyKey(item.slug) === slug);
-    if (!target) return undefined;
+    if (!target || isRemovedCategory(target.category)) return undefined;
     return consolidatePublicProducts(catalogSeedProducts
       .filter((item) => item.category === target.category)
       .map((product, index) => enrichProduct({ ...product, id: `seed-${product.slug}`, active: true, createdAt: index, updatedAt: index })))
@@ -245,7 +292,7 @@ export async function getProductBySlug(
 export async function getManagedProducts(): Promise<ManagedProduct[]> {
   await ensureProductStore();
   const result = await db()
-    .prepare("SELECT * FROM products ORDER BY active DESC, updated_at DESC")
+    .prepare("SELECT * FROM products WHERE category NOT IN ('samsung', 'samsung-cu') ORDER BY active DESC, updated_at DESC")
     .all<Record<string, unknown>>();
   return result.results.map(mapRow).map(enrichProduct);
 }
@@ -256,7 +303,8 @@ export async function getManagedProductById(id: string): Promise<ManagedProduct 
     .prepare("SELECT * FROM products WHERE id = ? LIMIT 1")
     .bind(id)
     .first<Record<string, unknown>>();
-  return row ? enrichProduct(mapRow(row)) : undefined;
+  const product = row ? enrichProduct(mapRow(row)) : undefined;
+  return product && !isRemovedCategory(product.category) ? product : undefined;
 }
 
 export async function saveManagedProduct(input: ProductInput) {
@@ -351,6 +399,7 @@ export async function deleteManagedProduct(id: string) {
 }
 
 function mapRow(row: Record<string, unknown>): ManagedProduct {
+  const cond = row.condition === "like-new" ? "like-new" : "new";
   return {
     id: String(row.id),
     slug: String(row.slug),
@@ -359,6 +408,8 @@ function mapRow(row: Record<string, unknown>): ManagedProduct {
     category: String(row.category) as Product["category"],
     sku: String(row.sku ?? ""),
     description: String(row.description ?? ""),
+    condition: cond,
+    conditionLabel: cond === "like-new" ? "Like New - Đã qua sử dụng" : "New",
     image: String(row.image),
     images: parseStringArray(row.images_json).length ? parseStringArray(row.images_json) : [String(row.image)],
     badge: String(row.badge),
@@ -394,6 +445,7 @@ async function ensureProductColumns(database: D1Database) {
     ["stock", "INTEGER NOT NULL DEFAULT 0"],
     ["status", "TEXT NOT NULL DEFAULT 'active'"],
     ["tags_json", "TEXT NOT NULL DEFAULT '[]'"],
+    ["condition", "TEXT NOT NULL DEFAULT 'new'"],
     ["seo_title", "TEXT NOT NULL DEFAULT ''"],
     ["seo_description", "TEXT NOT NULL DEFAULT ''"],
     ["variants_json", "TEXT NOT NULL DEFAULT '[]'"],
@@ -405,6 +457,12 @@ async function ensureProductColumns(database: D1Database) {
     } catch {
       // Existing databases already have the column.
     }
+  }
+
+  try {
+    await database.prepare("UPDATE products SET condition = 'like-new' WHERE name LIKE '%Like New%' OR name LIKE '%cũ%' OR name LIKE '%99%%' OR name LIKE '%98%%' OR slug LIKE '%like-new%' OR slug LIKE '%cu-%'").run();
+  } catch {
+    // Ignore if error
   }
 }
 

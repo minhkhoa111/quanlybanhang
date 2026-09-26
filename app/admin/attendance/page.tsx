@@ -22,14 +22,14 @@ export default async function AttendancePage({ searchParams }: { searchParams: P
   return (
     <>
       <div className="admin-topline">
-        <div><span>Timekeeping</span><h1>Chấm công nhân viên</h1><p className="admin-subtitle">{isSupervisor ? `Theo dõi tình hình làm việc ${user.role === "owner" ? "toàn hệ thống" : `tại ${user.branch}`}.` : "Quét khuôn mặt bằng camera để chấm công vào hoặc ra về."}</p></div>
+        <div><span>Timekeeping</span><h1>Chấm công khuôn mặt</h1><p className="admin-subtitle">{user.role === "owner" ? "Theo dõi tình hình làm việc toàn hệ thống." : user.role === "manager" ? `Quét khuôn mặt của bạn để chấm công, đồng thời theo dõi nhân sự tại ${user.branch}.` : "Quét khuôn mặt bằng camera để chấm công vào hoặc ra về."}</p></div>
         {isSupervisor && <Link className="admin-button" href="/admin/hr">Quản lý hồ sơ nhân sự</Link>}
       </div>
       {query.status === "checked-in" && <p className="admin-alert success">Đã chấm công vào thành công.</p>}
       {query.status === "checked-out" && <p className="admin-alert success">Đã chấm công ra thành công.</p>}
       {query.error && <p className="admin-alert error">{query.error}</p>}
 
-      {!isSupervisor && <FaceAttendance checkedIn={Boolean(ownToday?.checkIn)} checkedOut={Boolean(ownToday?.checkOut)} />}
+      {user.role !== "owner" && <FaceAttendance checkedIn={Boolean(ownToday?.checkIn)} checkedOut={Boolean(ownToday?.checkOut)} />}
 
       {isSupervisor && <>
         <form className="admin-report-filters admin-attendance-filter"><label><span>Ngày theo dõi</span><input type="date" name="date" defaultValue={selectedDate} /></label><button className="admin-button admin-button-primary">Xem chấm công</button></form>
@@ -51,4 +51,4 @@ export default async function AttendancePage({ searchParams }: { searchParams: P
 function AttendanceMetric({ label, value, note }: { label: string; value: number; note: string }) { return <article><i>◷</i><div><span>{label}</span><strong>{value}</strong><small>{note}</small></div></article>; }
 function formatDate(value: string) { return new Date(`${value}T00:00:00`).toLocaleDateString("vi-VN", { weekday: "long", day: "2-digit", month: "2-digit", year: "numeric" }); }
 function attendanceLabel(value: string) { if (value === "present") return "Có mặt"; if (value === "late") return "Đi trễ"; if (value === "leave") return "Nghỉ phép"; return "Vắng mặt"; }
-function roleLabel(role: string) { if (role === "manager") return "Quản lý"; if (role === "consultant") return "Tư vấn"; if (role === "warranty") return "Bảo hành"; if (role === "repair") return "Sửa chữa"; return "Bán hàng"; }
+function roleLabel(role: string) { if (role === "manager") return "Quản lý"; if (role === "consultant") return "Tư vấn"; if (role === "warranty") return "Bảo hành"; if (role === "repair") return "Sửa chữa"; if (role === "inventory") return "Kho"; return "Bán hàng"; }

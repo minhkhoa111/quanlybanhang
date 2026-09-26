@@ -33,7 +33,6 @@ export default function FilterPanel(){
         <select aria-label="Chọn thương hiệu" value={brand} onChange={(e)=>setBrand(e.target.value)}>
           <option value="">Tất cả thương hiệu</option>
           <option value="Apple">Apple</option>
-          <option value="Samsung">Samsung</option>
           <option value="Xiaomi">Xiaomi</option>
         </select>
         <select aria-label="Khoảng giá" value={priceRange} onChange={(e)=>setPriceRange(e.target.value)}>

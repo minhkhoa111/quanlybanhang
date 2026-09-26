@@ -55,7 +55,7 @@ function value(formData: FormData, key: string) {
 
 function roleValue(formData: FormData): AdminRole {
   const role=value(formData,"role");
-  return role === "manager" || role === "consultant" || role === "warranty" || role === "repair" ? role : "sales";
+  return role === "manager" || role === "consultant" || role === "warranty" || role === "repair" || role === "inventory" ? role : "sales";
 }
 
 function safeReturnTo(value:string){

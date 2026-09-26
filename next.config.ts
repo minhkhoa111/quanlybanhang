@@ -8,7 +8,9 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     serverActions: {
-      bodySizeLimit: "8mb",
+      // Allows several original-quality product images in one admin save.
+      // Individual files are still capped and signature-checked server-side.
+      bodySizeLimit: "80mb",
     },
   },
 };

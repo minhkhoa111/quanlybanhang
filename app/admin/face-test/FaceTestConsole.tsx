@@ -22,6 +22,7 @@ export default function FaceTestConsole({ employees, scopeLabel }: { employees: 
   const [busy, setBusy] = useState<"enroll" | "verify" | "delete" | "">("");
   const [pendingAction, setPendingAction] = useState<FaceAction | "">("");
   const [serverState, setServerState] = useState<"checking" | "online" | "offline">("checking");
+  const [serverError, setServerError] = useState("");
   const [registrations, setRegistrations] = useState<Registration[]>([]);
   const [selectedEmployeeId, setSelectedEmployeeId] = useState(employees.find((employee) => employee.active)?.id || "");
   const [keyword, setKeyword] = useState("");
@@ -51,15 +52,17 @@ export default function FaceTestConsole({ employees, scopeLabel }: { employees: 
 
   const loadRegistrations = useCallback(async () => {
     setServerState("checking");
+    setServerError("");
     try {
       const response = await fetch("/api/face/employees", { cache: "no-store" });
       const data = await response.json() as { employees?: Registration[]; message?: string };
       if (!response.ok) throw new Error(data.message || "Không kết nối được DeepFace.");
       setRegistrations(Array.isArray(data.employees) ? data.employees : []);
       setServerState("online");
-    } catch {
+    } catch (error) {
       setServerState("offline");
       setRegistrations([]);
+      setServerError(error instanceof Error ? error.message : "Không kết nối được máy chủ nhận diện.");
     }
   }, []);
 
@@ -67,6 +70,11 @@ export default function FaceTestConsole({ employees, scopeLabel }: { employees: 
     const timer = window.setTimeout(() => void loadRegistrations(), 100);
     return () => window.clearTimeout(timer);
   }, [loadRegistrations]);
+  useEffect(() => {
+    if (serverState !== "offline") return;
+    const timer = window.setTimeout(() => void loadRegistrations(), 5000);
+    return () => window.clearTimeout(timer);
+  }, [loadRegistrations, serverState]);
   useEffect(() => stopCamera, [stopCamera]);
 
   async function startCamera(employee?: Employee) {
@@ -89,7 +97,7 @@ export default function FaceTestConsole({ employees, scopeLabel }: { employees: 
       cameraCardRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
       return true;
     } catch {
-      setMessage({ kind: "error", title: "Không mở được camera", detail: "Hãy cấp quyền camera cho localhost:3000 rồi thử lại." });
+      setMessage({ kind: "error", title: "Không mở được camera", detail: "Hãy cấp quyền camera rồi thử lại." });
       return false;
     }
   }
@@ -251,22 +259,22 @@ export default function FaceTestConsole({ employees, scopeLabel }: { employees: 
             {cameraOn && <><div className={`face-test-tracker ${faceBox ? "is-tracking" : "is-searching"}`} style={faceBox ? { left: faceBox.left, top: faceBox.top, width: faceBox.width, height: faceBox.height } : undefined}><div className="face-test-frame"><i /><i /><i /><i /></div><div className="face-test-camera-status"><span className={message ? `is-${message.kind}` : busy || pendingAction ? "is-busy" : faceBox ? "is-ready" : ""}>{message?.kind === "success" ? "✓" : message?.kind === "error" ? "×" : busy || pendingAction ? "◎" : faceBox ? "✓" : "◎"}</span><div><strong>{message?.title || (busy === "enroll" ? "Đang lưu khuôn mặt" : busy === "verify" ? "Đang xác minh" : pendingAction && faceBox ? "Giữ khuôn mặt ổn định" : pendingAction ? "Đang tìm khuôn mặt" : faceBox ? "Đã tìm thấy khuôn mặt" : "Đang tìm khuôn mặt")}</strong><small>{message?.detail || (pendingAction && faceBox ? "Hệ thống sẽ tự chụp và xử lý, không cần bấm lại." : pendingAction ? "Đưa khuôn mặt vào camera để hệ thống tự quét." : faceBox ? "Khung đang tự bám theo khuôn mặt." : "Di chuyển khuôn mặt vào vùng camera để quét.")}</small></div></div></div><div className="face-test-scan" /></>}
             <span className="face-test-secure">● Gửi qua proxy bảo mật · Không lộ API key</span>
           </div>
+          <div className="face-test-actions face-test-camera-actions" aria-label="Thao tác khuôn mặt">
+            <button type="button" className="face-test-enroll" disabled={Boolean(busy) || Boolean(pendingAction) || !selectedEmployee} onClick={() => void submitFace("enroll")}><span>{selectedRegistered ? "↻" : "＋"}</span><div><strong>{busy === "enroll" ? "Đang xử lý ảnh…" : pendingAction === "enroll" ? "Đang tự tìm khuôn mặt…" : selectedRegistered ? "Cập nhật khuôn mặt" : "Đăng ký khuôn mặt"}</strong><small>{cameraOn ? "Một lần chụp chính diện · hỗ trợ mắt kính" : "Camera sẽ tự mở khi bắt đầu"}</small></div></button>
+            <button type="button" className="face-test-verify" disabled={Boolean(busy) || Boolean(pendingAction) || !selectedRegistered} onClick={() => void submitFace("verify")}><span>✓</span><div><strong>{busy === "verify" ? "Đang xác minh…" : pendingAction === "verify" ? "Đang tự tìm khuôn mặt…" : "Xác minh khuôn mặt"}</strong><small>{selectedRegistered ? "Tự so sánh khi khuôn mặt ổn định" : "Cần đăng ký khuôn mặt trước"}</small></div></button>
+          </div>
           <footer><div><span>Gợi ý chất lượng ảnh</span><p>Giữ khuôn mặt thẳng, đủ sáng và cách camera khoảng 40–70 cm.</p></div><button type="button" className={cameraOn ? "is-stop" : ""} onClick={cameraOn ? stopCamera : () => void startCamera()}>{cameraOn ? "Tắt camera" : "Mở camera"}</button></footer>
         </article>
 
         <aside className="face-test-controls">
           <div className="face-test-server">
             <div className={`face-test-server-icon is-${serverState}`}>◉</div>
-            <div><span>Máy chủ DeepFace</span><strong>{serverState === "online" ? "Đang kết nối" : serverState === "checking" ? "Đang kiểm tra…" : "Chưa kết nối"}</strong><small>{serverState === "online" ? `${registrations.length} nhân viên đã đăng ký` : "Kết nối được bảo vệ qua Next.js"}</small></div>
+            <div><span>Máy chủ DeepFace</span><strong>{serverState === "online" ? "Đang kết nối" : serverState === "checking" ? "Đang kiểm tra…" : "Chưa kết nối"}</strong><small>{serverState === "online" ? `${registrations.length} nhân viên đã đăng ký` : serverState === "offline" ? serverError : "Kết nối được bảo vệ qua Next.js"}</small></div>
             <button type="button" onClick={loadRegistrations} aria-label="Kiểm tra lại máy chủ">↻</button>
           </div>
           <label className="face-test-field"><span>Nhân viên đang thao tác</span><select value={selectedEmployeeId} onChange={(event) => { setSelectedEmployeeId(event.target.value); setPendingAction(""); setMessage(null); }}><option value="">Chọn nhân viên</option>{employees.map((employee) => <option key={employee.id} value={employee.id}>{employee.name} · {employee.branch}</option>)}</select></label>
           {selectedEmployee && <div className="face-test-selected"><span className="face-test-person-avatar">{selectedEmployee.name.charAt(0).toUpperCase()}</span><div><strong>{selectedEmployee.name}</strong><small>{roleLabel(selectedEmployee.role)} · {selectedEmployee.branch || "Chưa phân chi nhánh"}</small></div><em className={selectedRegistered ? "is-registered" : ""}>{selectedRegistered ? "Đã đăng ký" : "Chưa đăng ký"}</em></div>}
           <div className="face-test-privacy"><span>⚿</span><p><strong>Thông tin kết nối được bảo vệ</strong><small>Địa chỉ máy chủ và FACE_API_KEY chỉ tồn tại ở server, không gửi xuống trình duyệt.</small></p></div>
-          <div className="face-test-actions">
-            <button type="button" className="face-test-enroll" disabled={Boolean(busy) || Boolean(pendingAction) || !selectedEmployee} onClick={() => void submitFace("enroll")}><span>{selectedRegistered ? "↻" : "＋"}</span><div><strong>{busy === "enroll" ? "Đang xử lý ảnh…" : pendingAction === "enroll" ? "Đang tự tìm khuôn mặt…" : selectedRegistered ? "Cập nhật khuôn mặt" : "Đăng ký khuôn mặt"}</strong><small>{cameraOn ? "Một lần chụp chính diện · hỗ trợ mắt kính" : "Camera sẽ tự mở khi bắt đầu"}</small></div></button>
-            <button type="button" className="face-test-verify" disabled={Boolean(busy) || Boolean(pendingAction) || !selectedRegistered} onClick={() => void submitFace("verify")}><span>✓</span><div><strong>{busy === "verify" ? "Đang xác minh…" : pendingAction === "verify" ? "Đang tự tìm khuôn mặt…" : "Xác minh khuôn mặt"}</strong><small>{selectedRegistered ? "Tự so sánh khi khuôn mặt ổn định" : "Cần đăng ký khuôn mặt trước"}</small></div></button>
-          </div>
         </aside>
       </section>
 
@@ -326,6 +334,7 @@ function roleLabel(role: string) {
   if (role === "consultant") return "Nhân viên tư vấn";
   if (role === "warranty") return "Nhân viên bảo hành";
   if (role === "repair") return "Nhân viên sửa chữa";
+  if (role === "inventory") return "Nhân viên kho";
   if (role === "owner") return "Giám đốc";
   return "Nhân viên bán hàng";
 }

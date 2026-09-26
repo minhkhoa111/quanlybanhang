@@ -7,6 +7,12 @@ import { products } from "../products";
 
 const featuredSlugs = ["iphone-17-pro", "macbook-air-13-m5", "ipad-pro-11-m5"];
 
+const heroImageBySlug: Record<string, string> = {
+  "iphone-17-pro": "/hero-products/iphone-17-pro-cutout.png",
+  "macbook-air-13-m5": "/hero-products/macbook-air-13-m5-cutout.png",
+  "ipad-pro-11-m5": "/hero-products/ipad-pro-11-m5-cutout.png",
+};
+
 const categoryMeta: Record<string, { label: string; href: string; index: string }> = {
   iphone: { label: "iPhone", href: "/iphone", index: "01" },
   macbook: { label: "MacBook", href: "/macbook", index: "02" },
@@ -42,6 +48,8 @@ export default function HeroCarousel() {
     index: String(index + 1).padStart(2, "0"),
   };
   const price = active.sellingPrice ?? active.salePrice ?? active.price;
+  const displayName = active.name.replace(/\s*\|\s*Chính hãng.*$/i, "").trim();
+  const heroImage = heroImageBySlug[active.slug] ?? active.image;
 
   const move = (direction: number) => {
     setIndex((current) => (current + direction + slides.length) % slides.length);
@@ -52,12 +60,12 @@ export default function HeroCarousel() {
       <div className="vibe-hero-stage" key={active.slug}>
         <div className="vibe-hero-copy">
           <div className="vibe-hero-status">
-            <span>INFINITY COMPANY / SẢN PHẨM NỔI BẬT</span>
+            <span>INFINITY STORE / SẢN PHẨM NỔI BẬT</span>
             <span>{meta.index} / 03</span>
           </div>
 
           <p className="vibe-hero-kicker">{meta.label} · {active.badge ?? "Chính hãng"}</p>
-          <h1>{active.name}</h1>
+          <h1>{displayName}</h1>
           <p className="vibe-hero-description">
             {active.tagline ?? "Thiết bị nổi bật, cấu hình rõ ràng và đầy đủ lựa chọn màu sắc."}
           </p>
@@ -84,22 +92,14 @@ export default function HeroCarousel() {
         </div>
 
         <div className="vibe-hero-visual">
-          <div className="vibe-hero-frame" aria-hidden="true" />
           <Image
-            src={active.image}
+            src={heroImage}
             alt={active.name}
             width={920}
             height={760}
             priority
             unoptimized
           />
-          <div className="vibe-hero-note">
-            <span className="vibe-hero-online" aria-hidden="true" />
-            <div>
-              <strong>Tư vấn cấu hình</strong>
-              <span>Màu sắc · bộ nhớ · giao hàng</span>
-            </div>
-          </div>
         </div>
 
         <div className="vibe-hero-controls">

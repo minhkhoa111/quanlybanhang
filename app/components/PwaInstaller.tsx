@@ -11,6 +11,9 @@ export default function PwaInstaller() {
   const [prompt, setPrompt] = useState<InstallPromptEvent | null>(null);
 
   useEffect(() => {
+    if ("caches" in window) {
+      void caches.keys().then((keys) => Promise.all(keys.map((key) => caches.delete(key))));
+    }
     if ("serviceWorker" in navigator) {
       if (process.env.NODE_ENV === "production") {
         navigator.serviceWorker.register("/sw.js").catch(() => undefined);
@@ -21,6 +24,9 @@ export default function PwaInstaller() {
           Promise.all(registrations.map((registration) => registration.unregister())),
         );
       }
+      void navigator.serviceWorker.getRegistrations().then((registrations) =>
+        Promise.all(registrations.map((registration) => registration.unregister())),
+      );
     }
     const handlePrompt = (event: Event) => {
       event.preventDefault();
@@ -38,7 +44,7 @@ export default function PwaInstaller() {
       setPrompt(null);
     }}>
       <span aria-hidden="true">↓</span>
-      Cài ứng dụng Infinity Company
+      Cài ứng dụng Infinity Store
     </button>
   );
 }

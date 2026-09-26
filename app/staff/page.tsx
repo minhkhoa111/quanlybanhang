@@ -129,6 +129,7 @@ function staffTools(role: string) {
   if (role === "consultant") return [...common, { href: "/admin/live-chat", icon: "✦", eyebrow: "Khách hàng", title: "Tư vấn trực tiếp", note: "Tiếp nhận và trả lời khách đang chờ tại chi nhánh." }];
   if (role === "warranty") return [...common, { href: "/admin/orders", icon: "✓", eyebrow: "Dịch vụ", title: "Công việc bảo hành", note: "Theo dõi thiết bị và phiếu bảo hành được phân công." }];
   if (role === "repair") return [...common, { href: "/admin/orders", icon: "⌘", eyebrow: "Kỹ thuật", title: "Công việc sửa chữa", note: "Cập nhật tiến độ xử lý thiết bị được bàn giao." }];
+  if (role === "inventory") return [...common, { href: "/admin/inventory", icon: "⇄", eyebrow: "Kho chi nhánh", title: "Kiểm tra & xuất nhập hàng", note: "Kiểm kê và điều chỉnh số lượng sản phẩm tại đúng chi nhánh được phân công." }];
   return [...common, { href: "/admin/orders", icon: "▤", eyebrow: "Bán hàng", title: "Đơn hàng của tôi", note: "Tiếp nhận và cập nhật đơn hàng đang phụ trách." }, { href: "/admin/products", icon: "▦", eyebrow: "Tra cứu", title: "Sản phẩm & tồn kho", note: "Kiểm tra nhanh giá bán và hàng còn tại cửa hàng." }];
 }
 
@@ -136,7 +137,7 @@ function Tool({ href, icon, eyebrow, title, note, index }: { href: string; icon:
   return <Link href={href} className={`tone-${["blue", "violet", "green"][index % 3]}`}><span className="staff-tool-icon">{icon}</span><div><small>{eyebrow}</small><strong>{title}</strong><p>{note}</p></div><b>↗</b></Link>;
 }
 
-function roleLabel(role: string) { if (role === "consultant") return "Tư vấn viên"; if (role === "warranty") return "Nhân viên bảo hành"; if (role === "repair") return "Nhân viên sửa chữa"; return "Nhân viên bán hàng"; }
+function roleLabel(role: string) { if (role === "consultant") return "Tư vấn viên"; if (role === "warranty") return "Nhân viên bảo hành"; if (role === "repair") return "Nhân viên sửa chữa"; if (role === "inventory") return "Nhân viên kho"; return "Nhân viên bán hàng"; }
 function attendanceLabel(status: string) { if (status === "present") return "Đã vào ca"; if (status === "late") return "Đi trễ"; if (status === "leave") return "Nghỉ phép"; return "Vắng"; }
 function statusLabel(status: string) { if (status === "delivered") return "Hoàn thành"; if (status === "shipping") return "Đang giao"; if (status === "processing") return "Đang xử lý"; if (status === "confirmed") return "Đã xác nhận"; if (status === "cancelled") return "Đã hủy"; return "Chờ tiếp nhận"; }
 function fullDate() { return new Intl.DateTimeFormat("vi-VN", { timeZone: "Asia/Ho_Chi_Minh", weekday: "long", day: "2-digit", month: "long", year: "numeric" }).format(new Date()); }

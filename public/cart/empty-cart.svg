@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240" fill="none">
+  <defs>
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#eff6ff" />
+      <stop offset="100%" stop-color="#dbeafe" />
+    </linearGradient>
+    <linearGradient id="cart-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0071e3" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+    <linearGradient id="wheel-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#334155" />
+    </linearGradient>
+    <linearGradient id="badge-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#0071e3" />
+    </linearGradient>
+    <filter id="soft-shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#0071e3" flood-opacity="0.15" />
+    </filter>
+  </defs>
+
+  <!-- Background Circle Glow -->
+  <circle cx="120" cy="120" r="96" fill="url(#bg-grad)" />
+  <circle cx="120" cy="120" r="82" fill="#ffffff" opacity="0.7" />
+
+  <!-- Sparkles / Floating Dots -->
+  <circle cx="68" cy="64" r="4" fill="#38bdf8" opacity="0.8" />
+  <path d="M172 62 L175 70 L183 73 L175 76 L172 84 L169 76 L161 73 L169 70 Z" fill="#0071e3" opacity="0.75" />
+  <circle cx="188" cy="108" r="3" fill="#60a5fa" />
+  <path d="M54 130 L56 135 L61 137 L56 139 L54 144 L52 139 L47 137 L52 135 Z" fill="#38bdf8" opacity="0.7" />
+
+  <!-- Cart Shadow Base -->
+  <ellipse cx="126" cy="180" rx="54" ry="8" fill="#94a3b8" opacity="0.2" />
+
+  <!-- Floating Gift / Package inside Cart -->
+  <g filter="url(#soft-shadow)">
+    <rect x="92" y="82" width="52" height="44" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" />
+    <!-- Ribbon vertical -->
+    <rect x="114" y="82" width="8" height="44" fill="url(#badge-grad)" />
+    <!-- Ribbon horizontal -->
+    <rect x="92" y="100" width="52" height="8" fill="url(#badge-grad)" />
+    <!-- Ribbon Bow -->
+    <path d="M118 82 C110 74 104 80 115 82 C126 80 120 74 118 82 Z" fill="#0071e3" />
+    <!-- Infinity badge on gift -->
+    <circle cx="118" cy="104" r="10" fill="#0071e3" />
+    <text x="118" y="108" font-family="sans-serif" font-size="11" font-weight="900" fill="#ffffff" text-anchor="middle">∞</text>
+  </g>
+
+  <!-- Shopping Cart Body -->
+  <g filter="url(#soft-shadow)">
+    <!-- Basket Outline -->
+    <path d="M68 88 L82 88 L100 144 L158 144 L170 102 L86 102" fill="none" stroke="url(#cart-grad)" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" />
+    <!-- Basket Inner Grid Lines -->
+    <path d="M104 116 L164 116" stroke="#bae6fd" stroke-width="2.5" stroke-linecap="round" />
+    <path d="M110 132 L154 132" stroke="#bae6fd" stroke-width="2.5" stroke-linecap="round" />
+    <path d="M118 102 L114 144" stroke="#bae6fd" stroke-width="2.5" stroke-linecap="round" />
+    <path d="M138 102 L138 144" stroke="#bae6fd" stroke-width="2.5" stroke-linecap="round" />
+    <!-- Handle -->
+    <path d="M60 76 L72 88" stroke="url(#cart-grad)" stroke-width="6" stroke-linecap="round" />
+  </g>
+
+  <!-- Wheels -->
+  <g>
+    <!-- Left Wheel -->
+    <circle cx="106" cy="164" r="12" fill="url(#wheel-grad)" />
+    <circle cx="106" cy="164" r="5" fill="#ffffff" />
+    <circle cx="106" cy="164" r="2.5" fill="#0071e3" />
+
+    <!-- Right Wheel -->
+    <circle cx="152" cy="164" r="12" fill="url(#wheel-grad)" />
+    <circle cx="152" cy="164" r="5" fill="#ffffff" />
+    <circle cx="152" cy="164" r="2.5" fill="#0071e3" />
+  </g>
+</svg>

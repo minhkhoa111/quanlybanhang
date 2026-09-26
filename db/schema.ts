@@ -19,6 +19,7 @@ export const products = sqliteTable("products", {
   stock: integer("stock").notNull().default(0),
   status: text("status").notNull().default("active"),
   tagsJson: text("tags_json").notNull().default("[]"),
+  condition: text("condition").notNull().default("new"),
   seoTitle: text("seo_title").notNull().default(""),
   seoDescription: text("seo_description").notNull().default(""),
   variantsJson: text("variants_json").notNull().default("[]"),
@@ -203,6 +204,18 @@ export const customerVerificationSessions = sqliteTable("customer_verification_s
   channel: text("channel").notNull(),
   destination: text("destination").notNull(),
   expiresAt: integer("expires_at").notNull(),
+  createdAt: integer("created_at").notNull(),
+});
+
+export const customerPasswordResetSessions = sqliteTable("customer_password_reset_sessions", {
+  id: text("id").primaryKey(),
+  customerId: text("customer_id").notNull(),
+  tokenHash: text("token_hash").notNull().unique(),
+  channel: text("channel").notNull(),
+  destination: text("destination").notNull(),
+  expiresAt: integer("expires_at").notNull(),
+  verifiedAt: integer("verified_at").notNull().default(0),
+  attempts: integer("attempts").notNull().default(0),
   createdAt: integer("created_at").notNull(),
 });
 

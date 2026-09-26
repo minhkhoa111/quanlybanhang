@@ -1,0 +1,4 @@
+export const MAX_PRODUCT_IMAGE_BYTES = 20 * 1024 * 1024;
+export const MAX_PRODUCT_IMAGE_LABEL = "20 MB";
+export const RECOMMENDED_PRODUCT_IMAGE_EDGE = 1200;
+

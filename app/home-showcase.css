@@ -25,6 +25,13 @@
   background: #e9f7f6;
 }
 
+.home-showcase-accessories {
+  --showcase-accent: #7857c6;
+  --showcase-soft: #f1edfb;
+  --showcase-border: #d8cfef;
+  background: #f5f2fc;
+}
+
 .home-showcase-inner {
   display: grid;
   gap: 24px;
@@ -79,7 +86,7 @@
 
 .home-showcase-tabs {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   border: 1px solid var(--showcase-border);
   border-radius: 8px 8px 0 0;
   overflow: hidden;
@@ -193,9 +200,9 @@
 
 .home-showcase-media {
   position: relative;
-  height: 280px;
+  height: clamp(250px, 24vw, 300px);
   margin: 0;
-  background: #fff;
+  background: linear-gradient(180deg, #fff, #f8fbfd);
 }
 
 .home-showcase-media > a {
@@ -204,13 +211,14 @@
 }
 
 .home-showcase-media img {
-  object-fit: contain;
-  padding: 22px;
+  object-fit: contain !important;
+  object-position: center !important;
+  padding: 26px !important;
   transition: transform 220ms ease;
 }
 
 .home-showcase-card:hover .home-showcase-media img {
-  transform: scale(1.035);
+  transform: scale(1.02);
 }
 
 .home-showcase-badge {

@@ -1,0 +1,1503 @@
+/* ==========================================================================
+   INFINITY STORE - TUAN DIGI WHITE & BLUE BRIGHT LUXURY DESIGN SYSTEM
+   Tone Trắng - Xanh Tươi Sáng · Phong Cách Chuẩn Tuấn Digi (tuandigi.vn)
+   Tối Ưu Hoàn Hảo Cho Mọi Kích Thước Mobile, Tablet & Desktop
+   ========================================================================== */
+
+:root {
+  --tdg-bg: #f4f6f9;
+  --tdg-white: #ffffff;
+  --tdg-blue: #0088cc;
+  --tdg-blue-hover: #0077b5;
+  --tdg-blue-light: #e8f4fd;
+  --tdg-blue-glow: rgba(0, 136, 204, 0.28);
+  --tdg-cyan: #21ace0;
+  --tdg-cyan-soft: #63bfe2;
+  --tdg-orange: #e8790a;
+  --tdg-orange-light: #fff7ec;
+  --tdg-orange-border: #f4a93c;
+  --tdg-red: #da1717;
+  --tdg-text-main: #0f172a;
+  --tdg-text-sub: #475569;
+  --tdg-text-muted: #64748b;
+  --tdg-border: #e2e8f0;
+  --tdg-border-hover: #cbd5e1;
+  --tdg-card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  --tdg-card-hover-shadow: 0 12px 30px rgba(0, 136, 204, 0.12);
+  --tdg-accent-green: #10b981;
+}
+
+/* --------------------------------------------------------------------------
+   1. HERO 3D WHITE-BLUE STUDIO STAGE (TUAN DIGI STYLE)
+   -------------------------------------------------------------------------- */
+.apple-hero-3d-stage {
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 18%, #eaf4fd 0%, #ffffff 60%, #f1f5f9 100%) !important;
+  color: var(--tdg-text-main) !important;
+  padding: 40px 0 65px;
+  border-bottom: 1px solid var(--tdg-border);
+  perspective: 1200px;
+  isolation: isolate;
+}
+
+.apple-hero-bg-lights {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.apple-light-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.65;
+  transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.apple-light-orb-1 {
+  width: 600px;
+  height: 600px;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(33, 172, 224, 0.28) 0%, transparent 70%);
+}
+
+.apple-light-orb-2 {
+  width: 450px;
+  height: 450px;
+  right: 5%;
+  bottom: 0;
+  background: radial-gradient(circle, rgba(0, 136, 204, 0.18) 0%, transparent 70%);
+}
+
+.apple-hero-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  align-items: center;
+  gap: 40px;
+  min-height: 560px;
+}
+
+/* Hero Content */
+.apple-hero-badge-strip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: #ffffff !important;
+  border: 1.5px solid #d0e6f9 !important;
+  box-shadow: 0 4px 14px rgba(0, 136, 204, 0.1);
+  margin-bottom: 20px;
+}
+
+.apple-hero-badge-strip .apple-icon {
+  font-size: 15px;
+  color: var(--tdg-blue);
+}
+
+.apple-hero-badge-strip span {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tdg-blue) !important;
+}
+
+.apple-hero-title {
+  font-size: clamp(38px, 4.4vw, 62px);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  margin: 0 0 16px;
+  color: var(--tdg-text-main) !important;
+}
+
+.apple-hero-title-gradient {
+  display: block;
+  color: var(--tdg-text-main) !important;
+}
+
+.apple-hero-title-accent {
+  display: block;
+  font-size: 0.85em;
+  background: linear-gradient(90deg, #0088cc 0%, #21ace0 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+.apple-hero-desc {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--tdg-text-sub) !important;
+  max-width: 520px;
+  margin: 0 0 26px;
+}
+
+/* 3D Specs Highlights */
+.apple-hero-specs-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.apple-spec-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border-radius: 10px;
+  background: #ffffff !important;
+  border: 1.5px solid #e2e8f0 !important;
+  font-size: 13px;
+  font-weight: 700;
+  color: #334155 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.25s ease;
+}
+
+.apple-spec-pill:hover {
+  background: var(--tdg-blue-light) !important;
+  border-color: #93c5fd !important;
+  color: var(--tdg-blue) !important;
+  transform: translateY(-2px);
+}
+
+/* Color Switcher */
+.apple-hero-colors {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.apple-hero-colors-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--tdg-text-sub) !important;
+}
+
+.apple-color-btn {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.apple-color-btn::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.apple-color-btn.is-active::after {
+  border-color: var(--tdg-blue);
+  box-shadow: 0 0 10px var(--tdg-blue-glow);
+}
+
+/* Pricing & Action Buttons */
+.apple-hero-cta-box {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+}
+
+.apple-hero-price-display {
+  display: flex;
+  flex-direction: column;
+}
+
+.apple-hero-price-display span {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tdg-text-muted) !important;
+  font-weight: 700;
+}
+
+.apple-hero-price-display strong {
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--tdg-orange) !important;
+}
+
+.apple-hero-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 28px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #0088cc 0%, #0072aa 100%) !important;
+  color: #ffffff !important;
+  font-size: 15px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  box-shadow: 0 8px 22px rgba(0, 136, 204, 0.35);
+}
+
+.apple-hero-btn-primary:hover {
+  background: linear-gradient(135deg, #0077b5 0%, #005f8d 100%) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 136, 204, 0.45);
+}
+
+.apple-hero-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 13px 22px;
+  border-radius: 999px;
+  background: #ffffff !important;
+  border: 1.5px solid #cbd5e1 !important;
+  color: var(--tdg-text-main) !important;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.apple-hero-btn-secondary:hover {
+  background: var(--tdg-blue-light) !important;
+  border-color: var(--tdg-blue) !important;
+  color: var(--tdg-blue) !important;
+  transform: translateY(-2px);
+}
+
+/* 3D Visual Stage with Studio Lighting */
+.apple-hero-visual-3d {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 500px;
+  transform-style: preserve-3d;
+  touch-action: pan-y pinch-zoom;
+}
+
+.apple-3d-card-stage {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out;
+  cursor: grab;
+}
+
+.apple-3d-card-stage:active {
+  cursor: grabbing;
+}
+
+/* Specular Crystal Glare */
+.apple-specular-glare {
+  position: absolute;
+  inset: -5%;
+  border-radius: 40px;
+  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.6) 0%, transparent 55%);
+  pointer-events: none;
+  z-index: 5;
+  mix-blend-mode: overlay;
+  opacity: 0.9;
+}
+
+/* Soft Studio Halo */
+.apple-device-halo {
+  position: absolute;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33, 172, 224, 0.25) 0%, transparent 70%);
+  filter: blur(40px);
+  z-index: 1;
+  transform: translateZ(-50px);
+  transition: background 0.8s ease;
+}
+
+.apple-device-image-wrap {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateZ(40px);
+  filter: drop-shadow(0 20px 30px rgba(0, 50, 100, 0.15));
+}
+
+.apple-device-image-wrap img {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Floating 3D White Badges with Blue Tint */
+.apple-3d-floating-badge {
+  position: absolute;
+  z-index: 6;
+  padding: 10px 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1.5px solid #d0e6f9 !important;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 10px 30px rgba(0, 136, 204, 0.15) !important;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--tdg-text-main) !important;
+  pointer-events: none;
+  animation: appleLevitate 4s ease-in-out infinite alternate;
+}
+
+.apple-3d-floating-badge.badge-top-left {
+  top: 8%;
+  left: -4%;
+  transform: translateZ(70px);
+  animation-delay: 0s;
+}
+
+.apple-3d-floating-badge.badge-bottom-right {
+  bottom: 10%;
+  right: -4%;
+  transform: translateZ(80px);
+  animation-delay: 1.5s;
+}
+
+.apple-badge-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: var(--tdg-blue-light) !important;
+  color: var(--tdg-blue) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+}
+
+.apple-3d-floating-badge strong {
+  color: var(--tdg-text-main) !important;
+}
+
+.apple-3d-floating-badge span {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--tdg-text-muted) !important;
+}
+
+/* Devices Tabs Nav */
+.apple-hero-devices-nav {
+  position: relative;
+  z-index: 3;
+  margin-top: 32px;
+  display: flex;
+  gap: 12px;
+  padding-bottom: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.apple-hero-devices-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.apple-hero-device-tab {
+  flex: 1;
+  min-width: 170px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  border-radius: 14px;
+  background: #ffffff !important;
+  border: 1.5px solid #e2e8f0 !important;
+  color: var(--tdg-text-sub) !important;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-align: left;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  scroll-snap-align: start;
+}
+
+.apple-hero-device-tab:hover {
+  background: var(--tdg-blue-light) !important;
+  border-color: #93c5fd !important;
+  color: var(--tdg-blue) !important;
+  transform: translateY(-2px);
+}
+
+.apple-hero-device-tab.is-active {
+  background: #ffffff !important;
+  border-color: var(--tdg-blue) !important;
+  color: var(--tdg-blue) !important;
+  box-shadow: 0 6px 20px rgba(0, 136, 204, 0.2) !important;
+}
+
+.apple-hero-device-tab strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--tdg-text-main) !important;
+}
+
+.apple-hero-device-tab.is-active strong {
+  color: var(--tdg-blue) !important;
+}
+
+.apple-hero-device-tab span {
+  display: block;
+  font-size: 11px;
+  color: var(--tdg-orange) !important;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   2. TUAN DIGI BENTO & SALE HOT GIỜ VÀNG GRID
+   -------------------------------------------------------------------------- */
+.apple-bento-section {
+  padding: 50px 0 60px;
+  background: var(--tdg-bg) !important;
+  color: var(--tdg-text-main) !important;
+  position: relative;
+}
+
+.apple-bento-header {
+  text-align: center;
+  max-width: 740px;
+  margin: 0 auto 40px;
+}
+
+.apple-bento-eyebrow {
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--tdg-blue) !important;
+  margin-bottom: 8px;
+}
+
+.apple-bento-title {
+  font-size: clamp(28px, 3.4vw, 44px);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--tdg-text-main) !important;
+  margin: 0 0 12px;
+}
+
+.apple-bento-subtitle {
+  font-size: 15px;
+  color: var(--tdg-text-sub) !important;
+  line-height: 1.5;
+}
+
+.apple-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 18px;
+}
+
+.apple-bento-card {
+  position: relative;
+  border-radius: 20px;
+  background: #ffffff !important;
+  border: 1.5px solid var(--tdg-border) !important;
+  overflow: hidden;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--tdg-card-shadow);
+}
+
+.apple-bento-card:hover {
+  border-color: #93c5fd !important;
+  transform: translateY(-4px);
+  box-shadow: var(--tdg-card-hover-shadow);
+}
+
+/* Tuấn Digi Sale Hot Banner */
+.apple-bento-card.card-siri {
+  grid-column: span 7;
+  min-height: 320px;
+  background: linear-gradient(120deg, #21ace0 0%, #63bfe2 100%) !important;
+  border: 0 !important;
+  color: #ffffff !important;
+}
+
+.apple-bento-card.card-siri h3 {
+  color: #ffffff !important;
+  font-size: 26px;
+}
+
+.apple-bento-card.card-siri p {
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.tdg-countdown-box {
+  display: flex;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.tdg-countdown-unit {
+  background: var(--tdg-red);
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 8px 12px;
+  text-align: center;
+  min-width: 58px;
+  box-shadow: 0 4px 10px rgba(218, 23, 23, 0.3);
+}
+
+.tdg-countdown-unit b {
+  display: block;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.tdg-countdown-unit small {
+  font-size: 10px;
+  text-transform: uppercase;
+  opacity: 0.9;
+  font-weight: 700;
+}
+
+/* Tuấn Digi Trade-in Card */
+.apple-bento-card.card-tradein {
+  grid-column: span 5;
+  background: linear-gradient(135deg, #fff7ec 0%, #ffe7c9 55%, #ffdcb2 100%) !important;
+  border: 2px solid var(--tdg-orange-border) !important;
+}
+
+.apple-bento-card.card-tradein h3 {
+  color: #8a5a13 !important;
+  font-size: 24px;
+}
+
+.apple-bento-card.card-tradein p {
+  color: #8a5a13 !important;
+}
+
+/* M4/M5 Silicon Card */
+.apple-bento-card.card-mchip {
+  grid-column: span 4;
+  min-height: 280px;
+  background: #ffffff !important;
+  border-top: 4px solid var(--tdg-blue) !important;
+}
+
+/* RTX 5090 Extreme Gaming Card */
+.apple-bento-card.card-gaming {
+  grid-column: span 4;
+  min-height: 280px;
+  background: #ffffff !important;
+  border-top: 4px solid #10b981 !important;
+}
+
+/* Titan Aerospace Card */
+.apple-bento-card.card-titanium {
+  grid-column: span 4;
+  min-height: 280px;
+  background: #ffffff !important;
+  border-top: 4px solid var(--tdg-orange) !important;
+}
+
+.apple-bento-card h3 {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0 0 8px;
+  color: var(--tdg-text-main) !important;
+}
+
+.apple-bento-card p {
+  font-size: 13.5px;
+  color: var(--tdg-text-sub) !important;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.apple-bento-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tdg-blue);
+  margin-bottom: 12px;
+}
+
+/* --------------------------------------------------------------------------
+   3. TUAN DIGI STYLE PRODUCT CARD
+   -------------------------------------------------------------------------- */
+.product-card {
+  position: relative;
+  background: #ffffff !important;
+  border: 1px solid #ececec !important;
+  border-radius: 14px;
+  padding: 16px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  border-color: #93c5fd !important;
+  box-shadow: 0 10px 24px rgba(0, 136, 204, 0.12);
+}
+
+.product-image-wrapper {
+  position: relative;
+  aspect-ratio: 1 / 0.92;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff !important;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.product-image-wrapper img {
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image-wrapper img {
+  transform: scale(1.05);
+}
+
+/* Tuấn Digi Badges */
+.product-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 2;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 10.5px;
+  font-weight: 800;
+  background: var(--tdg-blue);
+  color: #ffffff;
+}
+
+.product-badge.badge-hot {
+  background: var(--tdg-orange);
+}
+
+.product-badge.badge-pro {
+  background: #0f172a;
+}
+
+/* Tuấn Digi Rating & Compare Bar */
+.tdg-card-meta-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+  padding-top: 6px;
+  border-top: 1px dashed #eef0f2;
+  font-size: 11px;
+}
+
+.tdg-card-rating {
+  color: #f5a623;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.tdg-card-rating span {
+  color: #64748b;
+  font-weight: 600;
+}
+
+.tdg-card-compare {
+  color: var(--tdg-blue);
+  font-weight: 700;
+  cursor: pointer;
+  border: 0;
+  background: none;
+  padding: 0;
+}
+
+.tdg-card-compare:hover {
+  color: var(--tdg-orange);
+}
+
+/* Tuấn Digi Specs Box */
+.product-card-specs-tech {
+  display: block;
+  margin: 8px 0;
+  background: #f6f8fa;
+  border-radius: 8px;
+  padding: 6px 8px;
+}
+
+.product-spec-chip {
+  display: block;
+  font-size: 11px;
+  color: #475569;
+  line-height: 1.6;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+
+/* Price Row */
+.product-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.product-price-highlight {
+  color: var(--tdg-orange) !important;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+/* --------------------------------------------------------------------------
+   4. PRODUCT QUICK VIEW MODAL (DESKTOP & MOBILE IOS SHEET DRAWER)
+   -------------------------------------------------------------------------- */
+.apple-pay-sheet-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.apple-quickview-modal-card {
+  max-width: 760px;
+  width: 92%;
+  background: #ffffff !important;
+  color: #0f172a !important;
+  text-align: left;
+  padding: 36px;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 32px;
+  position: relative;
+  border-radius: 24px;
+  box-shadow: 0 25px 60px rgba(0, 50, 100, 0.2);
+  border: 1px solid var(--tdg-border);
+}
+
+.apple-sheet-pull-handle {
+  display: none;
+}
+
+.apple-modal-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 0;
+  background: #f1f5f9;
+  color: #0f172a;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: all 0.2s ease;
+}
+
+.apple-modal-close-btn:hover {
+  background: #e2e8f0;
+}
+
+.apple-quickview-media-box {
+  position: relative;
+  background: radial-gradient(circle at center, #fbfbfd 0%, #f0f0f4 100%);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  min-height: 340px;
+  overflow: hidden;
+}
+
+.apple-quickview-info-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* --------------------------------------------------------------------------
+   5. METICULOUS CHECKOUT & CART (WHITE & BLUE TUAN DIGI THEME)
+   -------------------------------------------------------------------------- */
+.apple-checkout-container {
+  max-width: 1200px;
+  margin: 30px auto 80px;
+  padding: 0 16px;
+  font-family: inherit;
+}
+
+.apple-checkout-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding: 16px 20px;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid var(--tdg-border);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+.apple-step-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--tdg-text-muted);
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.apple-step-item.is-active {
+  color: var(--tdg-blue);
+  font-weight: 800;
+}
+
+.apple-step-number {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 900;
+  background: #f1f5f9;
+  color: var(--tdg-text-muted);
+  transition: all 0.25s ease;
+}
+
+.apple-step-item.is-active .apple-step-number {
+  background: var(--tdg-blue);
+  color: #ffffff;
+  box-shadow: 0 0 10px var(--tdg-blue-glow);
+}
+
+.apple-step-divider {
+  width: 40px;
+  height: 2px;
+  background: #e2e8f0;
+}
+
+.apple-checkout-card {
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1.5px solid var(--tdg-border);
+  padding: 26px;
+  box-shadow: var(--tdg-card-shadow);
+  margin-bottom: 20px;
+}
+
+.apple-checkout-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.apple-checkout-card-header h2 {
+  font-size: 18px;
+  font-weight: 800;
+  margin: 0;
+  color: var(--tdg-text-main);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Payment Options */
+.apple-payment-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 2px solid #e2e8f0;
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.apple-payment-option:hover {
+  border-color: #93c5fd;
+}
+
+.apple-payment-option.is-selected {
+  border-color: var(--tdg-blue);
+  background: var(--tdg-blue-light);
+  box-shadow: 0 4px 14px rgba(0, 136, 204, 0.1);
+}
+
+/* VietQR Box in Tech Blue */
+.vietqr-instant-box {
+  background: #ffffff;
+  border: 1.5px solid #bfdbfe;
+  border-radius: 16px;
+  padding: 22px;
+  margin: 18px 0;
+  box-shadow: 0 4px 16px rgba(0, 136, 204, 0.08);
+}
+
+.vietqr-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: var(--tdg-blue);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  border: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.vietqr-copy-btn:hover {
+  background: var(--tdg-blue-hover);
+}
+
+.vietqr-copy-btn.copied {
+  background: #10b981;
+}
+
+/* Order Summary Box */
+.apple-order-summary-box {
+  position: sticky;
+  top: 90px;
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1.5px solid var(--tdg-border);
+  padding: 26px;
+  box-shadow: var(--tdg-card-shadow);
+}
+
+.apple-order-summary-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--tdg-text-main);
+  margin: 0 0 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.apple-summary-line.total-line strong {
+  font-size: 24px;
+  color: var(--tdg-orange);
+  font-weight: 900;
+}
+
+.apple-checkout-submit-btn {
+  width: 100%;
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 12px;
+  border: 0;
+  background: linear-gradient(135deg, #0088cc 0%, #0072aa 100%);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 6px 20px rgba(0, 136, 204, 0.3);
+}
+
+.apple-checkout-submit-btn:hover {
+  background: linear-gradient(135deg, #0077b5 0%, #005f8d 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 136, 204, 0.4);
+}
+
+/* --------------------------------------------------------------------------
+   6. RESPONSIVE BREAKPOINTS (TABLET & MOBILE TUAN DIGI PERFECTION)
+   -------------------------------------------------------------------------- */
+
+/* TABLET (max-width: 980px) */
+@media (max-width: 980px) {
+  .apple-hero-grid {
+    grid-template-columns: 1fr !important;
+    text-align: center;
+    gap: 28px !important;
+  }
+  .apple-hero-specs-row,
+  .apple-hero-colors,
+  .apple-hero-cta-box {
+    justify-content: center !important;
+  }
+  .apple-hero-visual-3d {
+    min-height: 380px !important;
+  }
+  .apple-3d-floating-badge.badge-top-left {
+    left: 2% !important;
+  }
+  .apple-3d-floating-badge.badge-bottom-right {
+    right: 2% !important;
+  }
+  .apple-bento-card.card-siri,
+  .apple-bento-card.card-titanium,
+  .apple-bento-card.card-mchip,
+  .apple-bento-card.card-gaming,
+  .apple-bento-card.card-tradein {
+    grid-column: span 12 !important;
+  }
+  .apple-checkout-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .apple-order-summary-box {
+    position: static !important;
+  }
+}
+
+/* MOBILE PHONES & SMALL TABLETS (max-width: 768px) */
+@media (max-width: 768px) {
+  /* Hero 3D Stage on Mobile */
+  .apple-hero-3d-stage {
+    padding: 22px 0 30px !important;
+  }
+
+  .apple-hero-grid {
+    min-height: auto !important;
+    gap: 16px !important;
+  }
+
+  .apple-hero-badge-strip {
+    margin-bottom: 12px !important;
+    padding: 5px 14px !important;
+  }
+
+  .apple-hero-title {
+    font-size: clamp(28px, 7.5vw, 38px) !important;
+    line-height: 1.12 !important;
+    margin-bottom: 10px !important;
+  }
+
+  .apple-hero-desc {
+    font-size: 13.5px !important;
+    line-height: 1.5 !important;
+    margin: 0 auto 16px !important;
+    padding: 0 4px;
+  }
+
+  .apple-hero-specs-row {
+    gap: 6px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .apple-spec-pill {
+    padding: 5px 10px !important;
+    font-size: 11px !important;
+    border-radius: 8px !important;
+  }
+
+  .apple-hero-colors {
+    margin-bottom: 18px !important;
+    gap: 10px !important;
+  }
+
+  .apple-hero-cta-box {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+
+  .apple-hero-price-display {
+    text-align: center !important;
+    margin-bottom: 4px !important;
+  }
+
+  .apple-hero-price-display strong {
+    font-size: 24px !important;
+  }
+
+  .apple-hero-btn-primary,
+  .apple-hero-btn-secondary {
+    width: 100% !important;
+    justify-content: center !important;
+    min-height: 48px !important;
+    font-size: 14.5px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 3D Visual Stage on Mobile */
+  .apple-hero-visual-3d {
+    min-height: 310px !important;
+    height: 310px !important;
+    margin: 6px 0 !important;
+  }
+
+  .apple-3d-card-stage {
+    max-width: 290px !important;
+    height: 290px !important;
+  }
+
+  .apple-device-halo {
+    width: 240px !important;
+    height: 240px !important;
+    filter: blur(30px) !important;
+  }
+
+  .apple-device-image-wrap img {
+    max-width: 92% !important;
+    max-height: 92% !important;
+  }
+
+  /* Compact Floating Badges on Mobile */
+  .apple-3d-floating-badge {
+    padding: 5px 10px !important;
+    font-size: 11px !important;
+    border-radius: 10px !important;
+    gap: 6px !important;
+  }
+
+  .apple-3d-floating-badge strong {
+    font-size: 11px !important;
+  }
+
+  .apple-3d-floating-badge span {
+    font-size: 9px !important;
+  }
+
+  .apple-badge-icon {
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 12px !important;
+  }
+
+  .apple-3d-floating-badge.badge-top-left {
+    top: 4px !important;
+    left: 4px !important;
+  }
+
+  .apple-3d-floating-badge.badge-bottom-right {
+    bottom: 4px !important;
+    right: 4px !important;
+  }
+
+  /* Horizontal Swipeable Device Tabs on Mobile */
+  .apple-hero-devices-nav {
+    margin-top: 18px !important;
+    gap: 8px !important;
+    padding-bottom: 6px !important;
+  }
+
+  .apple-hero-device-tab {
+    flex: 0 0 auto !important;
+    min-width: 145px !important;
+    padding: 10px 12px !important;
+    border-radius: 12px !important;
+  }
+
+  .apple-hero-device-tab strong {
+    font-size: 12px !important;
+  }
+
+  .apple-hero-device-tab span {
+    font-size: 10.5px !important;
+  }
+
+  /* Bento Grid on Mobile */
+  .apple-bento-section {
+    padding: 32px 0 40px !important;
+  }
+
+  .apple-bento-header {
+    margin-bottom: 20px !important;
+  }
+
+  .apple-bento-title {
+    font-size: 24px !important;
+  }
+
+  .apple-bento-subtitle {
+    font-size: 13px !important;
+  }
+
+  .apple-bento-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  .apple-bento-card {
+    grid-column: span 1 !important;
+    border-radius: 16px !important;
+    padding: 20px 16px !important;
+  }
+
+  .apple-bento-card.card-siri {
+    min-height: 270px !important;
+  }
+
+  .apple-bento-card.card-siri h3 {
+    font-size: 21px !important;
+  }
+
+  .apple-bento-card.card-tradein h3 {
+    font-size: 20px !important;
+  }
+
+  .apple-bento-card.card-mchip,
+  .apple-bento-card.card-gaming,
+  .apple-bento-card.card-titanium {
+    min-height: auto !important;
+  }
+
+  .tdg-countdown-box {
+    gap: 6px !important;
+    margin-top: 14px !important;
+    justify-content: center !important;
+  }
+
+  .tdg-countdown-unit {
+    min-width: 50px !important;
+    padding: 6px 8px !important;
+    border-radius: 7px !important;
+  }
+
+  .tdg-countdown-unit b {
+    font-size: 18px !important;
+  }
+
+  .tdg-countdown-unit small {
+    font-size: 9.5px !important;
+  }
+
+  /* iOS Bottom-Sheet Drawer Quick View Modal */
+  .apple-pay-sheet-modal {
+    align-items: flex-end !important;
+    padding: 0 !important;
+  }
+
+  .apple-quickview-modal-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 24px 24px 0 0 !important;
+    padding: 14px 18px 32px !important;
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    max-height: 88vh !important;
+    overflow-y: auto !important;
+    animation: appleSheetSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  .apple-sheet-pull-handle {
+    display: block !important;
+    width: 44px !important;
+    height: 5px !important;
+    border-radius: 999px !important;
+    background: #cbd5e1 !important;
+    margin: 0 auto 10px !important;
+  }
+
+  .apple-quickview-media-box {
+    min-height: 190px !important;
+    height: 190px !important;
+    padding: 12px !important;
+    border-radius: 14px !important;
+  }
+
+  .apple-quickview-media-box img {
+    max-height: 160px !important;
+  }
+
+  .apple-modal-close-btn {
+    top: 14px !important;
+    right: 14px !important;
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 18px !important;
+  }
+
+  /* Checkout on Mobile */
+  .apple-checkout-container {
+    margin: 16px auto 70px !important;
+    padding: 0 12px !important;
+  }
+
+  .apple-checkout-stepper {
+    padding: 10px 12px !important;
+    gap: 6px !important;
+    border-radius: 12px !important;
+    margin-bottom: 18px !important;
+  }
+
+  .apple-step-item {
+    font-size: 11px !important;
+    gap: 5px !important;
+  }
+
+  .apple-step-number {
+    width: 22px !important;
+    height: 22px !important;
+    font-size: 10.5px !important;
+  }
+
+  .apple-step-divider {
+    width: 16px !important;
+  }
+
+  .apple-checkout-card {
+    padding: 16px 14px !important;
+    border-radius: 14px !important;
+    margin-bottom: 14px !important;
+  }
+
+  .vietqr-instant-box {
+    padding: 16px 12px !important;
+    border-radius: 12px !important;
+  }
+
+  .vietqr-copy-btn {
+    padding: 8px 12px !important;
+    font-size: 12px !important;
+  }
+
+  .apple-order-summary-box {
+    padding: 18px 14px !important;
+    border-radius: 14px !important;
+  }
+
+  .apple-checkout-submit-btn {
+    padding: 14px !important;
+    font-size: 14.5px !important;
+    border-radius: 10px !important;
+    min-height: 48px !important;
+  }
+}
+
+/* COMPACT SMARTPHONES (max-width: 480px) */
+@media (max-width: 480px) {
+  .apple-hero-title {
+    font-size: 29px !important;
+  }
+
+  .apple-hero-visual-3d {
+    min-height: 290px !important;
+    height: 290px !important;
+  }
+
+  .apple-3d-card-stage {
+    max-width: 270px !important;
+    height: 270px !important;
+  }
+
+  .apple-3d-floating-badge.badge-top-left {
+    top: 2px !important;
+    left: 0px !important;
+  }
+
+  .apple-3d-floating-badge.badge-bottom-right {
+    bottom: 2px !important;
+    right: 0px !important;
+  }
+
+  .product-card {
+    padding: 10px 8px !important;
+    border-radius: 12px !important;
+  }
+
+  .product-image-wrapper {
+    aspect-ratio: 1 / 1 !important;
+    border-radius: 8px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .product-badge {
+    top: 4px !important;
+    left: 4px !important;
+    padding: 2px 6px !important;
+    font-size: 9px !important;
+  }
+
+  .product-quick-view-btn {
+    padding: 4px 8px !important;
+    font-size: 10px !important;
+  }
+
+  .product-price-highlight {
+    font-size: 15px !important;
+  }
+}
+
+@keyframes appleLevitate {
+  0% {
+    transform: translateY(0px) translateZ(60px);
+  }
+  100% {
+    transform: translateY(-8px) translateZ(70px);
+  }
+}
+
+@keyframes appleSheetSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}

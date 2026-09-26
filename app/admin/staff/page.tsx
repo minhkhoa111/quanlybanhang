@@ -34,6 +34,7 @@ export default async function StaffPage({
         <article><span>Nhân viên tư vấn</span><strong>{users.filter((user) => user.role === "consultant" && user.active).length}</strong></article>
         <article><span>Nhân viên bảo hành</span><strong>{users.filter((user) => user.role === "warranty" && user.active).length}</strong></article>
         <article><span>Nhân viên sửa chữa</span><strong>{users.filter((user) => user.role === "repair" && user.active).length}</strong></article>
+        <article><span>Nhân viên kho</span><strong>{users.filter((user) => user.role === "inventory" && user.active).length}</strong></article>
       </section>
 
       <section className="admin-card admin-staff-create">
@@ -43,7 +44,7 @@ export default async function StaffPage({
           <label className="admin-field"><span>Họ và tên</span><input name="name" required placeholder="Nguyễn Văn An" /></label>
           <label className="admin-field"><span>Tên đăng nhập</span><input name="username" required minLength={4} placeholder="nhanvien.quan1" autoComplete="off" /></label>
           <label className="admin-field"><span>Mật khẩu ban đầu</span><input name="password" type="password" required minLength={8} autoComplete="new-password" /></label>
-          <label className="admin-field"><span>Vai trò</span><select name="role" defaultValue="sales"><option value="sales">Nhân viên bán hàng</option><option value="consultant">Nhân viên tư vấn</option><option value="warranty">Nhân viên bảo hành</option><option value="repair">Nhân viên sửa chữa</option><option value="manager">Quản lý chi nhánh</option></select></label>
+          <label className="admin-field"><span>Vai trò</span><select name="role" defaultValue="sales"><option value="sales">Nhân viên bán hàng</option><option value="consultant">Nhân viên tư vấn</option><option value="inventory">Nhân viên kho · kiểm tra &amp; xuất nhập hàng</option><option value="warranty">Nhân viên bảo hành</option><option value="repair">Nhân viên sửa chữa</option><option value="manager">Quản lý chi nhánh</option></select></label>
           <label className="admin-field"><span>Chi nhánh</span><select name="branchId" required defaultValue=""><option value="" disabled>Chọn chi nhánh</option>{branches.map(branch=><option key={branch.id} value={branch.id}>{branch.name}</option>)}</select></label>
           <button className="admin-button admin-button-primary" type="submit" disabled={!branches.length}>Tạo tài khoản</button>
         </form>
@@ -74,4 +75,4 @@ export default async function StaffPage({
   );
 }
 
-function roleLabel(role:string){if(role==="manager")return "Quản lý chi nhánh";if(role==="consultant")return "Nhân viên tư vấn";if(role==="warranty")return "Nhân viên bảo hành";if(role==="repair")return "Nhân viên sửa chữa";if(role==="owner")return "Giám đốc";return "Nhân viên bán hàng"}
+function roleLabel(role:string){if(role==="manager")return "Quản lý chi nhánh";if(role==="consultant")return "Nhân viên tư vấn";if(role==="warranty")return "Nhân viên bảo hành";if(role==="repair")return "Nhân viên sửa chữa";if(role==="inventory")return "Nhân viên kho";if(role==="owner")return "Giám đốc";return "Nhân viên bán hàng"}

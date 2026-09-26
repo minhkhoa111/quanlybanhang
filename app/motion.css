@@ -17,7 +17,16 @@
 
 @keyframes route-enter {
   from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  /* Finish without a transform so sticky product galleries keep their native containing block. */
+  to { opacity: 1; transform: none; }
+}
+
+/* Product lists reveal their controls and cards individually. Never hide the
+   full, potentially very tall catalog container. */
+.motion-ready .catalog-products-section[data-motion-reveal],
+.motion-ready .product-detail[data-motion-reveal] {
+  opacity: 1;
+  translate: none;
 }
 
 .motion-ready [data-motion-reveal] {
@@ -175,4 +184,55 @@ button:active,
     opacity: 1;
     translate: none;
   }
+}
+
+/* Reveal uses the independent translate property so card hover can still use
+   transform. Keep these properties explicit despite component transitions. */
+body.motion-ready .route-stage [data-motion-reveal] {
+  transition-property: opacity, translate, transform, box-shadow, border-color;
+  transition-duration: .6s, .6s, .25s, .25s, .25s;
+  transition-timing-function: var(--motion-spring);
+  transition-delay: calc(var(--reveal-order, 0) * 55ms), calc(var(--reveal-order, 0) * 55ms), 0s, 0s, 0s;
+}
+body.motion-ready .route-stage [data-motion-reveal]:focus-within {
+  opacity: 1;
+  translate: none;
+  transition-delay: 0s;
+}
+.cps-search-dropdown,
+.cps-header-cat-dropdown {
+  animation: menu-item-enter .22s var(--motion-spring) both;
+  transform-origin: top center;
+}
+.cps-cart-badge { animation: cart-badge-enter .3s var(--motion-spring) both; }
+@keyframes cart-badge-enter {
+  from { opacity: 0; scale: .65; }
+  to { opacity: 1; scale: 1; }
+}
+.storefront-refresh .shop-category-arrow,
+.storefront-refresh .cps-commit-icon {
+  transition: transform .3s var(--motion-spring);
+}
+@media (hover: hover) and (pointer: fine) {
+  .storefront-refresh .shop-category:hover .shop-category-arrow { transform: translate(3px, -3px); }
+  .storefront-refresh .cps-commit-item:hover .cps-commit-icon { transform: translateY(-3px) rotate(-6deg); }
+  .storefront-refresh .cps-product-card:hover .cps-card-media img { transform: scale(1.06); }
+}
+.storefront-refresh .cps-card-media img { transition: transform .45s var(--motion-spring); }
+.storefront-refresh :is(.shop-category, .cps-product-card, .product-launch-button):active {
+  transform: scale(.98);
+}
+@media (prefers-reduced-motion: reduce) {
+  body.motion-ready .route-stage [data-motion-reveal] {
+    opacity: 1;
+    translate: none;
+    transition: none !important;
+  }
+  .storefront-refresh :is(.shop-category, .cps-product-card, .product-launch-button):active,
+  .storefront-refresh .shop-category:hover,
+  .storefront-refresh .shop-category:hover img,
+  .storefront-refresh .shop-category:hover .shop-category-arrow,
+  .storefront-refresh .cps-commit-item:hover .cps-commit-icon,
+  .storefront-refresh .cps-product-card:hover,
+  .storefront-refresh .cps-product-card:hover .cps-card-media img { transform: none; }
 }

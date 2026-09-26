@@ -1,53 +1,25 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-
-type NavItem = { icon: string; label: string; href: string; roles?: string[] };
-type NavGroup = { label: string; items: NavItem[]; roles?: string[] };
-
-const groups: NavGroup[] = [
-  { label: "Điều hành", items: [
-    { icon: "⌂", label: "Tổng quan", href: "/admin" },
-    { icon: "✓", label: "Công việc & báo cáo", href: "/admin/tasks" },
-    { icon: "↗", label: "Báo cáo kinh doanh", href: "/admin/reports", roles: ["owner", "manager"] },
-  ] },
-  { label: "Bán hàng & khách hàng", items: [
-    { icon: "▤", label: "Đơn hàng", href: "/admin/orders", roles: ["owner", "manager", "sales", "warranty", "repair"] },
-    { icon: "✦", label: "Tư vấn trực tiếp", href: "/admin/live-chat", roles: ["owner", "manager", "consultant"] },
-    { icon: "♙", label: "Member khách hàng", href: "/admin/customers", roles: ["owner"] },
-    { icon: "◇", label: "Khuyến mãi & voucher", href: "/admin/vouchers", roles: ["owner"] },
-  ] },
-  { label: "Sản phẩm & kho", roles: ["owner", "manager", "sales"], items: [
-    { icon: "▦", label: "Danh mục sản phẩm", href: "/admin/products" },
-    { icon: "＋", label: "Thêm sản phẩm", href: "/admin/products/new", roles: ["owner", "manager"] },
-    { icon: "△", label: "Cảnh báo tồn kho", href: "/admin/products?stock=low" },
-  ] },
-  { label: "Tổ chức doanh nghiệp", roles: ["owner", "manager"], items: [
-    { icon: "⌘", label: "Hệ thống chi nhánh", href: "/admin/branches", roles: ["owner"] },
-    { icon: "♧", label: "Hồ sơ nhân sự", href: "/admin/hr", roles: ["owner", "manager"] },
-    { icon: "▣", label: "Thẻ nhân sự", href: "/admin/hr/cards", roles: ["owner", "manager"] },
-    { icon: "⚿", label: "Tài khoản & phân quyền", href: "/admin/staff", roles: ["owner"] },
-    { icon: "▤", label: "Kiểm kê lương tháng", href: "/admin/payroll", roles: ["owner"] },
-    { icon: "％", label: "Báo cáo thuế", href: "/admin/tax", roles: ["owner"] },
-  ] },
-  { label: "Chấm công", items: [
-    { icon: "◷", label: "Chấm công nhân viên", href: "/admin/attendance" },
-    { icon: "◎", label: "Đăng ký khuôn mặt", href: "/admin/face-test", roles: ["owner", "manager"] },
-  ] },
-  { label: "Cá nhân", roles: ["manager", "sales", "consultant", "warranty", "repair"], items: [
-    { icon: "▣", label: "Thẻ nhân sự của tôi", href: "/staff/card" },
-  ] },
-  { label: "An ninh", items: [
-    { icon: "◉", label: "Camera chi nhánh", href: "/admin/cameras" },
-  ] },
-];
+import { usePathname, useSearchParams } from "next/navigation";
+import { adminNavigationGroups } from "./navigation";
 
 export default function AdminNavigation({ role, homeHref = "/admin" }: { role: string; homeHref?: string }) {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const links = adminNavigationGroups
+    .filter((group) => !group.roles || group.roles.includes(role))
+    .flatMap((group) => group.items)
+    .filter((item) => !item.roles || item.roles.includes(role));
+  const selected = links.filter((item) => {
+    const [target, query] = (item.href === "/admin" ? homeHref : item.href).split("?");
+    if (item.href === "/admin") return pathname === homeHref;
+    return (pathname === target || pathname.startsWith(`${target}/`)) &&
+      (!query || [...new URLSearchParams(query)].every(([key, value]) => searchParams.get(key) === value));
+  }).sort((a, b) => b.href.length - a.href.length)[0]?.href;
   return (
     <nav className="admin-nav-groups">
-      {groups.filter((group) => !group.roles || group.roles.includes(role)).map((group) => ({
+      {adminNavigationGroups.filter((group) => !group.roles || group.roles.includes(role)).map((group) => ({
         ...group,
         items: group.items.filter((item) => !item.roles || item.roles.includes(role)),
       })).filter((group) => group.items.length).map((group) => (
@@ -55,9 +27,8 @@ export default function AdminNavigation({ role, homeHref = "/admin" }: { role: s
           <span>{group.label}</span>
           {group.items.map((item) => {
             const href = item.href === "/admin" ? homeHref : item.href;
-            const target = href.split("?")[0];
-            const active = item.href === "/admin" ? pathname === homeHref : pathname.startsWith(target);
-            return <Link key={item.href} href={href} className={active ? "is-active" : ""}><i>{item.icon}</i>{item.label}</Link>;
+            const active = item.href === selected;
+            return <Link key={item.href} href={href} aria-current={active ? "page" : undefined} className={active ? "is-active" : ""}><i aria-hidden="true">{item.icon}</i>{item.label}</Link>;
           })}
         </section>
       ))}

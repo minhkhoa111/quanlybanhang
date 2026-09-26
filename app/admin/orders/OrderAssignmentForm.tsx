@@ -46,5 +46,6 @@ function roleLabel(role: string) {
   if (role === "consultant") return "Tư vấn";
   if (role === "warranty") return "Bảo hành";
   if (role === "repair") return "Sửa chữa";
+  if (role === "inventory") return "Kho";
   return "Bán hàng";
 }

@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { clearAdminSession, requireAdminAction } from "../admin-auth";
 import { deleteManagedProduct, getManagedProductById, saveManagedProduct, setProductActive } from "@/db/products";
 import type { Product, ProductVariant } from "../products";
+import { MAX_PRODUCT_IMAGE_BYTES, MAX_PRODUCT_IMAGE_LABEL } from "../product-image-policy";
 
 type Bindings = {
   PRODUCT_IMAGES: R2Bucket;
@@ -19,7 +20,7 @@ export async function saveProductAction(formData: FormData) {
     const name = value(formData, "name");
     const brand = value(formData, "brand");
     const category = value(formData, "category") as Product["category"];
-    if (!name || !brand || !["iphone", "samsung", "android", "ipad", "macbook", "mac-mini-studio", "imac", "laptop", "laptop-cu", "smartwatch", "audio", "phu-kien"].includes(category)) {
+    if (!name || !brand || !["iphone", "android", "ipad", "macbook", "mac-mini-studio", "imac", "laptop", "laptop-cu", "smartwatch", "audio", "phu-kien"].includes(category)) {
       throw new Error("Vui lòng nhập tên, hãng và nhóm sản phẩm.");
     }
 
@@ -34,8 +35,8 @@ export async function saveProductAction(formData: FormData) {
       if (!imageFile.type.startsWith("image/")) {
         throw new Error("Tệp tải lên phải là hình ảnh.");
       }
-      if (imageFile.size > 6 * 1024 * 1024) {
-        throw new Error("Ảnh phải nhỏ hơn 6 MB.");
+      if (imageFile.size > MAX_PRODUCT_IMAGE_BYTES) {
+        throw new Error(`Ảnh phải nhỏ hơn ${MAX_PRODUCT_IMAGE_LABEL}.`);
       }
       const bucket = (env as unknown as Bindings).PRODUCT_IMAGES;
       if (!bucket) throw new Error("Kho ảnh sản phẩm chưa sẵn sàng.");
@@ -55,7 +56,6 @@ export async function saveProductAction(formData: FormData) {
     const variants = category === "macbook" || category === "mac-mini-studio" || category === "imac" || category === "laptop"
       ? buildMacVariants(formData, colors, image, previous?.variants)
       : previous?.variants;
-
     await saveManagedProduct({
       id,
       slug,
@@ -67,7 +67,7 @@ export async function saveProductAction(formData: FormData) {
       image,
       images: [image, ...(previous?.images ?? [])].filter((item, index, list) => list.indexOf(item) === index),
       badge: value(formData, "badge") || "Mới",
-      tagline: value(formData, "tagline") || `Khám phá ${name} tại Infinity Company.`,
+      tagline: value(formData, "tagline") || `Khám phá ${name} tại Infinity Store.`,
       price: value(formData, "price") || "Liên hệ giá tốt",
       costPrice: previous?.costPrice,
       sellingPrice: value(formData, "price") || previous?.sellingPrice || "Liên hệ giá tốt",
@@ -121,7 +121,6 @@ export async function logoutAdminAction() {
 function refreshProductPages(slug: string) {
   revalidatePath("/");
   revalidatePath("/iphone");
-  revalidatePath("/samsung");
   revalidatePath("/android");
   revalidatePath("/ipad");
   revalidatePath("/macbook");

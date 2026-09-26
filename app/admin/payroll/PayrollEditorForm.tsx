@@ -38,4 +38,4 @@ export default function PayrollEditorForm({ employee, month, selectedBranch, wor
 function numberValue(value: string) { const parsed = Number(value.replace(/\D/g, "")); return Number.isFinite(parsed) ? Math.max(0, Math.round(parsed)) : 0; }
 function numberInput(value: number) { return Math.max(0, Math.round(value)).toLocaleString("vi-VN"); }
 function money(value: number) { return `${Math.max(0, Math.round(value)).toLocaleString("vi-VN")}đ`; }
-function roleLabel(role: string) { if (role === "manager") return "Quản lý chi nhánh"; if (role === "consultant") return "Nhân viên tư vấn"; if (role === "warranty") return "Nhân viên bảo hành"; if (role === "repair") return "Nhân viên sửa chữa"; return "Nhân viên bán hàng"; }
+function roleLabel(role: string) { if (role === "manager") return "Quản lý chi nhánh"; if (role === "consultant") return "Nhân viên tư vấn"; if (role === "warranty") return "Nhân viên bảo hành"; if (role === "repair") return "Nhân viên sửa chữa"; if (role === "inventory") return "Nhân viên kho"; return "Nhân viên bán hàng"; }

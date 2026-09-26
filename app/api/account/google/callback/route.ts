@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { googleOAuthConfig } from "@/app/account-providers";
 import { createCustomerSession, upsertGoogleCustomer } from "@/db/customers";
-import { CUSTOMER_COOKIE, GOOGLE_STATE_COOKIE, customerCookieOptions, shortLivedCookieOptions } from "@/app/customer-auth";
+import { CUSTOMER_COOKIE, GOOGLE_RETURN_TO_COOKIE, GOOGLE_STATE_COOKIE, customerCookieOptions, shortLivedCookieOptions } from "@/app/customer-auth";
 import { clearAdminSession } from "@/app/admin-auth";
 
 type GoogleUser = { sub?: string; email?: string; email_verified?: boolean; name?: string };
@@ -11,7 +11,9 @@ export async function GET(request: Request) {
   const origin = url.origin;
   const store = await cookies();
   const expectedState = store.get(GOOGLE_STATE_COOKIE)?.value || "";
+  const returnTo = safeReturnTo(store.get(GOOGLE_RETURN_TO_COOKIE)?.value);
   store.set(GOOGLE_STATE_COOKIE, "", shortLivedCookieOptions(0));
+  store.set(GOOGLE_RETURN_TO_COOKIE, "", shortLivedCookieOptions(0));
   try {
     const code = url.searchParams.get("code") || "";
     const state = url.searchParams.get("state") || "";
@@ -44,8 +46,17 @@ export async function GET(request: Request) {
     const session = await createCustomerSession(customer.id);
     await clearAdminSession();
     store.set(CUSTOMER_COOKIE, session, customerCookieOptions());
-    return Response.redirect(new URL(customer.profileComplete ? "/tai-khoan" : "/tai-khoan?complete=1", origin));
+    const destination = customer.profileComplete
+      ? returnTo
+      : `/member?complete=1&returnTo=${encodeURIComponent(returnTo)}`;
+    return Response.redirect(new URL(destination, origin));
   } catch {
-    return Response.redirect(new URL("/tai-khoan?error=google", origin));
+    return Response.redirect(new URL("/member?error=google", origin));
   }
+}
+
+function safeReturnTo(value: string | undefined) {
+  return value?.startsWith("/") && !value.startsWith("//") && !value.startsWith("/api/")
+    ? value
+    : "/member";
 }

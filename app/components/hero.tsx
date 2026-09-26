@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const categories = [
-  ["iPhone", "/iphone"], ["Samsung", "/samsung"], ["Android", "/android"], ["MacBook", "/macbook"],
+  ["iPhone", "/iphone"], ["iPad", "/ipad"], ["Android", "/android"], ["MacBook", "/macbook"],
 ];
 
 export default function HomeHero() {
@@ -19,7 +19,7 @@ export default function HomeHero() {
         <div className="phone-hero-copy">
           <div className="phone-hero-kicker"><span /> Điện thoại chính hãng · Bảo hành rõ ràng</div>
           <h1 id="phone-hero-title">Chọn điện thoại<span>đúng nhu cầu.</span></h1>
-          <p>iPhone, Samsung và Android mới nhất với mức giá minh bạch. Tư vấn thật, hỗ trợ trả góp và giao hàng nhanh tại TP.HCM.</p>
+          <p>iPhone, iPad, MacBook và Android với mức giá minh bạch. Tư vấn thật, hỗ trợ trả góp và giao hàng nhanh tại TP.HCM.</p>
           <div className="phone-hero-actions">
             <Link href="/iphone" className="hero-buy">Mua điện thoại <span>→</span></Link>
             <Link href="/tu-van" className="hero-advice">Tư vấn chọn máy</Link>
@@ -36,14 +36,14 @@ export default function HomeHero() {
 
         <div className="phone-hero-visual" aria-label="Điện thoại nổi bật">
           <div className="phone-hero-orbit orbit-one" /><div className="phone-hero-orbit orbit-two" />
-          <div className="phone-device device-back"><Image src="/products/dien-thoai-samsung-galaxy-s26-ultra.jpg" alt="Samsung Galaxy S26 Ultra" fill sizes="(max-width: 720px) 45vw, 260px" priority unoptimized /></div>
+          <div className="phone-device device-back"><Image src="/products/iphone-17-pro.png" alt="iPhone 17 Pro" fill sizes="(max-width: 720px) 45vw, 260px" priority unoptimized /></div>
           <div className="phone-device device-main"><Image src="/products/iphone-17-pro-max.jpg" alt="iPhone 17 Pro Max" fill sizes="(max-width: 720px) 55vw, 330px" priority unoptimized /></div>
           <Link href="/san-pham/iphone-17-pro-max" className="hero-product-card"><span>Sản phẩm nổi bật</span><strong>iPhone 17 Pro Max</strong><small>Xem chi tiết và chọn cấu hình →</small></Link>
           <div className="hero-stock"><i /> Có sẵn tại cửa hàng</div>
         </div>
       </div>
 
-      <style jsx global>{`
+      <style>{`
         .phone-hero{--hero-red:#ee3f2f;position:relative;isolation:isolate;min-height:720px;overflow:hidden;background:linear-gradient(135deg,#f8f7f3 0%,#f0ede6 52%,#dedbd4 100%);color:#151515}.phone-hero-glow{position:absolute;z-index:-1;border-radius:50%;opacity:.75}.glow-one{right:-8%;top:-35%;width:680px;height:680px;background:radial-gradient(circle,#ff8c77 0%,transparent 68%)}.glow-two{left:35%;bottom:-45%;width:520px;height:520px;background:radial-gradient(circle,#b9d9ff 0%,transparent 70%)}
         .phone-hero-shell{width:min(1240px,calc(100% - 40px));min-height:720px;margin:auto;display:grid;grid-template-columns:1.02fr .98fr;align-items:center;gap:42px;padding:62px 0 70px}.phone-hero-copy{z-index:4;font-family:var(--font-site),"Nunito Sans",ui-rounded,"SF Pro Rounded",sans-serif;opacity:0;transform:translateY(20px);transition:.7s ease}.phone-hero.is-ready .phone-hero-copy{opacity:1;transform:none}.phone-hero-kicker{display:flex;align-items:center;gap:10px;margin-bottom:22px;color:#6d6962;font-size:12px;font-weight:750;letter-spacing:.08em!important;text-transform:uppercase}.phone-hero-kicker span{width:28px;height:2px;background:var(--hero-red)}.phone-hero h1{max-width:680px;margin:0;font-family:var(--font-site),"Nunito Sans",ui-rounded,"SF Pro Rounded",sans-serif;font-size:clamp(58px,6.4vw,90px);line-height:.94;letter-spacing:-.045em!important;font-weight:750}.phone-hero h1 span{display:block;color:var(--hero-red)}.phone-hero-copy>p{max-width:580px;margin:28px 0;color:#625f59;font-size:18px;line-height:1.7;font-weight:500}
         .phone-hero-actions{display:flex;gap:12px;flex-wrap:wrap}.phone-hero-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 22px;border-radius:999px;font-size:14px;font-weight:750;transition:.2s}.phone-hero-actions a:hover{transform:translateY(-2px)}.hero-buy{gap:22px;background:#171717;color:#fff;box-shadow:0 10px 25px #0002}.hero-buy span{color:#ff806c;font-size:20px}.hero-advice{border:1px solid #bdb9b1;background:#fff8}.phone-hero-categories{display:flex;gap:8px;flex-wrap:wrap;margin-top:24px}.phone-hero-categories a{padding:8px 12px;border:1px solid #1515151f;border-radius:999px;background:#fff8;color:#5a5751;font-size:12px;font-weight:700}.phone-hero-categories a:hover{border-color:var(--hero-red);color:var(--hero-red)}.phone-hero-benefits{display:grid;grid-template-columns:repeat(3,1fr);max-width:570px;margin-top:38px;padding-top:22px;border-top:1px solid #15151524}.phone-hero-benefits div{display:flex;gap:10px}.phone-hero-benefits strong{color:var(--hero-red);font-size:11px}.phone-hero-benefits span{color:#5e5b55;font-size:11px;line-height:1.5;font-weight:650}

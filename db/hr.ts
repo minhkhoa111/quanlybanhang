@@ -41,6 +41,7 @@ export type AttendanceRecord = {
 
 export type PayrollEmployee = Pick<EmployeeProfile, "adminUserId" | "name" | "role" | "branchId" | "branch" | "monthlySalary" | "bankName"> & {
   bankAccountMasked: string;
+  hasBankAccount: boolean;
 };
 
 const database = () => {
@@ -100,7 +101,7 @@ async function ensureEmployeeProfileDefaults() {
       p.bank_account_number_encrypted,p.monthly_salary,p.updated_at
     FROM admin_users u
     LEFT JOIN employee_profiles p ON p.admin_user_id=u.id
-    WHERE u.role IN ('manager','sales','consultant','warranty','repair')
+    WHERE u.role IN ('manager','sales','consultant','inventory','warranty','repair')
     ORDER BY u.created_at,u.id`).all<Record<string, unknown>>();
   const statements: D1PreparedStatement[] = [];
   for (const [index, row] of rows.results.entries()) {
@@ -167,7 +168,7 @@ export async function getEmployeeDirectory(): Promise<Array<EmployeeProfile & { 
     FROM admin_users u
     LEFT JOIN employee_profiles p ON p.admin_user_id=u.id
     LEFT JOIN employee_attendance a ON a.admin_user_id=u.id AND a.work_date=?
-    ORDER BY CASE u.role WHEN 'manager' THEN 0 WHEN 'sales' THEN 1 WHEN 'consultant' THEN 2 WHEN 'warranty' THEN 3 WHEN 'repair' THEN 4 ELSE 5 END,u.active DESC,u.name ASC`).bind(today).all<Record<string, unknown>>();
+    ORDER BY CASE u.role WHEN 'manager' THEN 0 WHEN 'sales' THEN 1 WHEN 'consultant' THEN 2 WHEN 'inventory' THEN 3 WHEN 'warranty' THEN 4 WHEN 'repair' THEN 5 ELSE 6 END,u.active DESC,u.name ASC`).bind(today).all<Record<string, unknown>>();
   return Promise.all(rows.results.map(async (row) => {
     const profile = await mapProfile(row);
     const fields = [profile.dateOfBirth, profile.joinedDate, profile.citizenId, profile.permanentAddress, profile.bankName, profile.bankAccountName, profile.bankAccountNumber, profile.monthlySalary > 0 ? String(profile.monthlySalary) : ""];
@@ -191,18 +192,22 @@ export async function getPayrollEmployeeDirectory(): Promise<PayrollEmployee[]> 
     FROM admin_users u
     LEFT JOIN employee_profiles p ON p.admin_user_id=u.id
     WHERE u.active=1
-    ORDER BY CASE u.role WHEN 'manager' THEN 0 WHEN 'sales' THEN 1 WHEN 'consultant' THEN 2 WHEN 'warranty' THEN 3 WHEN 'repair' THEN 4 ELSE 5 END,u.name ASC`)
+    ORDER BY CASE u.role WHEN 'manager' THEN 0 WHEN 'sales' THEN 1 WHEN 'consultant' THEN 2 WHEN 'inventory' THEN 3 WHEN 'warranty' THEN 4 WHEN 'repair' THEN 5 ELSE 6 END,u.name ASC`)
     .all<Record<string, unknown>>();
-  return Promise.all(rows.results.map(async (row) => ({
-    adminUserId: String(row.id || ""),
-    name: String(row.name || ""),
-    role: normalizeRole(String(row.role || "sales")),
-    branchId: String(row.branch_id || ""),
-    branch: String(row.branch || ""),
-    monthlySalary: Number(row.monthly_salary || 0),
-    bankName: String(row.bank_name || ""),
-    bankAccountMasked: maskValue(await decrypt(String(row.bank_account_number_encrypted || ""))),
-  })));
+  return Promise.all(rows.results.map(async (row) => {
+    const bankAccountNumber = await decrypt(String(row.bank_account_number_encrypted || ""));
+    return {
+      adminUserId: String(row.id || ""),
+      name: String(row.name || ""),
+      role: normalizeRole(String(row.role || "sales")),
+      branchId: String(row.branch_id || ""),
+      branch: String(row.branch || ""),
+      monthlySalary: Number(row.monthly_salary || 0),
+      bankName: String(row.bank_name || ""),
+      bankAccountMasked: maskValue(bankAccountNumber),
+      hasBankAccount: Boolean(bankAccountNumber),
+    };
+  }));
 }
 
 export async function getEmployeeProfile(adminUserId: string) {
@@ -333,9 +338,9 @@ function mapAttendance(row: Record<string, unknown>): AttendanceRecord {
 }
 
 function normalizeRole(value: string): AdminRole {
-  return value === "manager" || value === "consultant" || value === "owner" || value === "warranty" || value === "repair" ? value : "sales";
+  return value === "manager" || value === "consultant" || value === "owner" || value === "warranty" || value === "repair" || value === "inventory" ? value : "sales";
 }
-function salaryForRole(role: AdminRole) { if (role === "manager") return 38_000_000; if (role === "consultant") return 12_000_000; if (role === "warranty" || role === "repair") return 20_000_000; return role === "sales" ? 15_000_000 : 0; }
+function salaryForRole(role: AdminRole) { if (role === "manager") return 38_000_000; if (role === "consultant") return 12_000_000; if (role === "warranty" || role === "repair") return 20_000_000; if (role === "inventory") return 15_000_000; return role === "sales" ? 15_000_000 : 0; }
 function stableEmployeeNumber(value: string) { let hash = 2166136261; for (let index = 0; index < value.length; index += 1) hash = Math.imul(hash ^ value.charCodeAt(index), 16777619); return hash >>> 0; }
 function validCreatedDate(value: number) { const date = new Date(value); return Number.isFinite(date.getTime()) && value > 0 ? date.toISOString().slice(0, 10) : "2024-01-08"; }
 function defaultPermanentAddress(seed: number) { const streets = ["Nguyễn Văn Trỗi", "Cách Mạng Tháng Tám", "Lê Văn Sỹ", "Phan Đăng Lưu", "Hoàng Văn Thụ", "Trường Chinh"]; const districts = ["Quận 1", "Quận 3", "Quận 10", "Quận Phú Nhuận", "Quận Tân Bình", "Quận Bình Thạnh"]; return `${12 + seed % 180} ${streets[seed % streets.length]}, ${districts[Math.floor(seed / streets.length) % districts.length]}, TP. Hồ Chí Minh`; }
@@ -350,7 +355,10 @@ let encryptionKeyReady: Promise<CryptoKey> | null = null;
 async function encryptionKey() {
   if (encryptionKeyReady) return encryptionKeyReady;
   const bindings = env as unknown as Bindings;
-  const secret = bindings.HR_DATA_KEY || bindings.ADMIN_PASSWORD || process.env.HR_DATA_KEY || process.env.ADMIN_PASSWORD || "huy-apple-local-hr-data-key";
+  const secret = bindings.HR_DATA_KEY || process.env.HR_DATA_KEY;
+  if (!secret?.trim()) {
+    throw new Error("HR_DATA_KEY chưa được cấu hình trên máy chủ.");
+  }
   encryptionKeyReady = crypto.subtle.digest("SHA-256", new TextEncoder().encode(`hr:v1:${secret}`))
     .then((digest) => crypto.subtle.importKey("raw", digest, "AES-GCM", false, ["encrypt", "decrypt"]))
     .catch((error) => { encryptionKeyReady = null; throw error; });

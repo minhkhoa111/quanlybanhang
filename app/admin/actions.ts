@@ -14,6 +14,7 @@ import { getManagedOrderById, updateOrderAssignment, updateOrderInvoice, updateO
 import { getBranches } from "@/db/branches";
 import { getAdminUsers } from "@/db/admin-users";
 import type { Product, ProductVariant } from "@/app/products";
+import { MAX_PRODUCT_IMAGE_BYTES, MAX_PRODUCT_IMAGE_LABEL } from "@/app/product-image-policy";
 
 type Bindings = {
   PRODUCT_IMAGES?: R2Bucket;
@@ -21,7 +22,6 @@ type Bindings = {
 
 const categories = [
   "iphone",
-  "samsung",
   "android",
   "ipad",
   "macbook",
@@ -35,7 +35,7 @@ const categories = [
 ] as const;
 
 export async function saveAdminProductAction(formData: FormData) {
-  await requireAdminAction();
+  await requireCatalogMutation();
   const mode = value(formData, "mode");
   let target = "/admin/products?status=saved";
 
@@ -85,12 +85,14 @@ export async function saveAdminProductAction(formData: FormData) {
       image: primaryImage,
       images: allImages.length ? allImages : [primaryImage],
       badge: value(formData, "badge") || (status === "draft" ? "Nháp" : "Mới"),
-      tagline: value(formData, "tagline") || value(formData, "description") || `Khám phá ${name} tại Infinity Company.`,
+      tagline: value(formData, "tagline") || value(formData, "description") || `Khám phá ${name} tại Infinity Store.`,
       price: sellingPrice,
       costPrice: value(formData, "costPrice"),
       sellingPrice,
       salePrice: value(formData, "salePrice"),
-      stock: Math.max(0, Number(value(formData, "stock")) || 0),
+      stock: variants.length
+        ? variants.filter((variant) => variant.status !== "inactive").reduce((total, variant) => total + Math.max(0, Number(variant.stock) || 0), 0)
+        : Math.max(0, Number(value(formData, "stock")) || 0),
       status,
       tags: splitValues(value(formData, "tags"), ","),
       seoTitle: value(formData, "seoTitle"),
@@ -113,7 +115,7 @@ export async function saveAdminProductAction(formData: FormData) {
 }
 
 export async function toggleAdminProductAction(formData: FormData) {
-  await requireAdminAction();
+  await requireCatalogMutation();
   const id = value(formData, "id");
   const active = value(formData, "active") === "true";
   if (id) await setProductActive(id, active);
@@ -122,7 +124,7 @@ export async function toggleAdminProductAction(formData: FormData) {
 }
 
 export async function bulkDeleteProductsAction(formData: FormData) {
-  await requireAdminAction();
+  await requireCatalogMutation();
   const ids = formData.getAll("ids").filter((item): item is string => typeof item === "string");
   await deleteManagedProducts(ids);
   revalidatePath("/admin/products");
@@ -170,8 +172,8 @@ export async function assignOrderAction(formData: FormData) {
 
   const adminUserId = value(formData, "adminUserId");
   const staff = adminUserId ? (await getAdminUsers()).find((item) => item.id === adminUserId && item.active) : undefined;
-  if (adminUserId && (!staff || staff.branchId !== branch.id)) {
-    redirect(`/admin/orders/${id}?error=${encodeURIComponent("Nhân viên phải đang hoạt động và thuộc chi nhánh đã chọn.")}`);
+  if (adminUserId && (!staff || staff.branchId !== branch.id || staff.role === "inventory")) {
+    redirect(`/admin/orders/${id}?error=${encodeURIComponent("Nhân viên phụ trách đơn phải đang hoạt động, thuộc chi nhánh đã chọn và không thuộc bộ phận kho.")}`);
   }
 
   await updateOrderAssignment(id, {
@@ -241,6 +243,12 @@ async function requireOrderOperation(id: string) {
   return { user, order };
 }
 
+async function requireCatalogMutation() {
+  const user = await requireAdminAction();
+  if (user.role === "inventory") throw new Error("Nhân viên kho chỉ được điều chỉnh số lượng tại trang kho chi nhánh.");
+  return user;
+}
+
 async function uploadImages(items: FormDataEntryValue[]) {
   const files = items.filter((item): item is File => item instanceof File && item.size > 0);
   if (!files.length) return [];
@@ -251,7 +259,7 @@ async function uploadImages(items: FormDataEntryValue[]) {
   const urls: string[] = [];
   for (const file of files) {
     if (!file.type.startsWith("image/")) throw new Error("Tệp tải lên phải là hình ảnh.");
-    if (file.size > 6 * 1024 * 1024) throw new Error("Mỗi ảnh phải nhỏ hơn 6 MB.");
+    if (file.size > MAX_PRODUCT_IMAGE_BYTES) throw new Error(`Mỗi ảnh phải nhỏ hơn ${MAX_PRODUCT_IMAGE_LABEL}.`);
     const bytes = new Uint8Array(await file.arrayBuffer());
     const detectedType = detectImageType(bytes);
     if (!detectedType) throw new Error(`${file.name} không phải tệp ảnh PNG, JPG, WEBP, GIF hoặc AVIF hợp lệ.`);
@@ -273,7 +281,7 @@ async function uploadVariantImages(variants: ProductVariant[], formData: FormDat
 }
 
 function refreshAdminAndStore(slug: string) {
-  ["/", "/iphone", "/samsung", "/android", "/ipad", "/macbook", "/mac-mini-studio", "/imac", "/laptop", "/laptop-cu", "/smartwatch", "/audio", "/phu-kien", "/admin", "/admin/products"].forEach((path) =>
+  ["/", "/iphone", "/android", "/ipad", "/macbook", "/mac-mini-studio", "/imac", "/laptop", "/laptop-cu", "/smartwatch", "/audio", "/phu-kien", "/admin", "/admin/products"].forEach((path) =>
     revalidatePath(path),
   );
   if (slug) revalidatePath(`/san-pham/${slug}`);
@@ -311,8 +319,13 @@ function parseVariants(raw: string, category: Product["category"]): ProductVaria
           storage,
           version,
           sku: String(item.sku ?? "").trim(),
+          barcode: String(item.barcode ?? "").trim(),
+          costPrice: String(item.costPrice ?? "").trim(),
           price: String(item.price ?? "").trim(),
+          salePrice: String(item.salePrice ?? "").trim(),
           stock: Math.max(0, Number(item.stock) || 0),
+          status: item.status === "inactive" ? "inactive" : "active",
+          serials: Array.isArray(item.serials) ? item.serials.map(String).map((serial) => serial.trim()).filter(Boolean) : [],
           image: String(item.image ?? "").trim(),
         } satisfies ProductVariant;
       })

@@ -1,0 +1,587 @@
+/* ==========================================================================
+   INFINITY STORE - LUXURY FOOTER & FINANCIAL SUPPORT 2026
+   Apple & Modern High-End Tech Store Aesthetic
+   ========================================================================== */
+
+/* Root Wrapper */
+.site-footer-luxury {
+  position: relative;
+  width: 100%;
+  background: linear-gradient(180deg, #F8FAFC 0%, #EFF5FC 42%, #E4EFFB 100%);
+  border-top: 1px solid rgba(0, 104, 217, 0.12);
+  color: #1E293B;
+  overflow: hidden;
+  font-family: inherit;
+}
+
+/* Ambient Visual Glow Elements */
+.footer-luxury-glow {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(100px);
+  z-index: 0;
+}
+
+.footer-glow-left {
+  top: -40px;
+  left: -80px;
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, rgba(0, 104, 217, 0.08) 0%, rgba(255, 255, 255, 0) 70%);
+}
+
+.footer-glow-right {
+  top: 10%;
+  right: -60px;
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.09) 0%, rgba(0, 104, 217, 0.04) 40%, rgba(255, 255, 255, 0) 75%);
+}
+
+/* Container Shell */
+.footer-luxury-shell {
+  position: relative;
+  z-index: 1;
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 72px 28px 36px;
+}
+
+/* Main Split Grid (Left 65% | Right 35%) */
+.footer-luxury-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.85fr) minmax(360px, 1.15fr);
+  gap: 48px;
+  align-items: start;
+}
+
+/* --------------------------------------------------------------------------
+   LEFT ZONE: Brand Panel + 3-Column Navigation + Contact/Map
+   -------------------------------------------------------------------------- */
+.footer-left-zone {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+/* Brand Plate */
+.footer-brand-plate {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 26px 30px;
+  background: rgba(255, 255, 255, 0.68);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 22px;
+  box-shadow: 0 12px 36px rgba(16, 40, 80, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.footer-brand-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.footer-brand-link {
+  display: inline-block;
+  line-height: 1;
+  transition: transform 0.25s ease, opacity 0.2s ease;
+}
+
+.footer-brand-link:hover {
+  transform: scale(1.02);
+  opacity: 0.95;
+}
+
+.footer-brand-logo-img {
+  width: 172px;
+  height: auto;
+  max-height: 52px;
+  object-fit: contain;
+  display: block;
+}
+
+.footer-brand-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(0, 104, 217, 0.06);
+  border: 1px solid rgba(0, 104, 217, 0.12);
+  color: #0068D9;
+  font-size: 11.5px;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+}
+
+.footer-brand-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+}
+
+.footer-brand-slogan {
+  margin: 0;
+  color: #475467;
+  font-size: 14px;
+  line-height: 1.65;
+  font-weight: 450;
+  max-width: 640px;
+}
+
+/* 3 Navigation Columns */
+.footer-nav-columns {
+  display: grid;
+  grid-template-columns: minmax(130px, 1fr) minmax(140px, 1.05fr) minmax(220px, 1.45fr);
+  gap: 32px;
+}
+
+.footer-nav-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-col-header {
+  margin: 0 0 16px;
+  color: #0068D9;
+  font-size: 12px;
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.footer-nav-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-nav-links a {
+  color: #334155;
+  font-size: 13.5px;
+  line-height: 1.45;
+  font-weight: 480;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 4px;
+}
+
+.footer-nav-links a:hover {
+  color: #0068D9;
+  transform: translateX(4px);
+}
+
+/* Contact Column specifics */
+.footer-contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.footer-address-box {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13.5px;
+  color: #334155;
+  line-height: 1.5;
+}
+
+.footer-address-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #64748B;
+}
+
+.footer-hotline-card {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 14px;
+  background: rgba(0, 104, 217, 0.05);
+  border: 1px solid rgba(0, 104, 217, 0.14);
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.footer-hotline-card:hover {
+  background: rgba(0, 104, 217, 0.09);
+  border-color: #0068D9;
+  transform: translateY(-1px);
+}
+
+.footer-hotline-label {
+  font-size: 10.5px;
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #0068D9;
+}
+
+.footer-hotline-number {
+  font-size: 18px;
+  font-weight: 800;
+  color: #0050A8;
+  letter-spacing: 0.02em;
+}
+
+/* Google Map Frame */
+.footer-map-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.footer-map-frame {
+  position: relative;
+  width: 100%;
+  height: 136px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 104, 217, 0.18);
+  box-shadow: 0 6px 20px rgba(16, 40, 80, 0.05);
+  background: #E2E8F0;
+}
+
+.footer-map-frame iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 0;
+  filter: contrast(1.02) saturate(1.05);
+}
+
+.footer-map-direct-link {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #0068D9;
+  text-decoration: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.footer-map-direct-link:hover {
+  opacity: 0.85;
+  transform: translateX(2px);
+}
+
+/* --------------------------------------------------------------------------
+   RIGHT ZONE: Financial Support Feature Card (Premium Floating Glass)
+   -------------------------------------------------------------------------- */
+.footer-finance-feature-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: 26px;
+  padding: 34px 32px;
+  box-shadow: 0 24px 60px rgba(16, 44, 88, 0.08), 0 2px 6px rgba(0, 104, 217, 0.04), inset 0 1px 0 rgba(255, 255, 255, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Badge */
+.finance-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(0, 104, 217, 0.08);
+  border: 1px solid rgba(0, 104, 217, 0.15);
+  color: #0068D9;
+  font-size: 11px;
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.finance-badge-icon {
+  font-size: 13px;
+  line-height: 1;
+}
+
+/* Titles & Copy */
+.finance-heading {
+  margin: 0;
+  font-size: 23px;
+  font-weight: 800;
+  color: #0F172A;
+  line-height: 1.28;
+  letter-spacing: -0.015em;
+}
+
+.finance-desc {
+  margin: 0;
+  font-size: 13.5px;
+  color: #475467;
+  line-height: 1.6;
+}
+
+/* CTA Button */
+.finance-main-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 48px;
+  padding: 0 20px;
+  background: #FFFFFF;
+  border: 1px solid #D0DCEB;
+  border-radius: 14px;
+  color: #0F172A;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(16, 40, 80, 0.04);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.finance-main-cta span.cta-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(0, 104, 217, 0.08);
+  color: #0068D9;
+  font-size: 14px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.finance-main-cta:hover {
+  background: #0068D9;
+  border-color: #0068D9;
+  color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0, 104, 217, 0.25);
+}
+
+.finance-main-cta:hover span.cta-arrow {
+  background: rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
+  transform: translateX(3px);
+}
+
+/* 2x2 Financial Partners Grid */
+.finance-partners-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.finance-partner-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  padding: 10px 14px;
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 104, 217, 0.12);
+  border-radius: 14px;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(16, 40, 80, 0.03);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.finance-partner-card:hover {
+  border-color: #0068D9;
+  box-shadow: 0 8px 20px rgba(0, 104, 217, 0.12);
+  transform: translateY(-2px);
+}
+
+.finance-partner-img {
+  width: auto;
+  max-width: 80%;
+  max-height: 34px;
+  object-fit: contain;
+  transition: transform 0.25s ease;
+}
+
+.finance-partner-card:hover .finance-partner-img {
+  transform: scale(1.04);
+}
+
+.finance-partner-arrow {
+  color: #94A3B8;
+  font-size: 15px;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.finance-partner-card:hover .finance-partner-arrow {
+  color: #0068D9;
+  transform: translateX(3px);
+}
+
+/* Disclaimer / Note */
+.finance-note-block {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  margin-top: 2px;
+}
+
+.finance-note-icon {
+  color: #0068D9;
+  font-size: 13px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.finance-note-text {
+  margin: 0;
+  color: #64748B;
+  font-size: 11.5px;
+  line-height: 1.5;
+}
+
+/* --------------------------------------------------------------------------
+   BOTTOM BAR: Copyright & Attribution
+   -------------------------------------------------------------------------- */
+.footer-luxury-bottom {
+  margin-top: 54px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(0, 104, 217, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  color: #64748B;
+  font-size: 12.5px;
+}
+
+.footer-bottom-copy {
+  font-weight: 550;
+  color: #334155;
+}
+
+.footer-bottom-attrib {
+  font-size: 11.5px;
+  color: #64748B;
+}
+
+/* --------------------------------------------------------------------------
+   RESPONSIVE DESIGN (1024px Tablet & 768px/390px Mobile)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1080px) {
+  .footer-luxury-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .footer-nav-columns {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .footer-finance-feature-card {
+    max-width: 680px;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-luxury-shell {
+    padding: 44px 18px calc(88px + env(safe-area-inset-bottom));
+  }
+
+  .footer-left-zone {
+    gap: 28px;
+  }
+
+  .footer-brand-plate {
+    padding: 20px;
+    border-radius: 18px;
+  }
+
+  .footer-brand-topline {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .footer-brand-logo-img {
+    width: 148px;
+  }
+
+  .footer-nav-columns {
+    grid-template-columns: 1fr 1fr;
+    gap: 28px 20px;
+  }
+
+  .footer-nav-col.col-contact {
+    grid-column: 1 / -1;
+  }
+
+  .footer-map-frame {
+    height: 140px;
+  }
+
+  .footer-finance-feature-card {
+    padding: 24px 20px;
+    border-radius: 20px;
+  }
+
+  .finance-heading {
+    font-size: 20px;
+  }
+
+  .finance-partners-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .finance-partner-card {
+    height: 58px;
+    padding: 8px 12px;
+  }
+
+  .footer-luxury-bottom {
+    margin-top: 36px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-nav-columns {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .finance-partners-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+

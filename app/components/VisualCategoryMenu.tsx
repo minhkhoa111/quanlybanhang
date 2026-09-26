@@ -8,8 +8,10 @@ const categories = [
   { label: "Mac mini & Studio", href: "/mac-mini-studio", image: "/products/apple/mac-studio/front.jpg" },
   { label: "iMac", href: "/imac", image: "/products/apple/imac/hero.jpg" },
   { label: "Laptop", href: "/laptop", image: "/products/expanded/rog-scar18.jpg" },
-  { label: "Samsung", href: "/samsung", image: "/category-menu/samsung.jpg" },
   { label: "Android", href: "/android", image: "/category-menu/android.png" },
+  { label: "Đồng hồ", href: "/smartwatch", image: "/category-menu/apple-watch.jpg" },
+  { label: "Âm thanh", href: "/audio", image: "/category-menu/airpods-max.jpg" },
+  { label: "Phụ kiện", href: "/phu-kien", image: "/category-menu/magsafe.jpg" },
 ] as const;
 
 export default function VisualCategoryMenu() {
@@ -28,7 +30,7 @@ export default function VisualCategoryMenu() {
                   src={category.image}
                   alt=""
                   fill
-                  sizes="(max-width: 760px) 120px, 150px"
+                  sizes="(max-width: 760px) 110px, 108px"
                   unoptimized
                 />
               </span>

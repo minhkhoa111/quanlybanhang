@@ -16,5 +16,5 @@ export default function AccountHeaderLink() {
     window.addEventListener("huy-account-change", refresh);
     return () => window.removeEventListener("huy-account-change", refresh);
   }, []);
-  return <Link className="header-account-link" href="/tai-khoan" aria-label={name ? `Tài khoản ${name}` : "Đăng nhập hoặc đăng ký"}>{avatarUrl ? <Image className="header-account-avatar" src={avatarUrl} alt="" width={28} height={28} unoptimized /> : <span className="header-account-icon" aria-hidden="true" />}<strong>{name ? name.split(" ").at(-1) : "Tài khoản"}</strong></Link>;
+  return <Link className="header-account-link" href="/member" aria-label={name ? `Tài khoản ${name}` : "Đăng nhập hoặc đăng ký"}>{avatarUrl ? <Image className="header-account-avatar" src={avatarUrl} alt="" width={28} height={28} unoptimized /> : <span className="header-account-icon" aria-hidden="true" />}<strong>{name ? name.split(" ").at(-1) : "Member"}</strong></Link>;
 }
